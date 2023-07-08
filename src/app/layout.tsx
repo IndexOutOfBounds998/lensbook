@@ -31,6 +31,7 @@ const lensConfig: LensConfig = {
   environment: production,
 };
 
+
 export default function RootLayout({
   children,
 }: {
