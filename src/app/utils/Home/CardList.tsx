@@ -6,11 +6,10 @@ import CardAnt from './CardAnt'
 import { Tab } from '@headlessui/react'
 import { useExplorePublications } from '@lens-protocol/react-web';
 
-import API from "../../api/api";
-import {FloatButton, Skeleton, Spin} from 'antd';
+import { FloatButton, Skeleton, Spin } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 
-import Macy from 'macy'
+import Macy from 'macy';
 
 const LayoutContent = React.forwardRef(({ cardClick, searchParam, dataList, setParam }, ref) => {
 
@@ -50,7 +49,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, dataList, setP
         }
     }
 
-    const cardPosition = (img, index) => {
+    const cardPosition = (img: { height: number, width: number }, index: number) => {
         const imgObj = imgSizeRef.current;
         imgObj[index] = {
             height: img.height,
@@ -172,7 +171,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, dataList, setP
             setParam(obj)
         }
         // refresh()
-    },[searchParam]);
+    }, [searchParam]);
 
     const nextPage = () => {
         setIsMax(true)
@@ -219,11 +218,11 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, dataList, setP
                         className='w-full flex items-center justify-center h-[50px] mb-[20px]'
                         style={
                             isLoadingRef.current ?
-                                {display: 'flex'} :
-                                {display: 'none', height: '50px'}
+                                { display: 'flex' } :
+                                { display: 'none', height: '50px' }
                         }
                     >
-                        <Spin tip="Loading" size="large"/>
+                        <Spin tip="Loading" size="large" />
                         <span className='text-[13px] ml-[15px]'>加载中</span>
                     </div>
                 }
@@ -247,5 +246,8 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, dataList, setP
         </>
     )
 });
+
+
+LayoutContent.displayName = 'LayoutContent';
 
 export default LayoutContent;
