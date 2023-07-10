@@ -41,8 +41,6 @@ export default function LayoutContent({cardClick}) {
     useEffect(() => {
         if (!loading) {
             setCardList(data);
-            const val = next;
-            console.log(val)
         }
     }, [loading])
 
@@ -127,6 +125,7 @@ export default function LayoutContent({cardClick}) {
                 searchParam={searchParam}
                 setParam={setParam}
                 dataList={cardList}
+                dataObj={{ data, loading, hasMore, next }}
             >
             </CardList>
         </div>
