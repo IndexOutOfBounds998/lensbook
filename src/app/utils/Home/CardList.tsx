@@ -1,17 +1,18 @@
 
 import React, { useRef, useEffect, useReducer } from 'react'
 import useState from 'react-usestateref'
-
+import ReactDom from 'react-dom'
 import CardAnt from './CardAnt'
 import { Tab } from '@headlessui/react'
 import { useExplorePublications } from '@lens-protocol/react-web';
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import { FloatButton, Skeleton, Spin } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 
 import Macy from 'macy';
 
-const LayoutContent = React.forwardRef(({ cardClick, searchParam, dataList, setParam }, ref) => {
+const LayoutContent = React.forwardRef(({ cardClick, searchParam, dataList, setParam, dataObj }, ref) => {
 
     let [cardList, setCardList, cardListRef] = useState([]);
 
@@ -63,7 +64,8 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, dataList, setP
     }
 
     const macyInfo = () => {
-        console.log('macyInfo')
+        const cardsList = document.getElementsByClassName('scrollableDiv')[0];
+        cardsList.setAttribute('id', 'scrollableDiv');
         const columns = cardSizeRef.current;
         let macy = Macy({
             container: '#scrollableDiv', // 图像列表容器id
@@ -107,11 +109,11 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, dataList, setP
         setIsMax(false)
         setIsLoading(true)
         // const { error, data } = await getContent();
-        const data = dataList;
+        const data = dataObj.data;
         if (data) {
             const obj = [...cardListRef.current, ...data];
             setCardList(obj);
-            if (obj.length >= data.total) {
+            if (dataObj.hasMore) {
                 setIsMax(true)
             }
             setIsLoading(false)
@@ -134,10 +136,14 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, dataList, setP
     }, []);
 
     useEffect(() => {
-        if (dataList) {
+        if (!dataObj.loading) {
             loadMore();
         }
-    }, [dataList]);
+    }, [dataObj.loading])
+
+    useEffect(() => {
+        console.log(cardList)
+    }, [cardList]);
 
     useEffect(() => {
         if (queryParam) {
@@ -185,47 +191,43 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, dataList, setP
         setParam(obj)
     }
 
-    //滚动监听
-    function handleScroll(e) {
-        if (!isLoadingRef.current && !isMaxRef.current) {
-            const top = e.target.scrollTop;
-            const height = e.target.clientHeight;
-            const allHeight = e.target.scrollHeight;
-            if (allHeight - height - top < 500) {
-                console.log('加载');
-                nextPage();
-            }
-        }
+    const nextList = () => {
+        console.log(111)
     }
 
     return (
         <>
-            <div ref={cards} className='h-[calc(100%-68px)] overflow-auto' onScroll={handleScroll}>
-                <div id='scrollableDiv' className='w-full flex justify-between flex-wrap'>
-                    {cardListRef.current.map((item, index) => (
-                        <CardAnt
-                            key={index}
-                            item={item}
-                            index={index}
-                            cardClick={cardClick}
-                            width={cardWidthRef.current}
-                            cardPosition={cardPosition}
-                        />
-                    ))}
-                </div>
-                {isMax ? '' :
-                    <div
-                        className='w-full flex items-center justify-center h-[50px] mb-[20px]'
-                        style={
-                            isLoadingRef.current ?
-                                { display: 'flex' } :
-                                { display: 'none', height: '50px' }
-                        }
-                    >
-                        <Spin tip="Loading" size="large" />
-                        <span className='text-[13px] ml-[15px]'>加载中</span>
-                    </div>
-                }
+            <div
+                ref={cards}
+                id='cardsList'
+                className='h-[calc(100%-68px)] overflow-auto'
+            >
+                <InfiniteScroll
+                    dataLength={cardList.length}
+                    next={nextList}
+                    hasMore={ dataObj.hasMore}
+                    className='w-full flex justify-between flex-wrap scrollableDiv'
+                    loader={
+                        <div
+                            className='w-full flex items-center justify-center h-[50px] mb-[20px]'
+                        >
+                            <Spin tip="Loading" size="large" />
+                            <span className='text-[13px] ml-[15px]'>加载中</span>
+                        </div>
+                    }
+                    scrollableTarget='cardsList'
+                >
+                        {cardList.map((item, index) => (
+                            <CardAnt
+                                key={index}
+                                item={item}
+                                index={index}
+                                cardClick={cardClick}
+                                width={cardWidthRef.current}
+                                cardPosition={cardPosition}
+                            />
+                        ))}
+                </InfiniteScroll>
             </div>
             <FloatButton.Group
                 style={{
