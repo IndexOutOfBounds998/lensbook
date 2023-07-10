@@ -2,8 +2,11 @@ import { useWalletLogin } from '@lens-protocol/react-web';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { Button } from 'antd';
+import { useTranslation } from "react-i18next";
 
 export default function LoginButton() {
+  const { t } = useTranslation();
+
   const { execute: login, error: loginError, isPending: isLoginPending } = useWalletLogin();
 
   const { isConnected } = useAccount();
@@ -32,7 +35,7 @@ export default function LoginButton() {
   return (
     <div>
       {loginError && <p>{loginError}</p>}
-      <Button loading={isLoginPending} disabled={isLoginPending} onClick={onLoginClick}>Log in</Button>
+      <Button loading={isLoginPending} disabled={isLoginPending} onClick={onLoginClick}>{t('login')}</Button>
     </div>
   );
 }
