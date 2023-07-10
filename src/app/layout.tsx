@@ -5,9 +5,9 @@ import { polygonMumbai } from "wagmi/chains";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { InjectedConnector } from "wagmi/connectors/injected";
-import { LensProvider, LensConfig, production } from "@lens-protocol/react-web";
+import { LensProvider, LensConfig, production, appId } from "@lens-protocol/react-web";
 import { bindings as wagmiBindings } from "@lens-protocol/wagmi";
-
+import { Brand } from '@lens-protocol/shared-kernel';
 const { publicClient, webSocketPublicClient } = configureChains(
   [polygonMumbai],
   [publicProvider()]
@@ -29,6 +29,8 @@ const config = createConfig({
 const lensConfig: LensConfig = {
   bindings: wagmiBindings(),
   environment: production,
+  sources: [appId('lenster'), appId('lenstrip')],
+  appId: appId('lenstrip')
 };
 
 

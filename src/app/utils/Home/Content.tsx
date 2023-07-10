@@ -19,7 +19,7 @@ export default function LayoutContent({cardClick}) {
     let [cardList, setCardList] = useState([]);
 
     const { data, loading, hasMore, next } = useExplorePublications({
-        limit: 20,
+        limit: 40,
         publicationTypes: [PublicationTypes.Post],
         metadataFilter: {
             restrictPublicationMainFocusTo: [PublicationMainFocus.Image]
