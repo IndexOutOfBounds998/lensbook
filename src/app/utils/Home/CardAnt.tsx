@@ -50,7 +50,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
     }, []);
 
     const avatarLoad = async () => {
-        const url = formatPicture(item.profile.coverPicture);
+        const url = formatPicture(item.profile.picture);
         let imgObj = new Image();
         imgObj.src = url;
         imgObj.onload = () => {
