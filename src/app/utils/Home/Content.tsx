@@ -1,8 +1,7 @@
 import React, { useRef, useEffect, useState, useReducer } from 'react'
 import { Tab } from '@headlessui/react'
 import CardList from "./CardList";
-import { useExplorePublications, PublicationTypes } from '@lens-protocol/react-web';
-import { PublicationMainFocus,  } from "@lens-protocol/client";
+import { useExplorePublications, PublicationTypes,PublicationMainFocus } from '@lens-protocol/react-web';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')

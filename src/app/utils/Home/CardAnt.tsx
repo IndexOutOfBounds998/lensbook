@@ -30,7 +30,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
         if (item.metadata) {
             setContentItem(item.metadata)
             setFavouriteStatus(false)
-            const image = formatAvater(item.metadata.image)
+            const image = formatPicture(item.metadata.media[0])
             if (image) {
                 let img = new Image();
                 img.src = image;

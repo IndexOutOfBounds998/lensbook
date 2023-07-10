@@ -9,7 +9,7 @@ export function formatContent(item) {
     if (contentItem.image) {
         contentItem.image = contentItem.image.replace("ipfs://", IPFS_GATEWAY);
     }
-    return {...item, ...contentItem};
+    return { ...item, ...contentItem };
 }
 
 
@@ -26,6 +26,9 @@ export function formatAvater(imgUrl) {
 }
 
 export function formatPicture(picture) {
+    if (picture == undefined || picture == null) {
+        return picture;
+    }
     if (picture.__typename === 'MediaSet') {
         if (picture.original.url.startsWith('ipfs://')) {
             let result = picture.original.url.substring(7, picture.original.url.length)
