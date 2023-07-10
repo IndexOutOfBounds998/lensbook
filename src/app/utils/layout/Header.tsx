@@ -5,14 +5,14 @@ import logo from '../../../assets/logo192.png'
 import ProfileSetting from "@/app/components/ProfileSetting";
 import LoginButton from "@/app/components/LoginButton";
 import Search from "./Search";
-
+import { useActiveProfile } from '@lens-protocol/react-web';
 import { useActiveWallet } from '@lens-protocol/react-web';
-
+import { formatPicture } from "@/app/util/utils";
 
 export default function Header({ setSearchValue }) {
 
     const { data: wallet, loading } = useActiveWallet();
-
+    const { data, error, loadingProfile } = useActiveProfile();
 
     const titleList = [
         { text: '业务合作', src: '' },
@@ -40,7 +40,7 @@ export default function Header({ setSearchValue }) {
                         <Popover content={ProfileSetting} title="">
                             <div className='ml-[20px] flex cursor-pointer items-center'>
                                 <div className='w-[32px] rounded-3xl overflow-hidden'>
-                                    <img className='w-full' src={require('../../../assets/user.jpg')} />
+                                    <img className='w-full' src={data && formatPicture(data.picture)}/>
                                 </div>
                                 <i className='iconfont icon-icon-down text-[20px] mr-3' />
                             </div>
