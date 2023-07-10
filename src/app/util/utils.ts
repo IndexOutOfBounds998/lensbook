@@ -14,3 +14,15 @@ export function formatPicture(picture: any) {
       return picture
     }
   }
+
+  export function formatNickName(nickname:any) {
+    if (!nickname) {
+        return "";
+    }
+    const splitName = nickname.split(".");
+    if (splitName.length > 0) {
+        return splitName[0];
+    } else {
+        return "";
+    }
+}
