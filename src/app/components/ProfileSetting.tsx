@@ -4,6 +4,7 @@ import { formatNickName, formatPicture } from "@/app/util/utils";
 export default function ProfileSetting() {
     const { execute: logout, isPending } = useWalletLogout();
     const { data, error, loading } = useActiveProfile();
+    //data is null need create profile
     console.log(data)
     const { t } = useTranslation();
 
