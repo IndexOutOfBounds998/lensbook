@@ -3,34 +3,40 @@
 import { useExploreProfiles } from '@lens-protocol/react-web'
 import Link from 'next/link'
 import { formatPicture } from './utils'
+import React, {useState} from "react";
+import LayoutHeader from './utils/layout/Header'
+import LayoutSider from './utils/layout/Sider'
+import Content from './utils/Home/Content'
+import NoteDetail from "./utils/Home/NoteDetail";
 
 export default function Home() {
-  const { data: profiles } = useExploreProfiles({
-    limit: 25
-  })
-  
+  let [card, setCard] =  useState('');
+  let [img, setImg] =  useState('');
+  let [cardData, setCardData] =  useState('');
+  let [showDetail, setShowDetail] =  useState(false);
+  let [showRegister, setShowRegister] =  useState(false);
+  let [searchValue, setSearchValue] =  useState('');
+
+  const cardClick = (card, img, item) => {
+    setCard(card);
+    setImg(img);
+    setCardData(item);
+    setShowDetail(true);
+  }
+
+  const registerClick = () => {
+    setShowRegister(true);
+  }
+
   return (
-    <div className='p-20'>
-      <h1 className='text-5xl'>My Lens App</h1>
+    <div className='min-w-[1280px] h-full'>
+      <LayoutHeader setSearchValue={setSearchValue}/>
+      <div className='flex flex-row pt-20 h-full'>
+        <LayoutSider registerClick={registerClick}/>
+        <Content cardClick={cardClick}/>
+      </div>
       {
-        profiles?.map((profile, index) => (
-          <Link href={`/profile/${profile.handle}`} key={index}>
-            <div className='my-14'>
-              {
-                profile.picture && profile.picture.__typename === 'MediaSet' ? (
-                  <img
-                    src={formatPicture(profile.picture)}
-                    width="120"
-                    height="120"
-                    alt={profile.handle}
-                  />
-                ) : <div className="w-14 h-14 bg-slate-500  " />
-              }
-              <h3 className="text-3xl my-4">{profile.handle}</h3>
-              <p className="text-xl">{profile.bio}</p>
-            </div>
-          </Link>
-        ))
+        showDetail ? <NoteDetail card={card} img={img} item={cardData} setShowDetail={setShowDetail}/> : ''
       }
     </div>
   )

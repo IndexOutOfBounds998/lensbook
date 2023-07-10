@@ -1,0 +1,17 @@
+.ant-card-body {
+    padding: 0 !important
+}
+.ant-skeleton-image {
+    width: 291px !important;
+    height: 290px !important;
+}
+.ant-card-cover {
+    max-height: 360px;
+    overflow: hidden;
+}
+.ant-skeleton {
+    width: 100% !important;
+}
+.ant-skeleton-image {
+    width: 100% !important;
+}
