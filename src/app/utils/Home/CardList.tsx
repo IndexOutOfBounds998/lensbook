@@ -4,6 +4,7 @@ import useState from 'react-usestateref'
 
 import CardAnt from './CardAnt'
 import { Tab } from '@headlessui/react'
+import { useExplorePublications } from '@lens-protocol/react-web';
 
 import API from "../../api/api";
 import {FloatButton, Skeleton, Spin} from 'antd';
@@ -11,7 +12,7 @@ import { SyncOutlined } from '@ant-design/icons';
 
 import Macy from 'macy'
 
-const LayoutContent = React.forwardRef(({ cardClick, searchParam, GetCardList, setParam }, ref) => {
+const LayoutContent = React.forwardRef(({ cardClick, searchParam, dataList, setParam }, ref) => {
 
     let [cardList, setCardList, cardListRef] = useState([]);
 
@@ -31,7 +32,6 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, GetCardList, s
     // let getContent = GetCardList(queryParamRef.current);
 
     const cards = useRef();
-
 
     React.useImperativeHandle(ref, () => ({
         handleScroll: handleScroll,
@@ -108,18 +108,15 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, GetCardList, s
         setIsMax(false)
         setIsLoading(true)
         // const { error, data } = await getContent();
-        const data = await GetCardList(queryParam)
+        const data = dataList;
         if (data) {
-            const records = data.data
-            if (records) {
-                const obj = [...cardListRef.current, ...records];
-                setCardList(obj);
-                if (obj.length >= data.total) {
-                    setIsMax(true)
-                }
-                setIsLoading(false)
-                macyInfo()
+            const obj = [...cardListRef.current, ...data];
+            setCardList(obj);
+            if (obj.length >= data.total) {
+                setIsMax(true)
             }
+            setIsLoading(false)
+            macyInfo()
         }
     }
     //初始化queryParam
@@ -138,10 +135,10 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, GetCardList, s
     }, []);
 
     useEffect(() => {
-        if (queryParam) {
+        if (dataList) {
             loadMore();
         }
-    }, [queryParam]);
+    }, [dataList]);
 
     useEffect(() => {
         if (queryParam) {

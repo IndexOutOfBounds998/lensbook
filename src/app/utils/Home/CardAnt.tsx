@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { formatAvater, formatContent, formatNickName } from "../../util/FormatContent"
+import { formatAvater, formatPicture, formatNickName } from "../../util/FormatContent"
 import errorImg from '../../../assets/error.png'
 import {Card, message, Skeleton} from 'antd';
 import user from '../../../assets/user.jpg'
@@ -27,13 +27,13 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
     // const [disLike] = useMutation(API.DISLIKE({profileId: parseInt(item.profileId), pubId: parseInt(item.pubId)}))
 
     useEffect(() => {
-        if (item.contentResponse) {
-            const obj = formatContent(item);
-            setContentItem(obj)
-            setFavouriteStatus(obj.favouriteStatus)
-            if (obj.image) {
+        if (item.metadata) {
+            setContentItem(item.metadata)
+            setFavouriteStatus(false)
+            const image = formatAvater(item.metadata.image)
+            if (image) {
                 let img = new Image();
-                img.src = obj.image;
+                img.src = image;
                 img.onload = () => {
                     setContentImg(img.src);
                     setImgInfo(img);
@@ -50,7 +50,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
     }, []);
 
     const avatarLoad = async () => {
-        const url = formatAvater(item.avatar);
+        const url = formatPicture(item.profile.coverPicture);
         let imgObj = new Image();
         imgObj.src = url;
         imgObj.onload = () => {
@@ -79,16 +79,10 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
         if (isLogin) {
             if (!favouriteStatus) {
                 //点赞
-                const res = await addLike();
-                if (res.data && res.data.like) {
-                    setFavouriteStatus(true);
-                }
+
             } else {
                 //取消点赞
-                const res = await disLike();
-                if (res.data && res.data.dislike) {
-                    setFavouriteStatus(false);
-                }
+
             }
         }
     }
@@ -118,7 +112,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
         >
             <div className='p-2.5'>
                 <p className='text-[14px] leading-5 line-clamp-2 tracking-wide mb-2 cursor-pointer'>
-                    {contentItem.title}
+                    {contentItem.content}
                 </p>
                 <div className='h-[20px] text-[13px] flex justify-between text-gray-500 cursor-pointer'>
                     <div className='flex flex-row items-center'>
@@ -128,7 +122,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
                                 backgroundImage: `url(${avatarImg})`,
                             }}
                         />
-                        <span>{formatNickName(item.nickname)}</span>
+                        <span>{formatNickName(item.profile.name)}</span>
                     </div>
                     <div className='cursor-pointer leading-[2px] text-[14px] flex flex-row items-center'>
                         <i
