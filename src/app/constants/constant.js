@@ -19,7 +19,7 @@ export const FEE_COLLECT_MODULE = '0x47b7AF2DE408D815541604A860d46B1ba4402859';
 
 export const REVERT_COLLECT_MODULE = '0xed8a7E95d4CC8627d24178db30d7B92b56c04Fff';
 
-export const IPFS_GATEWAY = "https://coral-odd-lobster-965.mypinata.cloud/ipfs/";
+export const IPFS_GATEWAY = "https://lens.infura-ipfs.io/ipfs/";
 
 export const EVN = ".test";
 
