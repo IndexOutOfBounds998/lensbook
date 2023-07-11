@@ -10,8 +10,8 @@ export default function ProfileSetting() {
     const { t } = useTranslation();
 
     const list = [
-        { value: data && data.stats.totalFollowers, title: t('follow') },
-        { value: data && data.stats.totalFollowing, title: t('fans') },
+        { value: data && data.stats.totalFollowing, title: t('follow') },
+        { value: data && data.stats.totalFollowers, title: t('fans') },
         { value: data && data.stats.totalPosts, title: t('post') },
         { value: data && data.stats.totalCollects, title: t('collect') },
     ]
