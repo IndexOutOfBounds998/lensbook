@@ -165,8 +165,13 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
         // refresh()
     }, [searchParam]);
 
-    const nextList = async () => {
-        await dataObj.next();
+    const nextList = () => {
+        try {
+             dataObj.next();
+        } catch (error) {
+            
+        }
+       
     }
 
     //滚动监听

@@ -3,14 +3,52 @@ import Comment from "./Comment";
 import React, { useEffect, useRef, useState } from "react";
 import { message, Button, notification, Spin } from "antd";
 import Input from "antd/es/input";
-import { AUTHORIZE_PREFIX, HUB_CONTRACT_ADDRESS,FREE_COLLECT_MODULE ,ZERO_ADDRESS} from '../../constants/constant';
+import { AUTHORIZE_PREFIX, HUB_CONTRACT_ADDRESS, FREE_COLLECT_MODULE, ZERO_ADDRESS } from '../../constants/constant';
 import InfiniteScroll from "react-infinite-scroll-component";
 import { formatNickName, formatDate } from "../../util/FormatContent";
 import { useTranslation } from "react-i18next";
 import { formatPicture } from '@/app/util/utils';
+import { useFollowWithSelfFundedFallback } from '@/app/hooks/useFollowWithSelfFundedFallback';
+import {
+    Profile,
+    ProfileOwnedByMe,
+    useUnfollow,
+    useActiveProfile,
+    usePublication
+} from '@lens-protocol/react-web';
+import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
+type FollowButtonProps = {
+    follower: ProfileOwnedByMe;
+    followee: Profile;
+};
+
+type UseFollowInnerProps = {
+    activeProfile: ProfileOwnedByMe;
+};
 
 export default function NoteDetail({ card, img, item, setShowDetail }) {
-     
+
+    const { data: publication, loading: publication_loading } = usePublication({
+        publicationId: item.id,
+    });
+
+    const { data, error, loading } = useActiveProfile();
+
+    useEffect(() => {
+        if (publication && data && publication.profile.followStatus) {
+            setIsFollowing(!publication.profile.followStatus.canFollow);
+        }
+    }, [publication,data])
+
+    const {
+        execute: follow,
+        error: followError,
+        isPending: isFollowPending,
+    } = useFollowWithSelfFundedFallback({
+        followee: item.profile,
+        follower: data,
+    });
+
     const [messageApi, contextHolder] = message.useMessage();
     const [notificationApi, contextHolderNotification] = notification.useNotification();
     const [followButtonLoading, setFollowButtonLoading] = useState(false);
@@ -32,7 +70,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     let [contentSize, setContentSize] = useState(0);
     let [commentPage, setCommentPage] = useState([]);
     let [hasMore, setHasMore] = useState(true);//是否有更多评论
-    
+
     const detail = useRef();
     const imgBox = useRef();
     const contentBox = useRef();
@@ -95,7 +133,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     //     if (res) return res.data;
     //     return false
     // }
-    
+
 
     const Icon = (item) => (
         <div className='flex items-center' style={{ color: item.color }}>
@@ -127,6 +165,9 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     }, [show])
 
     const scaleDown = () => {
+        if (!img) {
+            return
+        }
         const detailWidth = window.innerWidth * 0.7;
         const maxWidth = detailWidth * 0.6;
         const imgScale = detail.current.clientHeight / img.height;
@@ -175,7 +216,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     }
     //点击关注
     const clickFollow = () => {
-
+        follow()
     }
     //点击收藏
     const clickCollection = () => {
@@ -238,7 +279,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                             ref={imgBox}
                             className='bg-no-repeat bg-contain h-full'
                             style={{
-                                backgroundImage: `url(${img.src})`,
+                                backgroundImage: `url(${img && img.src})`,
                                 width: `${bgSize}px`
                             }}
                         >
@@ -256,14 +297,15 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                             <div className='flex items-center'>
                                 <img
                                     className='rounded-3xl w-[40px] h-[40px] mx-2'
-                                    src={item.profile.picture ? formatPicture(item.profile.picture) : user}
+                                    src={publication.profile.picture ? formatPicture(publication.profile.picture) : user}
                                     alt=""
                                 />
-                                <span>{item.profile.name ? item.profile.name :formatNickName(item.profile.handle) }</span>
+                                <span>{publication.profile.name ? publication.profile.name : formatNickName(publication.profile.handle)}</span>
                             </div>
 
 
-                            {item.ownedByMe ? ('') : (<Button
+                            {publication.ownedByMe && data ? ('') : (
+                            <Button
                                 loading={followButtonLoading}
                                 className='flex items-center cursor-pointer justify-center rounded-3xl w-[74px] h-[40px] text-[15px]'
                                 style={
@@ -350,7 +392,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                     />
                                 </div>
                                 <Button loading={messageReplyButtonLoading} className='h-full bg-[#6790db] cursor-pointer w-[80px] rounded-3xl flex justify-center items-center text-[#fff] text-[16px]'
-                                            onClick={sendComment}>
+                                    onClick={sendComment}>
                                     发送
                                 </Button>
                             </div>
