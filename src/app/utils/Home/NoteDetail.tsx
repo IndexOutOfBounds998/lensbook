@@ -7,8 +7,10 @@ import { AUTHORIZE_PREFIX, HUB_CONTRACT_ADDRESS,FREE_COLLECT_MODULE ,ZERO_ADDRES
 import InfiniteScroll from "react-infinite-scroll-component";
 import { formatNickName, formatDate } from "../../util/FormatContent";
 import { useTranslation } from "react-i18next";
+import { formatPicture } from '@/app/util/utils';
 
 export default function NoteDetail({ card, img, item, setShowDetail }) {
+     
     const [messageApi, contextHolder] = message.useMessage();
     const [notificationApi, contextHolderNotification] = notification.useNotification();
     const [followButtonLoading, setFollowButtonLoading] = useState(false);
@@ -30,8 +32,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     let [contentSize, setContentSize] = useState(0);
     let [commentPage, setCommentPage] = useState([]);
     let [hasMore, setHasMore] = useState(true);//是否有更多评论
-    let [isOwn, setIsOwn] = useState(false);//是否是本人的帖子
-
+    
     const detail = useRef();
     const imgBox = useRef();
     const contentBox = useRef();
@@ -94,10 +95,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     //     if (res) return res.data;
     //     return false
     // }
-    //获取帖子内容
-    const getDetail = async () => {
-
-    }
+    
 
     const Icon = (item) => (
         <div className='flex items-center' style={{ color: item.color }}>
@@ -106,14 +104,9 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         </div>
     );
 
-    const contentResponse = (item) => {
-        return contentDetail.contentResponse ? contentDetail.contentResponse[item] : '';
-    }
-
     useEffect(() => {
         if (flag) {
             // imgSize();
-            getDetail();
             scaleDown();
         }
     }, []);
@@ -263,14 +256,14 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                             <div className='flex items-center'>
                                 <img
                                     className='rounded-3xl w-[40px] h-[40px] mx-2'
-                                    src={contentDetail.user ? contentDetail.user.avatar : user}
+                                    src={item.profile.picture ? formatPicture(item.profile.picture) : user}
                                     alt=""
                                 />
-                                <span>{contentDetail.user ? formatNickName(contentDetail.user.nickname) : ''}</span>
+                                <span>{item.profile.name ? item.profile.name :formatNickName(item.profile.handle) }</span>
                             </div>
 
 
-                            {isOwn ? ('') : (<Button
+                            {item.ownedByMe ? ('') : (<Button
                                 loading={followButtonLoading}
                                 className='flex items-center cursor-pointer justify-center rounded-3xl w-[74px] h-[40px] text-[15px]'
                                 style={
@@ -307,15 +300,15 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                     style={{ borderBottom: '0.5px solid rgba(0,0,0,.1)' }}
                                 >
                                     <div className='mb-5 font-semibold text-[20px] leading-8'>
-                                        {contentResponse('title')}
+                                        {item.metadata.title && item.metadata.title}
                                     </div>
                                     <div
                                         className='text-[17px] whitespace-pre-wrap'
-                                        dangerouslySetInnerHTML={{ __html: contentResponse('content') }}
+                                        dangerouslySetInnerHTML={{ __html: item.metadata.content && item.metadata.content }}
                                     >
                                     </div>
                                     <div className='mt-2 text-[14px] leading-6 text-[#33333399]'>
-                                        {formatDate(contentDetail.createTime)}
+                                        {formatDate(item.createdAt)}
                                     </div>
                                 </div>
                                 <div className='px-[30px] py-[20px]'>

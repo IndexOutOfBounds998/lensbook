@@ -10,6 +10,7 @@ import {AUTHORIZE_PREFIX} from "../../constants/constant";
 import {useTranslation} from "react-i18next";
 
 export default function CardAnt({ item, index, cardClick, width, position, cardPosition }) {
+    
     const card = useRef();
     const imgRef = useRef();
     const { t } = useTranslation();
@@ -100,7 +101,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
                         ref={imgRef}
                         className='w-full'
                         alt="example"
-                        src={contentImg}
+                        src={contentImg && contentImg}
                         style={{display: imgLoad ? 'none' : 'block'}}
                     />
                     {imgLoad ? <Skeleton.Image className='w-full' active={true}/> : ''}
@@ -112,7 +113,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
         >
             <div className='p-2.5'>
                 <p className='text-[14px] leading-5 line-clamp-2 tracking-wide mb-2 cursor-pointer'>
-                    {contentItem.content}
+                    {contentItem && contentItem.content}
                 </p>
                 <div className='h-[20px] text-[13px] flex justify-between text-gray-500 cursor-pointer'>
                     <div className='flex flex-row items-center'>
@@ -122,7 +123,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
                                 backgroundImage: `url(${avatarImg})`,
                             }}
                         />
-                        <span>{formatNickName(item.profile.name)}</span>
+                        <span>{formatNickName(item.profile.name?item.profile.name:item.profile.handle)}</span>
                     </div>
                     <div className='cursor-pointer leading-[2px] text-[14px] flex flex-row items-center'>
                         <i
