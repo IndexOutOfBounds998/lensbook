@@ -11,15 +11,10 @@ export default function LayoutContent({cardClick}) {
 
     const [param, setParam] = useState({});
     let [categories, setCategory] = useState([]);
-    let [searchParam, setSearchParam] = useState({
-        "category": null,
-        "contentType": null,
-        "keywords": null
-    });
     let [cardList, setCardList] = useState([]);
 
     const { data, loading, hasMore, next } = useExplorePublications({
-        limit: 40,
+        limit: 30,
         publicationTypes: [PublicationTypes.Post],
         metadataFilter: {
             restrictPublicationMainFocusTo: [PublicationMainFocus.Image]
@@ -27,11 +22,7 @@ export default function LayoutContent({cardClick}) {
     });
 
     const tabCheck = (index) => {
-        setSearchParam({
-            "category": index,
-            "contentType": null,
-            "keywords": null
-        })
+
     }
 
     useEffect(() => {
@@ -43,6 +34,14 @@ export default function LayoutContent({cardClick}) {
             setCardList(data);
         }
     }, [loading])
+
+    // useEffect(() => {
+    //     console.log(data)
+    // }, [data])
+
+    // const nextList = async () => {
+    //     await next();
+    // }
 
     const loadCategory = async () => {
         setCategory([
@@ -122,8 +121,6 @@ export default function LayoutContent({cardClick}) {
             </Tab.Group>
             <CardList
                 cardClick={cardClick}
-                searchParam={searchParam}
-                setParam={setParam}
                 dataList={cardList}
                 dataObj={{ data, loading, hasMore, next }}
             >
