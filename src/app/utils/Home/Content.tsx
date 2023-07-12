@@ -1,38 +1,23 @@
 import React, { useRef, useEffect, useState, useReducer } from 'react'
 import { Tab } from '@headlessui/react'
 import CardList from "./CardList";
-import { useExplorePublications, PublicationTypes,PublicationMainFocus } from '@lens-protocol/react-web';
+import { useExplorePublications, PublicationTypes, PublicationMainFocus } from '@lens-protocol/react-web';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function LayoutContent({cardClick, setShowContent}) {
+export default function LayoutContent({cardClick}) {
 
     let [categories, setCategory] = useState([]);
 
     const { data, loading, hasMore, next } = useExplorePublications({
-        limit: 30,
+        limit: 20,
         publicationTypes: [PublicationTypes.Post],
         metadataFilter: {
             restrictPublicationMainFocusTo: [PublicationMainFocus.Image]
         }
     });
-
-    const getData = () => (useExplorePublications({
-        limit: 30,
-        publicationTypes: [PublicationTypes.Post],
-        metadataFilter: {
-            restrictPublicationMainFocusTo: [PublicationMainFocus.Image]
-        }
-    }))
-
-    const Refresh = async () => {
-        const { data, loading, hasMore, next } = getData();
-        if (data) {
-            return { data, loading, hasMore, next };
-        }
-    };
 
     const tabCheck = (index) => {
 
