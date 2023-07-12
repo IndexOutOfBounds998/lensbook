@@ -7,11 +7,9 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function LayoutContent({ cardClick }) {
+export default function LayoutContent({cardClick}) {
 
-    const [param, setParam] = useState({});
     let [categories, setCategory] = useState([]);
-    let [cardList, setCardList] = useState([]);
 
     const { data, loading, hasMore, next } = useExplorePublications({
         limit: 20,
@@ -28,20 +26,6 @@ export default function LayoutContent({ cardClick }) {
     useEffect(() => {
         loadCategory();
     }, []);
-
-    useEffect(() => {
-        if (!loading) {
-            setCardList(data);
-        }
-    }, [loading])
-
-    // useEffect(() => {
-    //     console.log(data)
-    // }, [data])
-
-    // const nextList = async () => {
-    //     await next();
-    // }
 
     const loadCategory = async () => {
         setCategory([
@@ -121,7 +105,6 @@ export default function LayoutContent({ cardClick }) {
             </Tab.Group>
             <CardList
                 cardClick={cardClick}
-                dataList={cardList}
                 dataObj={{ data, loading, hasMore, next }}
             >
             </CardList>

@@ -3,14 +3,20 @@ import Comment from "./Comment";
 import React, { useEffect, useRef, useState } from "react";
 import { message, Button, notification, Spin } from "antd";
 import Input from "antd/es/input";
-import { AUTHORIZE_PREFIX, HUB_CONTRACT_ADDRESS, FREE_COLLECT_MODULE, ZERO_ADDRESS } from '../../constants/constant';
+import { AUTHORIZE_PREFIX, IPFS_API_KEY } from '../../constants/constant';
+import { upJsonContent } from "../../api/ipfsApi";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { formatNickName, formatDate } from "../../util/FormatContent";
 import { useTranslation } from "react-i18next";
 import { formatPicture } from '@/app/util/utils';
-import { useFollowWithSelfFundedFallback } from '@/app/hooks/useFollowWithSelfFundedFallback';
+
 import {
+    useComments,
+    useActiveProfile,
+    useCreateComment,
     ReactionType,
+    ContentFocus,
+    CollectPolicyType,
     usePublication
 } from '@lens-protocol/react-web';
 import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
@@ -20,7 +26,7 @@ import ReactionButton from '@/app/components/ReactionButton';
 
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
-    const { data: publication, loading: publication_loading } = usePublication({
+    const {data: publication, loading: publication_loading} = usePublication({
         publicationId: item.id,
     });
 
@@ -43,7 +49,6 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     let [bgSize, setBgSize] = useState(0);
     let [contentSize, setContentSize] = useState(0);
     let [commentPage, setCommentPage] = useState([]);
-    let [hasMore, setHasMore] = useState(true);//是否有更多评论
 
     const detail = useRef();
     const imgBox = useRef();
@@ -52,6 +57,11 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
     const appendReplyRef = useRef(null);
+
+    const {data: comments, loading: commentsLoading, hasMore, next} = useComments({
+        commentsOf: item.id,
+        limit: 10,
+    });
 
     const Icon = (item) => (
         <div className='flex items-center' style={{ color: item.color }}>
@@ -62,10 +72,13 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
     useEffect(() => {
         if (flag) {
-            // imgSize();
             scaleDown();
         }
     }, []);
+
+    useEffect(() => {
+        setCommentPage(comments || [])
+    }, [comments]);
 
     useEffect(() => {
         if (card && flag) {
@@ -110,29 +123,6 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         imgBox.current.style.backgroundPosition = '50%';
     }
 
-    const isLogin = () => {
-        const jwt = localStorage.getItem(AUTHORIZE_PREFIX);
-        if (jwt) return true;
-        else {
-            messageApi.open({
-                type: 'error',
-                content: t('loginError'),
-            });
-            return false
-        }
-    }
-
-    const oneself = (obj) => {
-        const userData = localStorage.getItem('userData');
-        let profileId;
-        try {
-            profileId = JSON.parse(userData).profileId;
-        } catch (e) {
-            profileId = '';
-        }
-        setIsOwn(parseInt(obj.profileId) === profileId)
-    }
-
     //点击收藏
     const clickCollection = () => {
 
@@ -141,19 +131,48 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const clickLike = async () => {
 
     }
+    async function upLoad(data) {
+        const serialized = JSON.stringify(data);
+        const obj = {
+            appId: 'tripWed3',
+            content: serialized,
+        }
+        const config = {
+            headers: {
+                Authorization: `Bearer ${IPFS_API_KEY}`
+            }
+        };
+        const res = await upJsonContent(obj, config)
+        if (res && res.data) {
+            return res.data.IpfsHash;
+        }
+        return '';
+    }
+
+    const { data: profile, error, loading: profileLoading } = useActiveProfile();
+    const { execute: create, error: commentError, isPending } = useCreateComment({ profile, upLoad });
     //发布评论
     const sendComment = async () => {
-
+        if (commentRef.current.input.value) {
+            console.log(commentRef.current.input.value)
+            let result = await create({
+                publicationId: item.id,
+                content: commentRef.current.input.value,
+                profileId: profile.id,
+                contentFocus: ContentFocus.TEXT,
+                locale: 'en',
+                collect: {
+                    type: CollectPolicyType.NO_COLLECT
+                },
+            })
+            console.log(result)
+        }
     }
+
     //加载更多评论
     const moreComment = () => {
 
     }
-
-    useEffect(() => {
-
-    }, [commentPage])
-
 
     const operate = [
         { icon: 'icon-message', text: contentDetail.commentCount || 0, color: '#3c82f6' },
@@ -263,9 +282,8 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                     <div className='mt-[16px]'>
                                         <Comment
                                             ref={appendReplyRef}
-                                            item={contentDetail}
-                                            setData={setCommentPage}
-                                            setMore={setHasMore}
+                                            item={commentPage}
+                                            total={item.stats ? item.stats.totalAmountOfComments : 0}
                                         >
                                         </Comment>
                                     </div>
