@@ -12,7 +12,7 @@ import { SyncOutlined } from '@ant-design/icons';
 
 import Macy from 'macy';
 
-const LayoutContent = React.forwardRef(({ cardClick, dataObj }, ref) => {
+const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, dataObj }, ref) => {
 
     let [cardList, setCardList, cardListRef] = useState([]);
 

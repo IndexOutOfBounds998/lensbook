@@ -15,24 +15,12 @@ import {
     ProfileOwnedByMe,
     useUnfollow,
     useActiveProfile,
-    usePublication,
-    useComments,
-    useCreateComment,
-    ContentFocus,
-    CollectPolicyType,
-    ReferencePolicyType
+    usePublication
 } from '@lens-protocol/react-web';
 import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
 import FollowButton from '@/app/components/FollowButton';
-
-type FollowButtonProps = {
-    follower: ProfileOwnedByMe;
-    followee: Profile;
-};
-
-type UseFollowInnerProps = {
-    activeProfile: ProfileOwnedByMe;
-};
+import CollectButton from '@/app/components/CollectButton';
+import ReactionButton from '@/app/components/ReactionButton';
 
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
@@ -64,6 +52,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const imgBox = useRef();
     const contentBox = useRef();
     const commentRef = useRef();
+
 
     const appendReplyRef = useRef(null);
 
@@ -173,6 +162,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         }
     }
 
+    }
     //加载更多评论
     const moreComment = () => {
 
@@ -299,13 +289,20 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                             style={{ width: `${contentSize}px` }}
                         >
                             <div className='h-[50px] rounded-3xl shadow w-full mb-[10px] py-[7px] px-[15px] flex justify-between'>
-                                {
-                                    operate.map((item) => (
-                                        <div key={item.icon} onClick={item.onClick}>
-                                            {Icon(item)}
-                                        </div>
-                                    ))
-                                }
+
+
+                                <WhenLoggedInWithProfile>
+                                    {({ profile }) =>
+                                        <ReactionButton publication={publication} profileId={profile.id} reactionType={ReactionType.UPVOTE} />}
+                                </WhenLoggedInWithProfile>
+
+                                <WhenLoggedInWithProfile>
+                                    {({ profile }) =>
+                                        <CollectButton collector={profile} publication={publication} />}
+                                </WhenLoggedInWithProfile>
+
+
+
                                 <div className='w-[70px] rounded-3xl bg-[#50b674] cursor-pointer p-[5px] text-[#fff] text-center'>
                                     分享
                                 </div>
