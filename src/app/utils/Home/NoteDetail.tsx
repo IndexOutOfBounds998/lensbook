@@ -11,10 +11,12 @@ import { useTranslation } from "react-i18next";
 import { formatPicture } from '@/app/util/utils';
 
 import {
-    Profile,
-    ProfileOwnedByMe,
-    useUnfollow,
+    useComments,
     useActiveProfile,
+    useCreateComment,
+    ReactionType,
+    ContentFocus,
+    CollectPolicyType,
     usePublication
 } from '@lens-protocol/react-web';
 import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
@@ -154,15 +156,19 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         if (commentRef.current.input.value) {
             console.log(commentRef.current.input.value)
             let result = await create({
+                publicationId: item.id,
                 content: commentRef.current.input.value,
-                contentFocus: ContentFocus.TEXT_ONLY,
+                profileId: profile.id,
+                contentFocus: ContentFocus.TEXT,
                 locale: 'en',
+                collect: {
+                    type: CollectPolicyType.NO_COLLECT
+                },
             })
             console.log(result)
         }
     }
 
-    }
     //加载更多评论
     const moreComment = () => {
 
