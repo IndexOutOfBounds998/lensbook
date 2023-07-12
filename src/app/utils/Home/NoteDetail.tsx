@@ -9,7 +9,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { formatNickName, formatDate } from "../../util/FormatContent";
 import { useTranslation } from "react-i18next";
 import { formatPicture } from '@/app/util/utils';
-import { useFollowWithSelfFundedFallback } from '@/app/hooks/useFollowWithSelfFundedFallback';
+
 import {
     Profile,
     ProfileOwnedByMe,
@@ -132,29 +132,6 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         imgBox.current.style.backgroundPosition = '50%';
     }
 
-    const isLogin = () => {
-        const jwt = localStorage.getItem(AUTHORIZE_PREFIX);
-        if (jwt) return true;
-        else {
-            messageApi.open({
-                type: 'error',
-                content: t('loginError'),
-            });
-            return false
-        }
-    }
-
-    const oneself = (obj) => {
-        const userData = localStorage.getItem('userData');
-        let profileId;
-        try {
-            profileId = JSON.parse(userData).profileId;
-        } catch (e) {
-            profileId = '';
-        }
-        setIsOwn(parseInt(obj.profileId) === profileId)
-    }
-
     //点击收藏
     const clickCollection = () => {
 
@@ -181,7 +158,8 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         return '';
     }
 
-    const { execute: create, error: commentError, isPending } = useCreateComment({ data, upLoad });
+    const { data: profile, error, loading: profileLoading } = useActiveProfile();
+    const { execute: create, error: commentError, isPending } = useCreateComment({ profile, upLoad });
     //发布评论
     const sendComment = async () => {
         if (commentRef.current.input.value) {
@@ -195,7 +173,6 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         }
     }
 
-    }
     //加载更多评论
     const moreComment = () => {
 

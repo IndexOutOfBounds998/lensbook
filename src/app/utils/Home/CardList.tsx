@@ -83,13 +83,6 @@ const LayoutContent = React.forwardRef(({ cardClick, dataObj }, ref) => {
             macy.recalculate()
         }, true)
     }
-    // //刷新
-    // const refresh = () => {
-    //     setCardList([]);
-    //     setImgSize({})
-    //     setIsMax(false);
-    //     macyInfo()
-    // }
 
     const loadMore = async () => {
         setIsMax(false)
@@ -104,18 +97,9 @@ const LayoutContent = React.forwardRef(({ cardClick, dataObj }, ref) => {
             macyInfo()
         }
     }
-    //初始化queryParam
-    const getKeyword = () => {
-        let obj = {
-            "current": 1,
-            "size": 20,
-        }
-        setQueryParam(obj)
-    }
 
     useEffect(() => {
         bodyWidth();
-        getKeyword()
     }, []);
 
     useEffect(() => {

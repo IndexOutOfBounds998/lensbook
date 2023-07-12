@@ -27,10 +27,6 @@ export default function LayoutContent({cardClick}) {
         loadCategory();
     }, []);
 
-    // const refresh = async () => {
-    //     setShowContent(false);
-    // }
-
     const loadCategory = async () => {
         setCategory([
             {

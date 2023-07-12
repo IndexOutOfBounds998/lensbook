@@ -14,7 +14,6 @@ export default function Home() {
   let [img, setImg] =  useState('');
   let [cardData, setCardData] =  useState('');
   let [showDetail, setShowDetail] =  useState(false);
-  let [showContent, setShowContent] =  useState(true);
   let [showRegister, setShowRegister] =  useState(false);
   let [searchValue, setSearchValue] =  useState('');
 
@@ -29,16 +28,11 @@ export default function Home() {
     setShowRegister(true);
   }
 
-  useEffect(() => {
-    if (!showContent) {
-      setTimeout(() => {setShowContent(true)}, 1000)
-    }
-  }, [showContent])
 
   return (
       <>
         <LayoutSider registerClick={registerClick}/>
-        { showContent ? <Content cardClick={cardClick} setShowContent={setShowContent}/> : ''}
+        <Content cardClick={cardClick}/>
         {
           showDetail ? <NoteDetail card={card} img={img} item={cardData} setShowDetail={setShowDetail}/> : ''
         }
