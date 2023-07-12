@@ -7,11 +7,9 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function LayoutContent({cardClick}) {
+export default function LayoutContent({cardClick, setShowContent}) {
 
-    const [param, setParam] = useState({});
     let [categories, setCategory] = useState([]);
-    let [cardList, setCardList] = useState([]);
 
     const { data, loading, hasMore, next } = useExplorePublications({
         limit: 30,
@@ -21,6 +19,21 @@ export default function LayoutContent({cardClick}) {
         }
     });
 
+    const getData = () => (useExplorePublications({
+        limit: 30,
+        publicationTypes: [PublicationTypes.Post],
+        metadataFilter: {
+            restrictPublicationMainFocusTo: [PublicationMainFocus.Image]
+        }
+    }))
+
+    const Refresh = async () => {
+        const { data, loading, hasMore, next } = getData();
+        if (data) {
+            return { data, loading, hasMore, next };
+        }
+    };
+
     const tabCheck = (index) => {
 
     }
@@ -29,18 +42,8 @@ export default function LayoutContent({cardClick}) {
         loadCategory();
     }, []);
 
-    useEffect(() => {
-        if (!loading) {
-            setCardList(data);
-        }
-    }, [loading])
-
-    // useEffect(() => {
-    //     console.log(data)
-    // }, [data])
-
-    // const nextList = async () => {
-    //     await next();
+    // const refresh = async () => {
+    //     setShowContent(false);
     // }
 
     const loadCategory = async () => {
@@ -121,7 +124,7 @@ export default function LayoutContent({cardClick}) {
             </Tab.Group>
             <CardList
                 cardClick={cardClick}
-                dataList={cardList}
+                Refresh={Refresh}
                 dataObj={{ data, loading, hasMore, next }}
             >
             </CardList>

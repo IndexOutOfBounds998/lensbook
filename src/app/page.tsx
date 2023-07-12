@@ -3,7 +3,7 @@
 import { useExploreProfiles } from '@lens-protocol/react-web'
 import Link from 'next/link'
 import { formatPicture } from './util/utils'
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import LayoutHeader from './utils/layout/Header'
 import LayoutSider from './utils/layout/Sider'
 import Content from './utils/Home/Content'
@@ -14,6 +14,7 @@ export default function Home() {
   let [img, setImg] =  useState('');
   let [cardData, setCardData] =  useState('');
   let [showDetail, setShowDetail] =  useState(false);
+  let [showContent, setShowContent] =  useState(true);
   let [showRegister, setShowRegister] =  useState(false);
   let [searchValue, setSearchValue] =  useState('');
 
@@ -28,16 +29,19 @@ export default function Home() {
     setShowRegister(true);
   }
 
+  useEffect(() => {
+    if (!showContent) {
+      setTimeout(() => {setShowContent(true)}, 1000)
+    }
+  }, [showContent])
+
   return (
-    <div className='min-w-[1280px] h-full'>
-      <LayoutHeader setSearchValue={setSearchValue}/>
-      <div className='flex flex-row pt-20 h-full'>
+      <>
         <LayoutSider registerClick={registerClick}/>
-        <Content cardClick={cardClick}/>
-      </div>
-      {
-        showDetail ? <NoteDetail card={card} img={img} item={cardData} setShowDetail={setShowDetail}/> : ''
-      }
-    </div>
+        { showContent ? <Content cardClick={cardClick} setShowContent={setShowContent}/> : ''}
+        {
+          showDetail ? <NoteDetail card={card} img={img} item={cardData} setShowDetail={setShowDetail}/> : ''
+        }
+      </>
   )
 }

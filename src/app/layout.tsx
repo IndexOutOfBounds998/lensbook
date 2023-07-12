@@ -8,6 +8,8 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { LensProvider, LensConfig, production, appId, development } from "@lens-protocol/react-web";
 import { bindings as wagmiBindings } from "@lens-protocol/wagmi";
 import "@/app/react-i18next/i18n";
+import LayoutHeader from "./utils/layout/Header";
+import React from "react";
 const { publicClient, webSocketPublicClient } = configureChains(
   [polygonMumbai],
   [publicProvider()]
@@ -43,7 +45,14 @@ export default function RootLayout({
     <html lang="en">
       <WagmiConfig config={config}>
         <LensProvider config={lensConfig}>
-          <body>{children}</body>
+          <body>
+            <div className='min-w-[1280px] h-full'>
+              <LayoutHeader/>
+              <div className='flex flex-row pt-20 h-full'>
+                {children}
+              </div>
+            </div>
+          </body>
         </LensProvider>
       </WagmiConfig>
     </html>

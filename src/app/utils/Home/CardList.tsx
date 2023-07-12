@@ -12,7 +12,7 @@ import { SyncOutlined } from '@ant-design/icons';
 
 import Macy from 'macy';
 
-const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, dataObj }, ref) => {
+const LayoutContent = React.forwardRef(({ cardClick, Refresh, dataObj }, ref) => {
 
     let [cardList, setCardList, cardListRef] = useState([]);
 
@@ -28,14 +28,11 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
 
     let [isMax, setIsMax, isMaxRef] = useState(false);
 
-    // const getContent = useImperativeQuery(API[apiName](queryParamRef.current || {}));
-    // let getContent = GetCardList(queryParamRef.current);
-
     const cards = useRef();
 
     React.useImperativeHandle(ref, () => ({
         handleScroll: handleScroll,
-        refresh: refresh,
+        // refresh: refresh,
     }));
 
     const bodyWidth = () => {
@@ -87,18 +84,15 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
             macy.recalculate()
         }, true)
     }
-    //刷新
-    const refresh = () => {
-        setCardList([]);
-        setImgSize({})
-        setIsMax(false);
-        macyInfo()
-    }
+    // //刷新
+    // const refresh = () => {
+    //     setCardList([]);
+    //     setImgSize({})
+    //     setIsMax(false);
+    //     macyInfo()
+    // }
 
     const loadMore = async () => {
-        if (isLoadingRef.current) {
-            return
-        }
         setIsMax(false)
         setIsLoading(true)
         const data = dataObj.data;
@@ -107,7 +101,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
             if (!dataObj.hasMore) {
                 setIsMax(true)
             }
-            setIsLoading(false)
+            setTimeout(() => (setIsLoading(false)), 500)
             macyInfo()
         }
     }
@@ -132,40 +126,8 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
         }
     }, [dataObj.data])
 
-    useEffect(() => {
-        if (queryParam) {
-            setCardList([]);
-            setImgSize({})
-            setIsMax(false);
-            const columns = cardSizeRef.current;
-            let macy = Macy({
-                container: '#scrollableDiv', // 图像列表容器id
-                trueOrder: false,
-                waitForImages: false,
-                useOwnImageLoader: true,
-                debug: true,
-
-                //设计间距
-                margin: {
-                    x: 20,
-                    y: 20
-                },
-
-                //设置列数
-                columns: columns,
-            });
-            macy.recalculate()
-            const obj = {
-                "current": 1,
-                "size": 20,
-                ...searchParam
-            }
-            setQueryParam(obj);
-        }
-        // refresh()
-    }, [searchParam]);
-
     const nextList = async () => {
+        setIsLoading(true)
         await dataObj.next();
     }
 
@@ -211,39 +173,6 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
                     </div>
                 }
             </div>
-
-            {/*<div*/}
-            {/*    ref={cards}*/}
-            {/*    id='cardsList'*/}
-            {/*    className='h-[calc(100%-68px)] overflow-auto'*/}
-            {/*>*/}
-            {/*    <InfiniteScroll*/}
-            {/*        dataLength={cardList.length}*/}
-            {/*        next={nextList}*/}
-            {/*        hasMore={ dataObj.hasMore}*/}
-            {/*        className='w-full flex justify-between flex-wrap scrollableDiv'*/}
-            {/*        loader={*/}
-            {/*            <div*/}
-            {/*                className='w-full flex items-center justify-center h-[50px] mb-[20px]'*/}
-            {/*            >*/}
-            {/*                <Spin tip="Loading" size="large" />*/}
-            {/*                <span className='text-[13px] ml-[15px]'>加载中</span>*/}
-            {/*            </div>*/}
-            {/*        }*/}
-            {/*        scrollableTarget='cardsList'*/}
-            {/*    >*/}
-            {/*            {cardList.map((item, index) => (*/}
-            {/*                <CardAnt*/}
-            {/*                    key={index}*/}
-            {/*                    item={item}*/}
-            {/*                    index={index}*/}
-            {/*                    cardClick={cardClick}*/}
-            {/*                    width={cardWidthRef.current}*/}
-            {/*                    cardPosition={cardPosition}*/}
-            {/*                />*/}
-            {/*            ))}*/}
-            {/*    </InfiniteScroll>*/}
-            {/*</div>*/}
             <FloatButton.Group
                 style={{
                     right: 94,
@@ -252,7 +181,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
                 <FloatButton
                     icon={<SyncOutlined />}
                     onClick={() => {
-                        refresh()
+                        Refresh()
                     }}
                 />
                 <FloatButton.BackTop
