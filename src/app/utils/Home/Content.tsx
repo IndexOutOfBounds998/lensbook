@@ -109,7 +109,6 @@ export default function LayoutContent({cardClick}) {
             </Tab.Group>
             <CardList
                 cardClick={cardClick}
-                Refresh={Refresh}
                 dataObj={{ data, loading, hasMore, next }}
             >
             </CardList>

@@ -3,7 +3,8 @@ import Comment from "./Comment";
 import React, { useEffect, useRef, useState } from "react";
 import { message, Button, notification, Spin } from "antd";
 import Input from "antd/es/input";
-import { AUTHORIZE_PREFIX, HUB_CONTRACT_ADDRESS, FREE_COLLECT_MODULE, ZERO_ADDRESS } from '../../constants/constant';
+import { AUTHORIZE_PREFIX, IPFS_API_KEY } from '../../constants/constant';
+import { upJsonContent } from "../../api/ipfsApi";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { formatNickName, formatDate } from "../../util/FormatContent";
 import { useTranslation } from "react-i18next";
@@ -14,9 +15,13 @@ import {
     ProfileOwnedByMe,
     useUnfollow,
     useActiveProfile,
-    usePublication
+    usePublication,
+    useComments,
+    useCreateComment,
+    ContentFocus,
+    CollectPolicyType,
+    ReferencePolicyType
 } from '@lens-protocol/react-web';
-import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
 type FollowButtonProps = {
     follower: ProfileOwnedByMe;
     followee: Profile;
@@ -28,17 +33,19 @@ type UseFollowInnerProps = {
 
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
-    const { data: publication, loading: publication_loading } = usePublication({
+    const {data: publication, loading: publication_loading} = usePublication({
         publicationId: item.id,
     });
 
-    const { data, error, loading } = useActiveProfile();
+    const {data, error, loading} = useActiveProfile();
 
     useEffect(() => {
         if (publication && data && publication.profile.followStatus) {
             setIsFollowing(!publication.profile.followStatus.canFollow);
         }
-    }, [publication,data])
+        console.log(item)
+        console.log(data)
+    }, [publication, data])
 
     const {
         execute: follow,
@@ -53,7 +60,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const [notificationApi, contextHolderNotification] = notification.useNotification();
     const [followButtonLoading, setFollowButtonLoading] = useState(false);
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const [messageReplyButtonLoading, setMessageReplyButtonLoading] = useState(false);
 
     let flag = true;
@@ -69,85 +76,35 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     let [bgSize, setBgSize] = useState(0);
     let [contentSize, setContentSize] = useState(0);
     let [commentPage, setCommentPage] = useState([]);
-    let [hasMore, setHasMore] = useState(true);//是否有更多评论
 
     const detail = useRef();
     const imgBox = useRef();
     const contentBox = useRef();
     const commentRef = useRef();
 
-    // const { contract } = useContract(HUB_CONTRACT_ADDRESS, contract_abi);
-    // const follow_address = contentDetail.user ? contentDetail.user.followNft : '';
-    // const followContract = useContract(follow_address, follow_abi);
-    // const authConfig = useThirdwebAuthContext();
-
     const appendReplyRef = useRef(null);
 
-    // //关注
-    // const { mutate: follow, isLoadingWrite, errorWrite } = useContractWrite(
-    //     contract,
-    //     "follow",
-    // );
-    // //取消关注
-    // const { mutate: burn, burnLoading, burnError } = useContractWrite(
-    //     followContract.contract,
-    //     "burn",
-    // );
-    // //收藏
-    // const { mutate: collect, collectLoading, collectError } = useContractWrite(
-    //     contract,
-    //     "collect",
-    // );
-    // //点赞
-    // const [addLike] = useMutation(API.LIKE({ profileId: parseInt(item.profileId), pubId: parseInt(item.pubId) }))
-    // //取消点赞
-    // const [disLike] = useMutation(API.DISLIKE({ profileId: parseInt(item.profileId), pubId: parseInt(item.pubId) }))
-    // //评论
-    // const { mutate: comment, commentLoading, commentError } = useContractWrite(
-    //     contract,
-    //     "comment",
-    // );
-    // //帖子内容
-    // const getContentDetail = useImperativeQuery(API.GET_CONTENT_DETAIL({
-    //     pubId: JSON.stringify(item.pubId),
-    //     profileId: JSON.stringify(item.profileId)
-    // }));
-    // //是否关注
-    // const isFollow = async (obj) => {
-    //     const res = await isFollowing({
-    //         params: {
-    //             profile_id: obj.profileId
-    //         }
-    //     })
-    //     if (res) return res.data;
-    //     return false
-    // }
-    // //是否收藏
-    // const isCollect = async (obj) => {
-    //     const res = await isCollection({
-    //         params: {
-    //             profile_id: obj.profileId,
-    //             pub_id: obj.pubId,
-    //         }
-    //     })
-    //     if (res) return res.data;
-    //     return false
-    // }
-
+    const {data: comments, loading: commentsLoading, hasMore, next} = useComments({
+        commentsOf: item.id,
+        limit: 10,
+    });
 
     const Icon = (item) => (
-        <div className='flex items-center' style={{ color: item.color }}>
-            <i className={`iconfont icon-${item.icon} cursor-pointer text-[25px] mr-3`} />
+        <div className='flex items-center' style={{color: item.color}}>
+            <i className={`iconfont icon-${item.icon} cursor-pointer text-[25px] mr-3`}/>
             <span className='font-bold'>{item.text}</span>
         </div>
     );
 
     useEffect(() => {
         if (flag) {
-            // imgSize();
             scaleDown();
         }
     }, []);
+
+    useEffect(() => {
+        setCommentPage(comments || [])
+    }, [comments]);
 
     useEffect(() => {
         if (card && flag) {
@@ -226,18 +183,43 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const clickLike = async () => {
 
     }
+    async function upLoad(data) {
+        const serialized = JSON.stringify(data);
+        const obj = {
+            appId: 'tripWed3',
+            content: serialized,
+        }
+        const config = {
+            headers: {
+                Authorization: `Bearer ${IPFS_API_KEY}`
+            }
+        };
+        const res = await upJsonContent(obj, config)
+        if (res && res.data) {
+            return res.data.IpfsHash;
+        }
+        return '';
+    }
+
+    const { execute: create, error: commentError, isPending } = useCreateComment({ data, upLoad });
     //发布评论
     const sendComment = async () => {
-
+        if (commentRef.current.input.value) {
+            console.log(commentRef.current.input.value)
+            let result = await create({
+                content: commentRef.current.input.value,
+                contentFocus: ContentFocus.TEXT_ONLY,
+                locale: 'en',
+            })
+            console.log(result)
+        }
     }
+
     //加载更多评论
     const moreComment = () => {
 
     }
 
-    useEffect(() => {
-        console.log(commentPage)
-    }, [commentPage])
     const operate = [
         { icon: 'icon-message', text: contentDetail.commentCount || 0, color: '#3c82f6' },
         { icon: isFavouriteStatus ? 'heart-fill' : 'heart', text: favouriteCount, color: '#ff2442', onClick: clickLike },
@@ -357,9 +339,8 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                     <div className='mt-[16px]'>
                                         <Comment
                                             ref={appendReplyRef}
-                                            item={contentDetail}
-                                            setData={setCommentPage}
-                                            setMore={setHasMore}
+                                            item={commentPage}
+                                            total={item.stats ? item.stats.totalAmountOfComments : 0}
                                         >
                                         </Comment>
                                     </div>

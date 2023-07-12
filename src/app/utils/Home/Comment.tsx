@@ -5,11 +5,10 @@ const icon = (icon) => (
     <i className={`iconfont icon-${icon} text-[16px] mr-[5px]`} />
 );
 
-const Comment = React.forwardRef(({ item, setData, setMore }, ref) => {
+const Comment = React.forwardRef(({ item, total }, ref) => {
     const [commentPage, setCommentPage] = useState([]);
     const [page, setPage] = useState({ current: 1, size: 20 });
     const [hasMore, setHasMore] = useState(true);
-    const [total, setTotal] = useState(0);
 
     const getComments = async () => {
 
@@ -24,8 +23,7 @@ const Comment = React.forwardRef(({ item, setData, setMore }, ref) => {
     };
 
     const updateReplay = (item) => {
-        const newCommentPage = [...commentPage, item];
-        setCommentPage(newCommentPage);
+        setCommentPage(item);
     };
 
     React.useImperativeHandle(ref, () => ({
@@ -34,9 +32,7 @@ const Comment = React.forwardRef(({ item, setData, setMore }, ref) => {
     }));
 
     useEffect(() => {
-        if (item.profileId && item.pubId) {
-            getComments();
-        }
+        console.log(item)
     }, [item]);
 
     useEffect(() => {
@@ -45,9 +41,9 @@ const Comment = React.forwardRef(({ item, setData, setMore }, ref) => {
         }
     }, [page]);
 
-    useEffect(() => {
-        setMore(hasMore)
-    }, [hasMore]);
+    // useEffect(() => {
+    //     setMore(hasMore)
+    // }, [hasMore]);
 
     const refresh = () => {
         setPage({ current: 1, size: 20 });
@@ -63,29 +59,29 @@ const Comment = React.forwardRef(({ item, setData, setMore }, ref) => {
 
     return (
         <div>
-            <p className="text-[#666] mb-[20px]">一共 {total} 条评论</p>
-            {commentPage.map((item) => (
+            <p className="text-[#666] mb-[20px]">一共 { total } 条评论</p>
+            {item.map((item) => (
                 <div key={item.id} className="flex mb-[16px]">
                     <div>
-                        <img className="rounded-3xl w-[32px]" src={user} alt="" />
+                        <img className="rounded-3xl w-[32px]" src={item.profile.picture} alt="" />
                     </div>
                     <div className="ml-[12px] flex flex-col w-full">
               <span className="leading-[18px] text-[#33333399]">
-                {item.nickname}
+                {item.profile.name}
               </span>
                         <div className="text-[#333333] mt-[7px] leading-[22px]">
-                            {commentText(item.comment)}
+                            {item.metadata.content}
                         </div>
                         <div className="flex mt-[12px] justify-between text-[13px] text-[#999]">
                             <span className="">21:54 江苏</span>
                             <div className="flex text-[14px]">
                                 <div className="cursor-pointer hover:text-[#333333]">
                                     {icon("xihuan1")}
-                                    <span>123</span>
+                                    <span></span>
                                 </div>
                                 <div className="cursor-pointer ml-[20px] hover:text-[#333333]">
                                     {icon("icon-message")}
-                                    <span>12</span>
+                                    <span></span>
                                 </div>
                             </div>
                         </div>

@@ -12,7 +12,7 @@ import { SyncOutlined } from '@ant-design/icons';
 
 import Macy from 'macy';
 
-const LayoutContent = React.forwardRef(({ cardClick, Refresh, dataObj }, ref) => {
+const LayoutContent = React.forwardRef(({ cardClick, dataObj }, ref) => {
 
     let [cardList, setCardList, cardListRef] = useState([]);
 
@@ -32,7 +32,6 @@ const LayoutContent = React.forwardRef(({ cardClick, Refresh, dataObj }, ref) =>
 
     React.useImperativeHandle(ref, () => ({
         handleScroll: handleScroll,
-        // refresh: refresh,
     }));
 
     const bodyWidth = () => {
@@ -181,7 +180,7 @@ const LayoutContent = React.forwardRef(({ cardClick, Refresh, dataObj }, ref) =>
                 <FloatButton
                     icon={<SyncOutlined />}
                     onClick={() => {
-                        Refresh()
+                        window.location.reload();
                     }}
                 />
                 <FloatButton.BackTop
