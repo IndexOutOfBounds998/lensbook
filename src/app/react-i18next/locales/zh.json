@@ -32,5 +32,7 @@
   "authPayees":"多收款人的付费收藏",
   "authFollow":"付费关注",
   "authForward":"只有账户的关注者可以评论和转发",
-  "allow":"允许"
+  "allow":"允许",
+  "followButton":"关注",
+  "UnfollowButton":"取消关注"
 }

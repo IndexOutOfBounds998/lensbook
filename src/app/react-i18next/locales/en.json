@@ -32,5 +32,7 @@
   "authPayees": "Paid Collections with Multiple Payees",
   "authFollow": "Pay to follow",
   "authForward":"Only followers of the account can comment and forward",
-  "allow":"Allow"
+  "allow":"Allow",
+  "followButton":"follow",
+  "UnfollowButton":"unfollow"
 }

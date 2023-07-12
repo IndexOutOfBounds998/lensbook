@@ -22,6 +22,9 @@ import {
     CollectPolicyType,
     ReferencePolicyType
 } from '@lens-protocol/react-web';
+import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
+import FollowButton from '@/app/components/FollowButton';
+
 type FollowButtonProps = {
     follower: ProfileOwnedByMe;
     followee: Profile;
@@ -37,36 +40,16 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         publicationId: item.id,
     });
 
-    const {data, error, loading} = useActiveProfile();
-
-    useEffect(() => {
-        if (publication && data && publication.profile.followStatus) {
-            setIsFollowing(!publication.profile.followStatus.canFollow);
-        }
-        console.log(item)
-        console.log(data)
-    }, [publication, data])
-
-    const {
-        execute: follow,
-        error: followError,
-        isPending: isFollowPending,
-    } = useFollowWithSelfFundedFallback({
-        followee: item.profile,
-        follower: data,
-    });
-
     const [messageApi, contextHolder] = message.useMessage();
     const [notificationApi, contextHolderNotification] = notification.useNotification();
-    const [followButtonLoading, setFollowButtonLoading] = useState(false);
 
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const [messageReplyButtonLoading, setMessageReplyButtonLoading] = useState(false);
 
     let flag = true;
     let [contentDetail, setContentDetail] = useState({});//帖子详情
     //不要放到一个对象里 容易混淆 各自负责各自的职责
-    let [isFollowingStatus, setIsFollowing] = useState(false);//是否关注
+
     let [isCollectionStatus, setIsCollected] = useState(false);//是否收藏
     let [isFavouriteStatus, setIsFavourite] = useState(false);//是否点赞
     let [favouriteCount, setFavouriteCount] = useState(0);//点赞数
@@ -90,8 +73,8 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     });
 
     const Icon = (item) => (
-        <div className='flex items-center' style={{color: item.color}}>
-            <i className={`iconfont icon-${item.icon} cursor-pointer text-[25px] mr-3`}/>
+        <div className='flex items-center' style={{ color: item.color }}>
+            <i className={`iconfont icon-${item.icon} cursor-pointer text-[25px] mr-3`} />
             <span className='font-bold'>{item.text}</span>
         </div>
     );
@@ -171,10 +154,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         }
         setIsOwn(parseInt(obj.profileId) === profileId)
     }
-    //点击关注
-    const clickFollow = () => {
-        follow()
-    }
+
     //点击收藏
     const clickCollection = () => {
 
@@ -215,6 +195,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         }
     }
 
+    }
     //加载更多评论
     const moreComment = () => {
 
@@ -286,21 +267,10 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                             </div>
 
 
-                            {publication.ownedByMe && data ? ('') : (
-                            <Button
-                                loading={followButtonLoading}
-                                className='flex items-center cursor-pointer justify-center rounded-3xl w-[74px] h-[40px] text-[15px]'
-                                style={
-                                    isFollowingStatus ?
-                                        { background: '#3333330d', color: '#33333399' } :
-                                        { background: '#ff2442', color: '#fff' }
-                                }
-                                onClick={clickFollow}
-                            >
-                                {
-                                    isFollowingStatus ? '已关注' : '关注'
-                                }
-                            </Button>)}
+                            <WhenLoggedInWithProfile>
+                                {({ profile }) =>
+                                    <FollowButton followee={publication.profile} follower={profile} />}
+                            </WhenLoggedInWithProfile>
 
 
                         </div>
@@ -324,15 +294,15 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                     style={{ borderBottom: '0.5px solid rgba(0,0,0,.1)' }}
                                 >
                                     <div className='mb-5 font-semibold text-[20px] leading-8'>
-                                        {item.metadata.title && item.metadata.title}
+                                        {publication.metadata.title && publication.metadata.title}
                                     </div>
                                     <div
                                         className='text-[17px] whitespace-pre-wrap'
-                                        dangerouslySetInnerHTML={{ __html: item.metadata.content && item.metadata.content }}
+                                        dangerouslySetInnerHTML={{ __html: publication.metadata.content && publication.metadata.content }}
                                     >
                                     </div>
                                     <div className='mt-2 text-[14px] leading-6 text-[#33333399]'>
-                                        {formatDate(item.createdAt)}
+                                        {formatDate(publication.createdAt)}
                                     </div>
                                 </div>
                                 <div className='px-[30px] py-[20px]'>
