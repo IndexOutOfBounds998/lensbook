@@ -35,6 +35,7 @@ export default function CollectButton({ collector, publication }: CollectButtonP
         case CollectState.CAN_BE_COLLECTED:
             return (
                 <>
+                <p>收藏个数{publication.stats.totalAmountOfCollects}</p>
                     <Button onClick={collect} disabled={isCollected || isPending}>
                         {error
                             ? 'Error'

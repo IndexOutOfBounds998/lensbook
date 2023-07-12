@@ -45,6 +45,7 @@ export default function ReactionButton({ publication, profileId, reactionType }:
 
     return (
         <>
+            <p>点赞个数{publication.stats.totalUpvotes}</p>
             <Button onClick={toggleReaction} disabled={isPending || (hasAnyReaction && !hasReactionType)}>
                 <strong>{hasReactionType ? `取消点赞` : `点赞`}</strong>
             </Button>
