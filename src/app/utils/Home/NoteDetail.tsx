@@ -10,23 +10,13 @@ import { useTranslation } from "react-i18next";
 import { formatPicture } from '@/app/util/utils';
 import { useFollowWithSelfFundedFallback } from '@/app/hooks/useFollowWithSelfFundedFallback';
 import {
-    Profile,
-    ProfileOwnedByMe,
-    useUnfollow,
-    useActiveProfile,
+    ReactionType,
     usePublication
 } from '@lens-protocol/react-web';
 import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
 import FollowButton from '@/app/components/FollowButton';
-
-type FollowButtonProps = {
-    follower: ProfileOwnedByMe;
-    followee: Profile;
-};
-
-type UseFollowInnerProps = {
-    activeProfile: ProfileOwnedByMe;
-};
+import CollectButton from '@/app/components/CollectButton';
+import ReactionButton from '@/app/components/ReactionButton';
 
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
@@ -36,14 +26,14 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
     const [messageApi, contextHolder] = message.useMessage();
     const [notificationApi, contextHolderNotification] = notification.useNotification();
-   
+
     const { t } = useTranslation();
     const [messageReplyButtonLoading, setMessageReplyButtonLoading] = useState(false);
 
     let flag = true;
     let [contentDetail, setContentDetail] = useState({});//帖子详情
     //不要放到一个对象里 容易混淆 各自负责各自的职责
-   
+
     let [isCollectionStatus, setIsCollected] = useState(false);//是否收藏
     let [isFavouriteStatus, setIsFavourite] = useState(false);//是否点赞
     let [favouriteCount, setFavouriteCount] = useState(0);//点赞数
@@ -60,64 +50,8 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const contentBox = useRef();
     const commentRef = useRef();
 
-    // const { contract } = useContract(HUB_CONTRACT_ADDRESS, contract_abi);
-    // const follow_address = contentDetail.user ? contentDetail.user.followNft : '';
-    // const followContract = useContract(follow_address, follow_abi);
-    // const authConfig = useThirdwebAuthContext();
 
     const appendReplyRef = useRef(null);
-
-    // //关注
-    // const { mutate: follow, isLoadingWrite, errorWrite } = useContractWrite(
-    //     contract,
-    //     "follow",
-    // );
-    // //取消关注
-    // const { mutate: burn, burnLoading, burnError } = useContractWrite(
-    //     followContract.contract,
-    //     "burn",
-    // );
-    // //收藏
-    // const { mutate: collect, collectLoading, collectError } = useContractWrite(
-    //     contract,
-    //     "collect",
-    // );
-    // //点赞
-    // const [addLike] = useMutation(API.LIKE({ profileId: parseInt(item.profileId), pubId: parseInt(item.pubId) }))
-    // //取消点赞
-    // const [disLike] = useMutation(API.DISLIKE({ profileId: parseInt(item.profileId), pubId: parseInt(item.pubId) }))
-    // //评论
-    // const { mutate: comment, commentLoading, commentError } = useContractWrite(
-    //     contract,
-    //     "comment",
-    // );
-    // //帖子内容
-    // const getContentDetail = useImperativeQuery(API.GET_CONTENT_DETAIL({
-    //     pubId: JSON.stringify(item.pubId),
-    //     profileId: JSON.stringify(item.profileId)
-    // }));
-    // //是否关注
-    // const isFollow = async (obj) => {
-    //     const res = await isFollowing({
-    //         params: {
-    //             profile_id: obj.profileId
-    //         }
-    //     })
-    //     if (res) return res.data;
-    //     return false
-    // }
-    // //是否收藏
-    // const isCollect = async (obj) => {
-    //     const res = await isCollection({
-    //         params: {
-    //             profile_id: obj.profileId,
-    //             pub_id: obj.pubId,
-    //         }
-    //     })
-    //     if (res) return res.data;
-    //     return false
-    // }
-
 
     const Icon = (item) => (
         <div className='flex items-center' style={{ color: item.color }}>
@@ -198,7 +132,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         }
         setIsOwn(parseInt(obj.profileId) === profileId)
     }
-    
+
     //点击收藏
     const clickCollection = () => {
 
@@ -217,8 +151,10 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     }
 
     useEffect(() => {
-        console.log(commentPage)
+
     }, [commentPage])
+
+
     const operate = [
         { icon: 'icon-message', text: contentDetail.commentCount || 0, color: '#3c82f6' },
         { icon: isFavouriteStatus ? 'heart-fill' : 'heart', text: favouriteCount, color: '#ff2442', onClick: clickLike },
@@ -341,13 +277,20 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                             style={{ width: `${contentSize}px` }}
                         >
                             <div className='h-[50px] rounded-3xl shadow w-full mb-[10px] py-[7px] px-[15px] flex justify-between'>
-                                {
-                                    operate.map((item) => (
-                                        <div key={item.icon} onClick={item.onClick}>
-                                            {Icon(item)}
-                                        </div>
-                                    ))
-                                }
+
+
+                                <WhenLoggedInWithProfile>
+                                    {({ profile }) =>
+                                        <ReactionButton publication={publication} profileId={profile.id} reactionType={ReactionType.UPVOTE} />}
+                                </WhenLoggedInWithProfile>
+
+                                <WhenLoggedInWithProfile>
+                                    {({ profile }) =>
+                                        <CollectButton collector={profile} publication={publication} />}
+                                </WhenLoggedInWithProfile>
+
+
+
                                 <div className='w-[70px] rounded-3xl bg-[#50b674] cursor-pointer p-[5px] text-[#fff] text-center'>
                                     分享
                                 </div>

@@ -169,7 +169,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
         try {
              dataObj.next();
         } catch (error) {
-            
+            console.log(error)
         }
        
     }
