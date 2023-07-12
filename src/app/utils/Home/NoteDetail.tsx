@@ -38,7 +38,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         if (publication && data && publication.profile.followStatus) {
             setIsFollowing(!publication.profile.followStatus.canFollow);
         }
-    }, [publication,data])
+    }, [publication, data])
 
     const {
         execute: follow,
@@ -48,6 +48,19 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         followee: item.profile,
         follower: data,
     });
+
+    const {
+        execute: unfollow,
+        error: unfollowError,
+        isPending: isUnfollowPending,
+    } = useUnfollow({
+        followee: item.profile,
+        follower: data,
+    });
+
+    useEffect(() => {
+        setFollowButtonLoading(isFollowPending || isUnfollowPending)
+    }, [isFollowPending, isUnfollowPending])
 
     const [messageApi, contextHolder] = message.useMessage();
     const [notificationApi, contextHolderNotification] = notification.useNotification();
@@ -216,7 +229,11 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     }
     //点击关注
     const clickFollow = () => {
-        follow()
+        if (isFollowingStatus) {
+            unfollow()
+        } else {
+            follow()
+        }
     }
     //点击收藏
     const clickCollection = () => {
@@ -305,20 +322,20 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
                             {publication.ownedByMe && data ? ('') : (
-                            <Button
-                                loading={followButtonLoading}
-                                className='flex items-center cursor-pointer justify-center rounded-3xl w-[74px] h-[40px] text-[15px]'
-                                style={
-                                    isFollowingStatus ?
-                                        { background: '#3333330d', color: '#33333399' } :
-                                        { background: '#ff2442', color: '#fff' }
-                                }
-                                onClick={clickFollow}
-                            >
-                                {
-                                    isFollowingStatus ? '已关注' : '关注'
-                                }
-                            </Button>)}
+                                <Button
+                                    loading={followButtonLoading}
+                                    className='flex items-center cursor-pointer justify-center rounded-3xl w-[74px] h-[40px] text-[15px]'
+                                    style={
+                                        isFollowingStatus ?
+                                            { background: '#3333330d', color: '#33333399' } :
+                                            { background: '#ff2442', color: '#fff' }
+                                    }
+                                    onClick={clickFollow}
+                                >
+                                    {
+                                        isFollowingStatus ? '已关注' : '关注'
+                                    }
+                                </Button>)}
 
 
                         </div>
