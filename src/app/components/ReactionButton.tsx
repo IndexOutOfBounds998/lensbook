@@ -9,7 +9,9 @@ import {
 
 } from '@lens-protocol/react-web';
 
-import { Button } from 'antd';
+import {Button, message} from 'antd';
+import {useState} from "react";
+import './style/ReactionButton.css'
 
 type ReactionButtonProps = {
     publication: ContentPublication;
@@ -18,6 +20,7 @@ type ReactionButtonProps = {
 };
 
 export default function ReactionButton({ publication, profileId, reactionType }: ReactionButtonProps) {
+
     const { addReaction, removeReaction, hasReaction, isPending } = useReaction({
         profileId,
     });
@@ -27,9 +30,12 @@ export default function ReactionButton({ publication, profileId, reactionType }:
         publication,
     });
 
+    let [loading, setLoading] = useState(false);
+
     const hasAnyReaction = publication.reaction !== null;
 
     const toggleReaction = async () => {
+        setLoading(true)
         if (hasReactionType) {
             await removeReaction({
                 reactionType,
@@ -41,12 +47,22 @@ export default function ReactionButton({ publication, profileId, reactionType }:
                 publication,
             });
         }
+        setLoading(false)
     };
 
     return (
         <>
-            <Button onClick={toggleReaction} disabled={isPending || (hasAnyReaction && !hasReactionType)}>
-                <strong>{hasReactionType ? `取消点赞` : `点赞`}</strong>
+            <Button
+                onClick={toggleReaction}
+                type="link"
+                loading={loading}
+                title={hasReactionType ? `取消点赞` : `点赞`}
+                ghost
+                disabled={isPending || (hasAnyReaction && !hasReactionType)}
+                icon={<i className={`iconfont icon-${hasReactionType ? 'heart-fill' : 'heart'} cursor-pointer text-[25px] mr-3`} />}
+                className='reaction-btn flex items-center p-[0] h-[auto] text-[#ff2442]'
+            >
+                <span className='font-bold h-[25px]'>{ publication.stats.totalUpvotes }</span>
             </Button>
         </>
     );
