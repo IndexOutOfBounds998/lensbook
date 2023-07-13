@@ -55,7 +55,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <WagmiConfig config={wagmiConfig}>
-        <RainbowKitProvider chains={chains}>
+        <RainbowKitProvider chains={chains} coolMode={true}>
           <LensProvider config={lensConfig}>
             <body>
               <div className='min-w-[1280px] h-full'>

@@ -5,10 +5,13 @@ import {
     ProfileOwnedByMe,
 } from '@lens-protocol/react-web';
 
-import {Button, message} from 'antd';
+import { Button, message, Modal } from 'antd';
+
+import { useTranslation } from "react-i18next";
 
 import { useCollectWithSelfFundedFallback } from '@/app/hooks/useCollectWithSelfFundedFallback';
-import {useEffect} from "react";
+
+import { useEffect, useState } from "react";
 
 
 type CollectButtonProps = {
@@ -18,23 +21,61 @@ type CollectButtonProps = {
 
 export default function CollectButton({ collector, publication }: CollectButtonProps) {
     const [messageApi, contextHolder] = message.useMessage();
+
+    const { t } = useTranslation();
+
     const {
         execute: collect,
         error,
         isPending,
     } = useCollectWithSelfFundedFallback({ collector, publication });
+
     const isCollected = publication.hasCollectedByMe;
 
     useEffect(() => {
         if (!isPending) {
             messageApi.open({
                 type: 'success',
-                content: '收藏成功',
+                content: t('collectSuccess'),
             });
         }
-    }, [isPending])
+    }, [isPending, messageApi, t])
 
-    const CollectBtn = ({title}) => (
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
+    const ShowCollectModal = ({ publication }) => {
+        return (
+            <>
+            <Modal title={t('collect')} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <p>{publication.collectModule.feeOptional ?'付费收藏 '+publication.collectModule.feeOptional.amount.asset.symbol + ' 需要支付 ' + publication.collectModule.feeOptional.amount.value:''}</p>
+                <Button
+                        onClick={() => collect()}
+                        disabled={isCollected || isPending}
+                        loading={isPending}
+                        type="link"
+                        ghost
+                        icon={<i className={`iconfont icon-${isCollected ? 'star-fill' : 'star'} cursor-pointer text-[25px] mr-3`} />}
+                        className='flex items-center'
+                    >
+                        <span className='font-bold'>{publication.stats.totalAmountOfCollects}</span>
+                    </Button>
+            </Modal>
+            </>)
+    };
+
+    const CollectBtn = ({ title }) => (
         <Button
             type="link"
             ghost
@@ -43,42 +84,34 @@ export default function CollectButton({ collector, publication }: CollectButtonP
             title={title}
         >
             <i className={`iconfont icon-star cursor-pointer text-[25px] mr-3`} />
-            <span className='font-bold'>{ publication.stats.totalAmountOfCollects }</span>
+            <span className='font-bold'>{publication.stats.totalAmountOfCollects}</span>
         </Button>
     )
 
     switch (publication.collectPolicy.state) {
         case CollectState.COLLECT_TIME_EXPIRED:
-            return <CollectBtn title='Collecting ended'/>;
+            return <CollectBtn title='Collecting ended' />;
         case CollectState.COLLECT_LIMIT_REACHED:
-            return <CollectBtn title='Collect limit reached'/>;
+            return <CollectBtn title='Collect limit reached' />;
         case CollectState.NOT_A_FOLLOWER:
-            return <CollectBtn title='Only followers can collect'/>;
+            return <CollectBtn title='Only followers can collect' />;
         case CollectState.CANNOT_BE_COLLECTED:
-            return <CollectBtn title='Cannot be collected'/>;
+            return <CollectBtn title='Cannot be collected' />;
         case CollectState.CAN_BE_COLLECTED:
             return (
                 <>
+                    <ShowCollectModal publication={publication}></ShowCollectModal>
                     <Button
-                        onClick={collect}
-                        disabled={isCollected || isPending}
+                        onClick={() => setIsModalOpen(true)}
+                        disabled={isPending}
                         loading={isPending}
                         type="link"
                         ghost
                         icon={<i className={`iconfont icon-${isCollected ? 'star-fill' : 'star'} cursor-pointer text-[25px] mr-3`} />}
                         className='flex items-center'
                     >
-                        <span className='font-bold'>{ publication.stats.totalAmountOfCollects }</span>
+                        <span className='font-bold'>{publication.stats.totalAmountOfCollects}</span>
                     </Button>
-                    {/*<Button onClick={collect} disabled={isCollected || isPending}>*/}
-                    {/*    {error*/}
-                    {/*        ? 'Error'*/}
-                    {/*        : isPending*/}
-                    {/*            ? 'Collecting...'*/}
-                    {/*            : isCollected*/}
-                    {/*                ? `You've already collected`*/}
-                    {/*                : 'Collect'}*/}
-                    {/*</Button>*/}
 
                 </>
             );

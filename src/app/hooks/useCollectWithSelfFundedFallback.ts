@@ -32,7 +32,7 @@ import {
   
      
       if (gaslessResult.isFailure()) {
-        
+    
         if (supportsSelfFundedFallback(gaslessResult.error)) {
           // ask your confirmation before using their funds
           const shouldPayFor = window.confirm(

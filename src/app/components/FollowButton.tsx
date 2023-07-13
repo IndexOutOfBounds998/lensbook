@@ -29,6 +29,7 @@ export default function FollowButton({ followee, follower }: FollowButtonProps) 
         isPending: isUnfollowPending,
     } = useUnfollow({ follower, followee });
 
+
     if (followee.followStatus === null) {
         return null;
     }
