@@ -11,6 +11,7 @@ export default function LayoutContent({cardClick}) {
 
     let [categories, setCategory] = useState([]);
 
+    
     const { data, loading, hasMore, next } = useExplorePublications({
         limit: 20,
         publicationTypes: [PublicationTypes.Post],

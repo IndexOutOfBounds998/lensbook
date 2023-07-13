@@ -1,7 +1,7 @@
 // app/layout.tsx
 "use client";
 import "./globals.css";
-import { LensProvider, LensConfig, production, appId, development, mumbai } from "@lens-protocol/react-web";
+import { LensProvider, LensConfig, production, appId, development } from "@lens-protocol/react-web";
 import { bindings as wagmiBindings } from "@lens-protocol/wagmi";
 import "@/app/react-i18next/i18n";
 import LayoutHeader from "./utils/layout/Header";
@@ -15,12 +15,14 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
-  polygonMumbai
+  polygonMumbai,
+  polygon
 } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
+import { MAIN_NETWORK } from "@/app/constants/constant";
 const { chains, publicClient } = configureChains(
-  [polygonMumbai],
+  [MAIN_NETWORK ? polygon : polygonMumbai],
   [
     alchemyProvider({ apiKey: ALCHEMY_KEY }),
     publicProvider()
@@ -41,7 +43,7 @@ const wagmiConfig = createConfig({
 
 const lensConfig: LensConfig = {
   bindings: wagmiBindings(),
-  environment: development,
+  environment: MAIN_NETWORK ? production : development,
   sources: [appId('lenster'), appId('lenstrip')],
   appId: appId('lenstrip')
 };
