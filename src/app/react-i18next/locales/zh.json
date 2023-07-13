@@ -34,6 +34,6 @@
   "authForward":"只有账户的关注者可以评论和转发",
   "allow":"允许",
   "followButton":"关注",
-  "UnfollowButton":"取消关注",
+  "unfollowButton":"取消关注",
   "collectSuccess":"成功收藏"
 }

@@ -34,6 +34,6 @@
   "authForward":"Only followers of the account can comment and forward",
   "allow":"Allow",
   "followButton":"follow",
-  "UnfollowButton":"unfollow",
+  "unfollowButton":"unfollow",
   "collectSuccess":"collect success"
 }

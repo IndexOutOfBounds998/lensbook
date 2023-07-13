@@ -29,36 +29,43 @@ export default function FollowButton({ followee, follower }: FollowButtonProps) 
         isPending: isUnfollowPending,
     } = useUnfollow({ follower, followee });
 
+    //cant follow self
+    if (followee.id === follower.id) {
+        return null;
+    }
 
+    
     if (followee.followStatus === null) {
         return null;
     }
 
+
+
     if (followee.followStatus.isFollowedByMe) {
 
-        if(unfollowError){
+        if (unfollowError) {
             messageApi.open({
                 type: 'error',
                 content: unfollowError.message,
-              });
+            });
         }
 
-        if(followError){
+        if (followError) {
             messageApi.open({
                 type: 'error',
                 content: followError.message,
-              });
+            });
         }
 
         return (
             <>
-               {contextHolder}
+                {contextHolder}
                 <Button
                     loading={isUnfollowPending}
                     className='flex items-center cursor-pointer justify-center rounded-3xl w-[74px] h-[40px] text-[15px]'
                     style={
 
-                       
+
                         { background: '#3333330d', color: '#33333399' }
                     }
                     onClick={unfollow}
@@ -67,14 +74,14 @@ export default function FollowButton({ followee, follower }: FollowButtonProps) 
                         t('unfollowButton')
                     }
                 </Button>
- 
+
             </>
         );
     }
 
     return (
         <>
-        {contextHolder}
+            {contextHolder}
             <Button
                 loading={isFollowPending}
                 className='flex items-center cursor-pointer justify-center rounded-3xl w-[74px] h-[40px] text-[15px]'
