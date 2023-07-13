@@ -3,8 +3,18 @@ import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { Button } from 'antd';
 import { useTranslation } from "react-i18next";
-
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useNetwork, useSwitchNetwork } from 'wagmi';
+import {
+  polygonMumbai
+} from 'wagmi/chains';
+import { useEffect } from 'react';
 export default function LoginButton() {
+  const { chain } = useNetwork()
+
+  const { chains, error, isLoading, pendingChainId, switchNetwork } =
+    useSwitchNetwork()
+
   const { t } = useTranslation();
 
   const { execute: login, error: loginError, isPending: isLoginPending } = useWalletLogin();
@@ -17,6 +27,15 @@ export default function LoginButton() {
     connector: new InjectedConnector(),
   });
 
+  useEffect(() => {
+
+    if (chain) {
+      if (chain.id !== polygonMumbai.id) {
+        switchNetwork(polygonMumbai.id);
+      }
+    }
+
+  }, [chain, switchNetwork])
   const onLoginClick = async () => {
     if (isConnected) {
       await disconnectAsync();
@@ -26,16 +45,17 @@ export default function LoginButton() {
 
     if (connector instanceof InjectedConnector) {
       const walletClient = await connector.getWalletClient();
-       await login({
+      await login({
         address: walletClient.account.address,
       });
     }
   };
- 
+
   return (
     <div>
-      {loginError && <p>{loginError}</p>}
-      <Button loading={isLoginPending} disabled={isLoginPending} onClick={onLoginClick}>{t('login')}</Button>
+      {!isConnected ? <ConnectButton /> :
+        <Button loading={isLoginPending} disabled={isLoginPending} onClick={onLoginClick}>{t('login')}</Button>}
+
     </div>
   );
 }

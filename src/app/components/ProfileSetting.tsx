@@ -2,11 +2,28 @@ import { useTranslation } from "react-i18next";
 import { useWalletLogout, useActiveProfile } from '@lens-protocol/react-web';
 import { formatNickName, formatPicture } from "@/app/util/utils";
 import { Skeleton } from 'antd';
+import { useNetwork } from 'wagmi'
+import {
+    polygonMumbai
+} from 'wagmi/chains';
+import { useEffect } from "react";
+
 export default function ProfileSetting() {
     const { execute: logout, isPending } = useWalletLogout();
+
     const { data, error, loading } = useActiveProfile();
-    //data is null need create profile
-    console.log(data)
+
+    const { chain, chains } = useNetwork()
+
+    useEffect(() => {
+        if (chain) {
+            if (chain.id !== polygonMumbai.id) {
+                logout()
+            }
+        }
+
+    }, [chain, logout])
+
     const { t } = useTranslation();
 
     const list = [
