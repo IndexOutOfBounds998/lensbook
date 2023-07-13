@@ -9,7 +9,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { formatNickName, formatDate } from "../../util/FormatContent";
 import { useTranslation } from "react-i18next";
 import { formatPicture } from '@/app/util/utils';
-
+import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 import {
     useComments,
     useActiveProfile,
@@ -17,16 +17,17 @@ import {
     ReactionType,
     ContentFocus,
     CollectPolicyType,
-    usePublication
+    usePublication,
+    useActiveWallet
 } from '@lens-protocol/react-web';
 import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
 import FollowButton from '@/app/components/FollowButton';
 import CollectButton from '@/app/components/CollectButton';
 import ReactionButton from '@/app/components/ReactionButton';
-
+import { useSignTypedData } from 'wagmi';
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
-    const {data: publication, loading: publication_loading} = usePublication({
+    const { data: publication, loading: publication_loading } = usePublication({
         publicationId: item.id,
     });
 
@@ -58,7 +59,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
     const appendReplyRef = useRef(null);
 
-    const {data: comments, loading: commentsLoading, hasMore, next} = useComments({
+    const { data: comments, loading: commentsLoading, hasMore, next } = useComments({
         commentsOf: item.id,
         limit: 10,
     });
@@ -132,17 +133,12 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
     }
     async function upLoad(data) {
-        const serialized = JSON.stringify(data);
-        const obj = {
-            appId: 'tripWed3',
-            content: serialized,
-        }
         const config = {
             headers: {
                 Authorization: `Bearer ${IPFS_API_KEY}`
             }
         };
-        const res = await upJsonContent(obj, config)
+        const res = await upJsonContent(data, config)
         if (res && res.data) {
             return res.data.IpfsHash;
         }
@@ -150,23 +146,78 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     }
 
     const { data: profile, error, loading: profileLoading } = useActiveProfile();
-    const { execute: create, error: commentError, isPending } = useCreateComment({ profile, upLoad });
+
+    const { signTypedDataAsync, isLoading: typedDataLoading } = useSignTypedData();
+
+
+
     //发布评论
     const sendComment = async () => {
-        if (commentRef.current.input.value) {
-            console.log(commentRef.current.input.value)
-            let result = await create({
-                publicationId: item.id,
-                content: commentRef.current.input.value,
-                profileId: profile.id,
-                contentFocus: ContentFocus.TEXT,
-                locale: 'en',
-                collect: {
-                    type: CollectPolicyType.NO_COLLECT
-                },
-            })
-            console.log(result)
+        const contentURI = 'ar://Y3M4T88IXIBYt63FEpeAUQzSreioCli1A7LYabPV6Vk';
+        const lensClient = await getAuthenticatedClient();
+        const typedDataResult = await lensClient.publication.createCommentTypedData({
+            profileId: profile.id,
+            publicationId: publication.id,
+            contentURI: contentURI, // or arweave
+            collectModule: {
+                revertCollectModule: true, // collect disabled
+            },
+            referenceModule: {
+                followerOnlyReferenceModule: false, // anybody can comment or mirror
+            },
+        });
+        // typedDataResult is a Result object
+        const data = typedDataResult.unwrap();
+        // sign with the wallet
+        const signTypedData = await signTypedDataAsync({
+            primaryType: 'CommentWithSig',
+            domain: (data.typedData.domain),
+            message: data.typedData.value,
+            types: (data.typedData.types),
+            value: (data.typedData.value)
+        });
+        // broadcast
+        const broadcastResult = await lensClient.transaction.broadcast({
+            id: data.id,
+            signature: signTypedData,
+        });
+
+        // broadcastResult is a Result object
+        const broadcastResultValue = broadcastResult.unwrap();
+
+        if (broadcastResultValue.__typename=="RelayerResult") {
+            console.log(
+                `Transaction was successfuly broadcasted with txId ${broadcastResultValue.txId}`
+            );
         }
+
+      
+        // const typedDataResult =await lensClient.publication.createCommentTypedData({
+        //     profileId: profile && profile.id,
+        //     publicationId: publication && publication.id,
+        //     contentURI,
+        //     collectModule: {
+        //         revertCollectModule: true, // collect disabled
+        //     },
+        //     referenceModule: {
+        //         followerOnlyReferenceModule: false, // anybody can comment or mirror
+        //     },
+        // });
+
+        // if (commentRef.current.input.value) {
+        //     console.log(commentRef.current.input.value)
+        //     let result = await create({
+        //         publicationId: item.id,
+        //         content: commentRef.current.input.value,
+        //         profileId: profile.id,
+        //         contentFocus: ContentFocus.TEXT,
+        //         locale: 'en',
+        //         collect: {
+        //             type: CollectPolicyType.NO_COLLECT
+        //         },
+        //     })
+        //     console.log(result)
+        // }
     }
 
     //加载更多评论
