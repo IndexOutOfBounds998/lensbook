@@ -155,6 +155,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const sendComment = async () => {
         const contentURI = 'ar://Y3M4T88IXIBYt63FEpeAUQzSreioCli1A7LYabPV6Vk';
         const lensClient = await getAuthenticatedClient();
+        lensClient.explore.publications()
         const typedDataResult = await lensClient.publication.createCommentTypedData({
             profileId: profile.id,
             publicationId: publication.id,
