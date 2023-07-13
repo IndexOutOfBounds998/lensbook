@@ -12,8 +12,7 @@ import { useEffect } from 'react';
 export default function LoginButton() {
   const { chain } = useNetwork()
 
-  const { chains, error, isLoading, pendingChainId, switchNetwork } =
-    useSwitchNetwork()
+  const { chains, error, isLoading, pendingChainId, switchNetwork } = useSwitchNetwork()
 
   const { t } = useTranslation();
 
