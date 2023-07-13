@@ -35,5 +35,6 @@
   "allow":"Allow",
   "followButton":"follow",
   "unfollowButton":"unfollow",
-  "collectSuccess":"collect success"
+  "collectSuccess":"collect success",
+  "unlike":"unlike"
 }
