@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, useReducer } from 'react'
 import { Tab } from '@headlessui/react'
 import CardList from "./CardList";
 import { useExplorePublications, PublicationTypes, PublicationMainFocus } from '@lens-protocol/react-web';
+import ProfileNft from '@/app/components/nft/ProfileNft';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')

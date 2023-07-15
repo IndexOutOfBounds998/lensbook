@@ -1,12 +1,8 @@
 import {
-
     ContentPublication,
     ReactionType,
-
     useReaction,
-
-    ProfileId,
-
+    ProfileId
 } from '@lens-protocol/react-web';
 
 import { Button, message } from 'antd';
