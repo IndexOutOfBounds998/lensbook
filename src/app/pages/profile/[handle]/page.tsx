@@ -2,7 +2,7 @@
 "use client";
 import { useParams } from "next/navigation";
 import { useProfile, usePublications, Profile } from "@lens-protocol/react-web";
-import { formatPicture } from "../../util/utils";
+import { formatPicture } from "../../../utils/utils";
 
 export default function Profile() {
   const { handle } = useParams();

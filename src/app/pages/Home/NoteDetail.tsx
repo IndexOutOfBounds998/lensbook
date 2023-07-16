@@ -6,9 +6,9 @@ import Input from "antd/es/input";
 import { IPFS_API_KEY } from '../../constants/constant';
 import { upJsonContent } from "../../api/ipfsApi";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { formatNickName, formatDate } from "../../util/FormatContent";
+import { formatNickName, formatDate } from "../../utils/FormatContent";
 import { useTranslation } from "react-i18next";
-import { formatPicture } from '@/app/util/utils';
+import { formatPicture } from '@/app/utils/utils';
 import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 import {
     useComments,
