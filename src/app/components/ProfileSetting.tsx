@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useWalletLogout, useActiveProfile } from '@lens-protocol/react-web';
-import { formatNickName, formatPicture } from "@/app/util/utils";
+import { formatNickName, formatPicture } from "@/app/utils/utils";
 import { Skeleton } from 'antd';
 import { useNetwork } from 'wagmi'
 import {

@@ -2,7 +2,7 @@
 'use client'
 import { useExploreProfiles } from '@lens-protocol/react-web'
 import Link from 'next/link'
-import { formatPicture } from './util/utils'
+import { formatPicture } from './utils/utils'
 import React, {useEffect, useState} from "react";
 import LayoutHeader from './pages/layout/Header'
 import LayoutSider from './pages/layout/Sider'

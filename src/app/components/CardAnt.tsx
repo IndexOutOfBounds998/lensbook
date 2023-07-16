@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { formatPicture, formatNickName } from "../util/FormatContent"
+import { formatPicture, formatNickName } from "../utils/FormatContent"
 import { Card, message, Skeleton } from 'antd';
 import '../style/Card.css'
 import { AUTHORIZE_PREFIX } from "../constants/constant";

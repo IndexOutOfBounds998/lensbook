@@ -7,7 +7,7 @@ import LoginButton from "@/app/components/LoginButton";
 import Search from "./Search";
 import { useActiveProfile } from '@lens-protocol/react-web';
 import { useActiveWallet } from '@lens-protocol/react-web';
-import { formatPicture } from "@/app/util/utils";
+import { formatPicture } from "@/app/utils/utils";
 
 export default function Header({ }) {
 
