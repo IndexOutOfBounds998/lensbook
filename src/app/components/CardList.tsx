@@ -54,40 +54,40 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
         };
         if (cardListRef.current.length === Object.keys(imgObj).length) {
             setImgSize(imgObj)
-            if (typeof window !== 'undefined') {
-                setTimeout(() => (macyInfo()), 500)
-            }
+
+            setTimeout(() => (macyInfo()), 500)
+
         }
-        if (typeof window !== 'undefined') {
-            macyInfo()
-        }
+
+        macyInfo()
+
     }
 
     const macyInfo = () => {
         const columns = cardSizeRef.current;
-        if (typeof window !== 'undefined') {
-            
-            let macy = Macy({
-                container: '#scrollableDiv', // 图像列表容器id
-                trueOrder: false,
-                waitForImages: false,
-                useOwnImageLoader: false,
-                debug: false,
 
-                //设计间距
-                margin: {
-                    x: 20,
-                    y: 20
-                },
 
-                //设置列数
-                columns: columns,
-            });
+        let macy = Macy({
+            container: '#scrollableDiv', // 图像列表容器id
+            trueOrder: false,
+            waitForImages: false,
+            useOwnImageLoader: false,
+            debug: false,
 
-            macy.runOnImageLoad(() => {
-                macy.recalculate()
-            }, true)
-        }
+            //设计间距
+            margin: {
+                x: 20,
+                y: 20
+            },
+
+            //设置列数
+            columns: columns,
+        });
+
+        macy.runOnImageLoad(() => {
+            macy.recalculate()
+        }, true)
+
     }
 
     const loadMore = async () => {
@@ -100,9 +100,9 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
                 setIsMax(true)
             }
             setTimeout(() => (setIsLoading(false)), 500)
-            if (typeof window !== 'undefined') {
-                macyInfo()
-            }
+
+            macyInfo()
+
         }
     }
 

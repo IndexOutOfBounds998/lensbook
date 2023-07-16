@@ -1,7 +1,13 @@
 import React, {useEffect, useState } from 'react'
 import { Tab } from '@headlessui/react'
-import CardList from "./CardList";
 import { useExplorePublications, PublicationTypes, PublicationMainFocus } from '@lens-protocol/react-web';
+
+import dynamic from 'next/dynamic';
+
+const CardList = dynamic(import("../../components/CardList"), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>, //异步加载组件前的loading状态
+});
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')

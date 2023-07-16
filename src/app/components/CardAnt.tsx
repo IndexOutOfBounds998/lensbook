@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { formatPicture, formatNickName } from "../../util/FormatContent"
+import { formatPicture, formatNickName } from "../util/FormatContent"
 import { Card, message, Skeleton } from 'antd';
-import '../../style/Card.css'
-import { AUTHORIZE_PREFIX } from "../../constants/constant";
+import '../style/Card.css'
+import { AUTHORIZE_PREFIX } from "../constants/constant";
 import { useTranslation } from "react-i18next";
 // @ts-ignore
 export default function CardAnt({ item, index, cardClick, width, position, cardPosition }: {
