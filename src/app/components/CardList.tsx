@@ -2,7 +2,6 @@
 import React, { useRef, useEffect } from 'react'
 import useState from 'react-usestateref'
 import CardAnt from './CardAnt'
-
 import { FloatButton, Spin } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 
