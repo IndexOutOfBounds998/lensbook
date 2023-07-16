@@ -1,24 +1,20 @@
 
-import React, { useRef, useEffect, useReducer } from 'react'
+import React, { useRef, useEffect } from 'react'
 import useState from 'react-usestateref'
-import ReactDom from 'react-dom'
 import CardAnt from './CardAnt'
-import { Tab } from '@headlessui/react'
-import { useExplorePublications } from '@lens-protocol/react-web';
-import InfiniteScroll from "react-infinite-scroll-component";
 
-import { FloatButton, Skeleton, Spin } from 'antd';
+import { FloatButton, Spin } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 
 import Macy from 'macy';
-
+// @ts-ignore
 const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, dataObj }, ref) => {
 
     let [cardList, setCardList, cardListRef] = useState([]);
 
     let [cardSize, setCardSize, cardSizeRef] = useState(4);
 
-    let [cardWidth, setCardWidth, cardWidthRef] = useState();
+    let [cardWidth, setCardWidth, cardWidthRef] = useState(0);
 
     let [imgSize, setImgSize, imgSizeRef] = useState({});
 
@@ -28,7 +24,9 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
 
     let [isMax, setIsMax, isMaxRef] = useState(false);
 
-    const cards = useRef();
+    const cards = useRef({
+        offsetWidth:undefined
+    });
 
     React.useImperativeHandle(ref, () => ({
         handleScroll: handleScroll,
@@ -129,7 +127,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
 
     return (
         <>
-            <div ref={cards} className='h-[calc(100%-68px)] overflow-auto' onScroll={handleScroll}>
+            <div   className='h-[calc(100%-68px)] overflow-auto' onScroll={handleScroll}>
                 <div id='scrollableDiv' className='w-full flex justify-between flex-wrap'>
                     {cardListRef.current.map((item, index) => (
                         <CardAnt

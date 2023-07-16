@@ -5,6 +5,7 @@ import { Button } from 'antd';
 import { useTranslation } from "react-i18next";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useNetwork, useSwitchNetwork } from 'wagmi';
+
 import {
   polygonMumbai
 } from 'wagmi/chains';
@@ -12,7 +13,7 @@ import { useEffect } from 'react';
 export default function LoginButton() {
   const { chain } = useNetwork()
 
-  const { chains, error, isLoading, pendingChainId, switchNetwork } = useSwitchNetwork()
+  const { switchNetwork } = useSwitchNetwork();
 
   const { t } = useTranslation();
 
@@ -30,7 +31,9 @@ export default function LoginButton() {
 
     if (chain) {
       if (chain.id !== polygonMumbai.id) {
-        switchNetwork(polygonMumbai.id);
+        if (switchNetwork) {
+          switchNetwork(polygonMumbai.id);
+        }
       }
     }
 

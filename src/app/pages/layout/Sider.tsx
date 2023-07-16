@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { useEffect } from "react";
 
 export default function LayoutSider({ titleList, styleWidth, registerClick }) {
 

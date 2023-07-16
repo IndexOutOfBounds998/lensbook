@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    ignoreBuildErrors: true,
-    ignoreDuringBuilds: true,
+    distDir: 'build',
+    typescript: {
+        ignoreBuildErrors: true,
+        ignoreDuringBuilds: true,
+    },
+    experimental: {
+        appDir: false,
+    },
 }
 
 module.exports = nextConfig

@@ -3,7 +3,7 @@ import Comment from "./Comment";
 import React, { useEffect, useRef, useState } from "react";
 import { message, Button, notification, Spin } from "antd";
 import Input from "antd/es/input";
-import { AUTHORIZE_PREFIX, IPFS_API_KEY } from '../../constants/constant';
+import { IPFS_API_KEY } from '../../constants/constant';
 import { upJsonContent } from "../../api/ipfsApi";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { formatNickName, formatDate } from "../../util/FormatContent";
@@ -13,12 +13,11 @@ import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 import {
     useComments,
     useActiveProfile,
-    useCreateComment,
+    
     ReactionType,
-    ContentFocus,
-    CollectPolicyType,
+    
     usePublication,
-    useActiveWallet
+
 } from '@lens-protocol/react-web';
 import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
 import FollowButton from '@/app/components/FollowButton';

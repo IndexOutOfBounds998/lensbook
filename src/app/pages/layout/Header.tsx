@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Popover } from "antd";
 import logo from '../../../assets/logo192.png'
@@ -9,7 +9,7 @@ import { useActiveProfile } from '@lens-protocol/react-web';
 import { useActiveWallet } from '@lens-protocol/react-web';
 import { formatPicture } from "@/app/util/utils";
 
-export default function Header({ setSearchValue }) {
+export default function Header({ }) {
 
     const { data: wallet, loading } = useActiveWallet();
     const { data, error, loadingProfile } = useActiveProfile();
@@ -28,7 +28,7 @@ export default function Header({ setSearchValue }) {
                     <img className='w-20 h-16' src={logo} alt="" />
                 </div>
                 <div className='w-[30%] h-10 fixed left-1/2 translate-x-[-50%]'>
-                    <Search setSearchValue={setSearchValue} />
+                    <Search setSearchValue={''} />
                 </div>
                 <div className='flex items-center'>
                     {titleList.map((item, index) => (

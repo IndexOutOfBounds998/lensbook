@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 import { MAIN_NETWORK } from '@/app/constants/constant';
+import { NftFragment } from '@lens-protocol/client';
 import {
     polygonMumbai,
     polygon
@@ -18,7 +19,7 @@ export default function ProfileNft({ address }: ProfileNftProps) {
 
     const { t } = useTranslation();
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<NftFragment[]>([]);
 
     const fetchNft = async (offset: number, address: string) => {
         let lensClient = await getAuthenticatedClient();

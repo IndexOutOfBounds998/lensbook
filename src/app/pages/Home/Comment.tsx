@@ -1,4 +1,4 @@
-import user from "../../../assets/user.jpg";
+
 import React, { useEffect, useState } from "react";
 
 const icon = (icon) => (
@@ -91,5 +91,5 @@ const Comment = React.forwardRef(({ item, total }, ref) => {
         </div>
     );
 });
-
+Comment.displayName = "Comment";
 export default Comment;

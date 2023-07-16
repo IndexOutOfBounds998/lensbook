@@ -55,7 +55,7 @@ export default function CollectButton({ collector, publication }: CollectButtonP
         setIsModalOpen(false);
     };
 
-    const ShowCollectModal = ({ publication }) => {
+    const ShowCollectModal = ({ publication }: { publication: any }) => {
         return (
             <>
             <Modal title={t('collect')} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
@@ -75,18 +75,18 @@ export default function CollectButton({ collector, publication }: CollectButtonP
             </>)
     };
 
-    const CollectBtn = ({ title }) => (
+    const CollectBtn = ({ title }: { title: string }) => (
         <Button
-            type="link"
-            ghost
-            disabled
-            className='flex items-center'
-            title={title}
+          type="link"
+          ghost
+          disabled
+          className='flex items-center'
+          title={title}
         >
-            <i className={`iconfont icon-star cursor-pointer text-[25px] mr-3`} />
-            <span className='font-bold'>{publication.stats.totalAmountOfCollects}</span>
+          <i className={`iconfont icon-star cursor-pointer text-[25px] mr-3`} />
+          <span className='font-bold'>{publication.stats.totalAmountOfCollects}</span>
         </Button>
-    )
+      )
 
     switch (publication.collectPolicy.state) {
         case CollectState.COLLECT_TIME_EXPIRED:

@@ -60,8 +60,8 @@ export default function ProfileSetting() {
                 </div>
                 <div className='flex justify-around mb-[30px]'>
                     {
-                        list.map((item) => (
-                            <div className='text-[#3339] text-center cursor-pointer hover:text-[blueviolet]'>
+                        list.map((item, index) => (
+                            <div key={index} className='text-[#3339] text-center cursor-pointer hover:text-[blueviolet]'>
                                 <p className='text-black'>{item.value}</p> {item.title}
                             </div>
                         ))
@@ -69,8 +69,9 @@ export default function ProfileSetting() {
                 </div>
                 <div className='flex justify-between'>
                     {
-                        tools.map((item) => (
+                        tools.map((item, index) => (
                             <div
+                                key={index}
                                 className='mr-[16px] text-[#333] text-center cursor-pointer hover:text-[blueviolet]' onClick={item.click}
                             >
                                 <i className={`iconfont icon-${item.icon} text-[25px]`} />

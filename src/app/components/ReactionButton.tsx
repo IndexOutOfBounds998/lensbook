@@ -7,7 +7,7 @@ import {
 
 import { Button, message } from 'antd';
 import { useState } from "react";
-import './style/ReactionButton.css'
+import '../style/ReactionButton.css'
 import { useTranslation } from "react-i18next";
 type ReactionButtonProps = {
     publication: ContentPublication;

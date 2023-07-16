@@ -4,10 +4,10 @@ import { useExploreProfiles } from '@lens-protocol/react-web'
 import Link from 'next/link'
 import { formatPicture } from './util/utils'
 import React, {useEffect, useState} from "react";
-import LayoutHeader from './utils/layout/Header'
-import LayoutSider from './utils/layout/Sider'
-import Content from './utils/Home/Content'
-import NoteDetail from "./utils/Home/NoteDetail";
+import LayoutHeader from './pages/layout/Header'
+import LayoutSider from './pages/layout/Sider'
+import Content from './pages/Home/Content'
+import NoteDetail from "./pages/Home/NoteDetail";
 
 export default function Home() {
   let [card, setCard] =  useState('');
@@ -17,7 +17,7 @@ export default function Home() {
   let [showRegister, setShowRegister] =  useState(false);
   let [searchValue, setSearchValue] =  useState('');
 
-  const cardClick = (card, img, item) => {
+  const cardClick = (card: string, img: string, item: string) => {
     setCard(card);
     setImg(img);
     setCardData(item);
@@ -31,7 +31,7 @@ export default function Home() {
 
   return (
       <>
-        <LayoutSider registerClick={registerClick}/>
+        <LayoutSider registerClick={registerClick} titleList={undefined} styleWidth={undefined}/>
         <Content cardClick={cardClick}/>
         {
           showDetail ? <NoteDetail card={card} img={img} item={cardData} setShowDetail={setShowDetail}/> : ''

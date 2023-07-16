@@ -4,7 +4,7 @@ import "./globals.css";
 import { LensProvider, LensConfig, production, appId, development } from "@lens-protocol/react-web";
 import { bindings as wagmiBindings } from "@lens-protocol/wagmi";
 import "@/app/react-i18next/i18n";
-import LayoutHeader from "./utils/layout/Header";
+import LayoutHeader from "./pages/layout/Header";
 import React from "react";
 import { ALCHEMY_KEY, RB_PID } from "@/app/constants/constant"
 
