@@ -56,20 +56,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <WagmiConfig config={wagmiConfig}>
+    <body>
+    <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains} coolMode={true}>
           <LensProvider config={lensConfig}>
-            <body>
               <div className='min-w-[1280px] h-full'>
                 <LayoutHeader />
                 <div className='flex flex-row pt-20 h-full'>
                   {children}
                 </div>
               </div>
-            </body>
           </LensProvider>
         </RainbowKitProvider>
       </WagmiConfig>
+    </body>
     </html>
   );
 }

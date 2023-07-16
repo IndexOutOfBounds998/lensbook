@@ -110,6 +110,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
     }, []);
 
     useEffect(() => {
+        console.log(dataObj.data)
         if (!dataObj.loading) {
             console.log(dataObj.data)
             loadMore();
@@ -137,7 +138,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
     return (
         <>
             <div className='h-[calc(100%-68px)] overflow-auto' onScroll={handleScroll}>
-                <div id='scrollableDiv' className='w-full flex justify-between flex-wrap'>
+                <div ref={cards} id='scrollableDiv' className='w-full flex justify-between flex-wrap'>
                     {cardListRef.current.map((item, index) => (
                         <CardAnt
                             key={index}
