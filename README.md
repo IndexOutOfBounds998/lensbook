@@ -1,34 +1,37 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# LensTrip
 
-## Getting Started
+[![npm version][npm-badge]][npm-url]
+[![npm downloads][downloads-badge]][npm-url]
+[![npm bundle size][size-badge]][npm-url]
+[![Open issues][issues-badge]][issues-url]
+[![TypeScript][typescript-badge]][typescript-url]
+[![semantic-release][semantic-badge]][semantic-url]
 
-First, run the development server:
+[![CI][lint-badge]][lint-url]
+[![CI][tsc-badge]][tsc-url]
+[![CI][build-badge]][build-url]
+[![CI][test-badge]][test-url]
+[![Codecov Coverage][coverage-badge]][coverage-url]
+
+[![CI][deploy-storybook-badge]][deploy-storybook-url]
+[![CI][npm-release-badge]][npm-release-url]
+
+_👀 Easily apply tilt hover effect on React components_
+
+[![](misc/demo.gif)](https://mkosir.github.io/react-parallax-tilt/?path=/story/react-parallax-tilt--glare-effect)
+
+## [Demo 💥](https://mkosir.github.io/react-parallax-tilt)
+
+## Install
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## steps
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- build Social media with lens protocol 📦
+- Establish your own travel protocol
+- Increase advertisers and tourists
+- Increase hotels and airfare
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
