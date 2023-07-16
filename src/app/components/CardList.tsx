@@ -5,7 +5,7 @@ import CardAnt from './CardAnt'
 import { FloatButton, Spin } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 
-import Macy from 'macy';
+// import Macy from 'macy';
 // @ts-ignore
 const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, dataObj }, ref) => {
 
@@ -65,27 +65,15 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
     const macyInfo = () => {
         const columns = cardSizeRef.current;
 
-
-        let macy = Macy({
-            container: '#scrollableDiv', // 图像列表容器id
-            trueOrder: false,
-            waitForImages: false,
-            useOwnImageLoader: false,
-            debug: false,
-
-            //设计间距
-            margin: {
-                x: 20,
-                y: 20
-            },
-
-            //设置列数
-            columns: columns,
+        let elem = document.querySelector('.scrollableDiv');
+        let msnry = new Masonry( elem, {
+            // options
+            itemSelector: '.CardAnt',
+            columnWidth: cardWidth,
         });
-
-        macy.runOnImageLoad(() => {
-            macy.recalculate()
-        }, true)
+        let msnry2 = new Masonry( '.scrollableDiv', {
+            gutter: 20
+        });
 
     }
 
@@ -110,6 +98,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
     }, []);
 
     useEffect(() => {
+        console.log(dataObj.data)
         if (!dataObj.loading) {
             console.log(dataObj.data)
             loadMore();
@@ -137,9 +126,10 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
     return (
         <>
             <div className='h-[calc(100%-68px)] overflow-auto' onScroll={handleScroll}>
-                <div id='scrollableDiv' className='w-full flex justify-between flex-wrap'>
+                <div ref={cards} id='scrollableDiv' className='scrollableDiv w-full flex justify-between flex-wrap'>
                     {cardListRef.current.map((item, index) => (
                         <CardAnt
+                            className='CardAnt'
                             key={index}
                             item={item}
                             index={index}

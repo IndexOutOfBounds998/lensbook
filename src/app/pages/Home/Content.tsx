@@ -1,13 +1,14 @@
 import React, {useEffect, useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { useExplorePublications, PublicationTypes, PublicationMainFocus } from '@lens-protocol/react-web';
+import CardList from "../../components/CardList";
 
-import dynamic from 'next/dynamic';
-
-const CardList = dynamic(import("../../components/CardList"), {
-  ssr: false,
-  loading: () => <p>Loading ...</p>, //异步加载组件前的loading状态
-});
+// import dynamic from 'next/dynamic';
+//
+// const CardList = dynamic(import("../../components/CardList"), {
+//   ssr: true,
+//   loading: () => <p>Loading ...</p>, //异步加载组件前的loading状态
+// });
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -17,7 +18,7 @@ export default function LayoutContent({cardClick}) {
 
     let [categories, setCategory] = useState([]);
 
-    
+
     const { data, loading, hasMore, next } = useExplorePublications({
         limit: 20,
         publicationTypes: [PublicationTypes.Post],

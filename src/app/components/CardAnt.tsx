@@ -85,6 +85,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
         <Card
             ref={card}
             hoverable
+            className='mb-[20px]'
             style={{
                 width: width,
             }}
@@ -121,7 +122,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
                     <div className='cursor-pointer leading-[2px] text-[14px] flex flex-row items-center'>
                         <i
                             className={`iconfont icon-${favouriteStatus ? 'heart-fill text-[#ff2442]' : 'heart'} mr-[5px]`}
-                    
+
                         />
                         <span>{contentItem.favouriteCount}</span>
                     </div>
