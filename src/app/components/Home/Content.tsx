@@ -1,7 +1,7 @@
 import React, {useEffect, useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { useExplorePublications, PublicationTypes, PublicationMainFocus } from '@lens-protocol/react-web';
-import CardList from "../../components/CardList";
+import CardList from "../CardList";
 
 import dynamic from 'next/dynamic';
 

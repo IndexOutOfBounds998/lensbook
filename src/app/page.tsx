@@ -4,10 +4,10 @@ import { useExploreProfiles } from '@lens-protocol/react-web'
 import Link from 'next/link'
 import { formatPicture } from './util/utils'
 import React, {useEffect, useState} from "react";
-import LayoutHeader from './pages/layout/Header'
-import LayoutSider from './pages/layout/Sider'
-import Content from './pages/Home/Content'
-import NoteDetail from "./pages/Home/NoteDetail";
+import LayoutHeader from './components/layout/Header'
+import LayoutSider from './components/layout/Sider'
+import Content from './components/Home/Content'
+import NoteDetail from "./components/Home/NoteDetail";
 
 export default function Home() {
   let [card, setCard] =  useState('');
