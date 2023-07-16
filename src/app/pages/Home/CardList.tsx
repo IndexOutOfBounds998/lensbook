@@ -25,7 +25,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
     let [isMax, setIsMax, isMaxRef] = useState(false);
 
     const cards = useRef({
-        offsetWidth:undefined
+        offsetWidth: undefined
     });
 
     React.useImperativeHandle(ref, () => ({
@@ -54,32 +54,40 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
         };
         if (cardListRef.current.length === Object.keys(imgObj).length) {
             setImgSize(imgObj)
-            setTimeout(() => (macyInfo()), 500)
+            if (typeof window !== 'undefined') {
+                setTimeout(() => (macyInfo()), 500)
+            }
         }
-        macyInfo()
+        if (typeof window !== 'undefined') {
+            macyInfo()
+        }
     }
 
     const macyInfo = () => {
         const columns = cardSizeRef.current;
-        let macy = Macy({
-            container: '#scrollableDiv', // 图像列表容器id
-            trueOrder: false,
-            waitForImages: false,
-            useOwnImageLoader: false,
-            debug: false,
+        if (typeof window !== 'undefined') {
+            
+            let macy = Macy({
+                container: '#scrollableDiv', // 图像列表容器id
+                trueOrder: false,
+                waitForImages: false,
+                useOwnImageLoader: false,
+                debug: false,
 
-            //设计间距
-            margin: {
-                x: 20,
-                y: 20
-            },
+                //设计间距
+                margin: {
+                    x: 20,
+                    y: 20
+                },
 
-            //设置列数
-            columns: columns,
-        });
-        macy.runOnImageLoad(() => {
-            macy.recalculate()
-        }, true)
+                //设置列数
+                columns: columns,
+            });
+
+            macy.runOnImageLoad(() => {
+                macy.recalculate()
+            }, true)
+        }
     }
 
     const loadMore = async () => {
@@ -92,7 +100,9 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
                 setIsMax(true)
             }
             setTimeout(() => (setIsLoading(false)), 500)
-            macyInfo()
+            if (typeof window !== 'undefined') {
+                macyInfo()
+            }
         }
     }
 
@@ -127,7 +137,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
 
     return (
         <>
-            <div   className='h-[calc(100%-68px)] overflow-auto' onScroll={handleScroll}>
+            <div className='h-[calc(100%-68px)] overflow-auto' onScroll={handleScroll}>
                 <div id='scrollableDiv' className='w-full flex justify-between flex-wrap'>
                     {cardListRef.current.map((item, index) => (
                         <CardAnt
@@ -145,11 +155,11 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
                         className='w-full flex items-center justify-center h-[50px] mb-[20px]'
                         style={
                             isLoadingRef.current ?
-                                {display: 'flex'} :
-                                {display: 'none', height: '50px'}
+                                { display: 'flex' } :
+                                { display: 'none', height: '50px' }
                         }
                     >
-                        <Spin tip="Loading" size="large"/>
+                        <Spin tip="Loading" size="large" />
                         <span className='text-[13px] ml-[15px]'>加载中</span>
                     </div>
                 }

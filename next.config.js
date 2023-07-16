@@ -4,10 +4,7 @@ const nextConfig = {
     typescript: {
         ignoreBuildErrors: true,
         ignoreDuringBuilds: true,
-    },
-    experimental: {
-        appDir: false,
-    },
+    }
 }
 
 module.exports = nextConfig
