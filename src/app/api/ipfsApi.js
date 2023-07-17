@@ -13,5 +13,8 @@ instance.interceptors.response.use(
   (err) => Promise.reject(err)
 );
 
+export const upLoadImg = (data, config) =>
+    instance.post("/pinning/pinFileToIPFS", data, config);
+
 export const upJsonContent = (data, config) =>
   instance.post("/pinning/pinJSONToIPFS", data, config);

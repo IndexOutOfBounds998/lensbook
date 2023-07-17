@@ -13,9 +13,9 @@ import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 import {
     useComments,
     useActiveProfile,
-    
+
     ReactionType,
-    
+
     usePublication,
 
 } from '@lens-protocol/react-web';
@@ -169,6 +169,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         // typedDataResult is a Result object
         const data = typedDataResult.unwrap();
         // sign with the wallet
+        debugger
         const signTypedData = await signTypedDataAsync({
             primaryType: 'CommentWithSig',
             domain: (data.typedData.domain),
@@ -191,7 +192,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
             );
         }
 
-      
+
         // const typedDataResult =await lensClient.publication.createCommentTypedData({
         //     profileId: profile && profile.id,
         //     publicationId: publication && publication.id,

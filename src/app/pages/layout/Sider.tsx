@@ -1,3 +1,4 @@
+import Link from "next/link";
 
 export default function LayoutSider({ titleList, styleWidth, registerClick }) {
 
@@ -8,8 +9,8 @@ export default function LayoutSider({ titleList, styleWidth, registerClick }) {
         </>
     );
     titleList = titleList || [
-        { text: '发现', icon: 'icon-home', router: '/Home', needLogin: false },
-        { text: '发布', icon: 'icon-add', router: '/Publish/Index', needLogin: true },
+        { text: '发现', icon: 'icon-home', router: '/', needLogin: false },
+        { text: '发布', icon: 'icon-add', router: '/publish', needLogin: true },
         { text: '我', icon: 'icon-user', router: '', needLogin: false },
     ];
     return (
@@ -17,13 +18,12 @@ export default function LayoutSider({ titleList, styleWidth, registerClick }) {
             <ul>
                 {titleList.map((item, index) => (
                     <li key={index}>
-                        <div
-                            className={
-                                `text-[16px] px-4 py-1 my-2 cursor-pointer flex flex-row items-center rounded-3xl hover:bg-zinc-100`
-                            }
+                        <Link
+                            href={item.router}
+                            className='text-[16px] px-4 py-1 my-2 cursor-pointer flex flex-row items-center rounded-3xl hover:bg-zinc-100'
                         >
                             {item.component ? item.component(item) : icon(item)}
-                        </div>
+                        </Link>
                     </li>
                 ))}
             </ul>
