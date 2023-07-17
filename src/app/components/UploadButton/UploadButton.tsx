@@ -1,5 +1,5 @@
 import { PlusOutlined, LoadingOutlined  } from '@ant-design/icons';
-import { upLoadImg } from '../../api/ipfsApi'
+import { useUpIpfs } from "../../hooks/useUpIpfs";
 import { Upload, message } from 'antd';
 import { useState } from 'react';
 import { IPFS_API_KEY } from "../../constants/constant";
@@ -21,7 +21,7 @@ export default function UploadButton({setIpfsHash, setSize}) {
         };
         const formData = new FormData();
         formData.append('file', file);
-        const res = await upLoadImg(formData, config);
+        const res = await useUpIpfs({type: 'upLoadImg', data: formData});
         if(res) {
             const url = `https://ipfs.io/ipfs/${res.IpfsHash}`;
             setIpfsHash(res.IpfsHash);

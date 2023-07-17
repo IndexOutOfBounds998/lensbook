@@ -5,14 +5,13 @@ import './ReactQuill.css';
 import UploadButton from "../../components/UploadButton/UploadButton";
 import { Radio, Input, Button, message, Modal, Switch } from 'antd';
 import React, { useEffect, useRef, useState } from "react";
-import { upJsonContent } from "../../api/ipfsApi";
-import { IPFS_API_KEY } from "../../constants/constant";
 import { useTranslation } from "react-i18next";
-import {getAuthenticatedClient} from "../../shared/getAuthenticatedClient";
-import {useSignTypedData} from "wagmi";
-import {useActiveProfile, useCreatePost} from '@lens-protocol/react-web';
 import {uuid} from "@walletconnect/legacy-utils";
-export default function Strategy() {
+import { usePost } from '../../hooks/usePost'
+import i18n from "i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+
+export default function Strategy({type, data}: useUpData) {
     const [sumbitButtonLoading, setSumbitButtonLoading] = useState(false);
 
     const [messageApi, contextHolder] = message.useMessage();
@@ -118,74 +117,16 @@ export default function Strategy() {
         setIsModalOpen(true);
     };
 
-    const upIpfs = async (data) => {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${IPFS_API_KEY}`
-            }
-        };
-        const res = await upJsonContent(data, config)
-        if (res && res.data) {
-            return res.data.IpfsHash;
-        }
-        return false;
-    }
-
-    const { signTypedDataAsync, isLoading: typedDataLoading } = useSignTypedData();
-    const { data: profile, error, loading: profileLoading } = useActiveProfile();
+    const { submit: post } = usePost();
     const onSubmit = async () => {
         const obj = {
-            metadata_id: uuid(),
-            appId: "lenstrip",
             title: titleRef.current.input.value,
             image: "ipfs://" + ipfsHash,
             content: quillRef.current.value,
-            attributes: profile.attributes,
             state: stateValue,
             description: quillRef.current.value,
-            locale: "en-us",
-            mainContentFocus: "IMAGE",
-            name: `Post by ${profile.handle}`,
         };
-        debugger
-        const contentURI = upIpfs(obj);
-        if (contentURI) {
-            const lensClient = await getAuthenticatedClient();
-            const typedDataResult = await lensClient.publication.createPostTypedData({
-                profileId: profile.id,
-                contentURI: "ipfs://" + contentURI, // or arweave
-                collectModule: {
-                    revertCollectModule: true, // collect disabled
-                },
-                referenceModule: {
-                    followerOnlyReferenceModule: false, // anybody can comment or mirror
-                },
-            });
-            // typedDataResult is a Result object
-            const data = typedDataResult.unwrap();
-            // sign with the wallet
-            const signTypedData = await signTypedDataAsync({
-                primaryType: 'PostWithSig',
-                domain: (data.typedData.domain),
-                message: data.typedData.value,
-                types: (data.typedData.types),
-                value: (data.typedData.value)
-            });
-            // broadcast
-            const broadcastResult = await lensClient.transaction.broadcast({
-                id: data.id,
-                signature: signTypedData,
-            });
-
-            // broadcastResult is a Result object
-            const broadcastResultValue = broadcastResult.unwrap();
-
-            if (broadcastResultValue.__typename=="RelayerResult") {
-                console.log(
-                    `Transaction was successfuly broadcasted with txId ${broadcastResultValue.txId}`
-                );
-            }
-        }
+        post(obj);
     };
 
     return (
