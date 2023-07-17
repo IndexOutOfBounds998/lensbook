@@ -17,6 +17,8 @@ type ReactionButtonProps = {
 
 export default function ReactionButton({ publication, profileId, reactionType }: ReactionButtonProps) {
 
+    if (!publication) return ''
+
     const { t } = useTranslation();
 
     const { addReaction, removeReaction, hasReaction, isPending } = useReaction({

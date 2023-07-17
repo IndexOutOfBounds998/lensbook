@@ -7,7 +7,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { formatNickName, formatDate } from "../../utils/FormatContent";
 import { useTranslation } from "react-i18next";
 import { formatPicture } from '@/app/utils/utils';
-import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 import {
     useComments,
     useActiveProfile,
@@ -20,7 +19,6 @@ import CollectButton from '@/app/components/CollectButton';
 import ReactionButton from '@/app/components/ReactionButton';
 import { useSignTypedData } from 'wagmi';
 import { useSendComment } from '../../hooks/useSendComment'
-import { useGetPublication } from '@/app/hooks/useGetPublication';
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
@@ -51,6 +49,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     let [bgSize, setBgSize] = useState(0);
     let [contentSize, setContentSize] = useState(0);
     let [commentPage, setCommentPage] = useState([]);
+    let [detailStyle, setDetailStyle] = useState({});
 
     const detail = useRef();
     const imgBox = useRef();
@@ -103,22 +102,25 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         if (!img) {
             return
         }
-        if (detail.current && imgBox.current) {
-            const detailWidth = window.innerWidth * 0.7;
-            const maxWidth = detailWidth * 0.6;
-            const imgScale = detail.current.clientHeight / img.height;
-            const imgWidth = img.width * imgScale > maxWidth ? maxWidth : img.width * imgScale;
-            setBgSize(imgWidth)
-            const cardWidth = card.current.offsetWidth;
-            const scale = cardWidth / imgWidth;
-            const client = card.current.getBoundingClientRect();
-            detail.current.style.border = 'none';
-            detail.current.style.boxShadow = 'none';
-            detail.current.style.transform = `translate(${client.x}px,${client.y - 32}px) scale(${scale})`;
-            detail.current.style.transformOrigin = 'left top';
-            imgBox.current.style.backgroundPosition = '';
-        }
-
+        const detailWidth = window.innerWidth * 0.7;
+        const maxWidth = detailWidth * 0.6;
+        const imgScale = (window.innerHeight - 64) / img.height;
+        const imgWidth = img.width * imgScale > maxWidth ? maxWidth : img.width * imgScale;
+        setBgSize(imgWidth)
+        const cardWidth = card.current.offsetWidth;
+        const scale = cardWidth / imgWidth;
+        const client = card.current.getBoundingClientRect();
+        setDetailStyle({
+            border: 'none',
+            boxShadow: 'none',
+            transform: `translate(${client.x}px,${client.y - 32}px) scale(${scale})`,
+            transformOrigin: 'left top',
+        })
+        detail.current.style.border = 'none';
+        detail.current.style.boxShadow = 'none';
+        detail.current.style.transform = `translate(${client.x}px,${client.y - 32}px) scale(${scale})`;
+        detail.current.style.transformOrigin = 'left top';
+        if (imgBox.current) imgBox.current.style.backgroundPosition = '';
     }
 
     const scaleUp = () => {
@@ -129,6 +131,12 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
             detail.current.style.boxShadow = '0 0 100px rgba(0,0,0,.1)';
             detail.current.style.transition = 'all 0.5s ease';
             detail.current.style.transform = `translate(${detailWidth}px,0) scale(1)`;
+            setDetailStyle({
+                border: '1px solid #00000014',
+                boxShadow: '0 0 100px rgba(0,0,0,.1)',
+                transition: 'all 0.5s ease',
+                transform: `translate(${detailWidth}px,0) scale(1)`,
+            })
             imgBox.current.style.backgroundPosition = '50%';
         }
 
@@ -164,10 +172,9 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         { icon: isCollectionStatus ? 'star-fill' : 'star', text: collectionCount, color: '#ec4899', onClick: clickCollection }
     ];
 
-    if (publication_loading) {
-        return <Skeleton />;
-    }
-
+    // if (publication_loading) {
+    //     return <Skeleton />;
+    // }
 
     return (
         <>
@@ -203,7 +210,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                             ref={imgBox}
                             className='bg-no-repeat bg-contain h-full'
                             style={{
-                                backgroundImage: `url(${img && img.src})`,
+                                backgroundImage: `url(${img.src})`,
                                 width: `${bgSize}px`
                             }}
                         >
