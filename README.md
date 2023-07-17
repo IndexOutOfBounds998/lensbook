@@ -4,7 +4,7 @@ _👀 LensTrip is a decentralized and permissionless social media app built with
 
 [![](misc/demo.gif)](https://mkosir.github.io/react-parallax-tilt/?path=/story/react-parallax-tilt--glare-effect)
 
-## [Demo 💥](https://lenstrip.vercel.app/)
+## [Demo 💥](https://testnet.0xtrip.xyz/)
 
 ## Install
 
