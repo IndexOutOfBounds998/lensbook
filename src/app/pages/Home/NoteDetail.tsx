@@ -72,17 +72,17 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     );
 
     useEffect(() => {
-        if (flag) {
+        if (flag || publication) {
             scaleDown();
         }
-    }, []);
+    }, [publication]);
 
     useEffect(() => {
         setCommentPage(comments || [])
     }, [comments]);
 
     useEffect(() => {
-        if (card && flag) {
+        if ((card && flag) || publication) {
             flag = false;
             setShow(false)
             setTimeout(() => {
@@ -92,14 +92,11 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                 }
             }, 100)
         }
-    }, [card]);
-
-    useEffect(() => {
-        console.log(show)
-    }, [show])
+    }, [card, publication]);
 
     const scaleDown = () => {
-        if (!img) {
+
+        if (!img || !publication) {
             return
         }
         const detailWidth = window.innerWidth * 0.7;
@@ -156,7 +153,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const { signTypedDataAsync, isLoading: typedDataLoading } = useSignTypedData();
 
     //发布评论
-    const { submit: send } = useSendComment({publication: publication});
+    const { submit: send } = useSendComment({ publication: publication });
     const sendComment = async () => {
         send(commentRef.current.input.value);
     }
@@ -171,6 +168,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         { icon: isFavouriteStatus ? 'heart-fill' : 'heart', text: favouriteCount, color: '#ff2442', onClick: clickLike },
         { icon: isCollectionStatus ? 'star-fill' : 'star', text: collectionCount, color: '#ec4899', onClick: clickCollection }
     ];
+
 
     if (publication_loading) {
         return <Skeleton />;
@@ -187,9 +185,9 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                     transition: 'all 0.5s ease'
                 }}
                 onClick={() => {
-                    setShow(true);
                     scaleDown();
-                    setTimeout(() => { setShowDetail(false) }, 500)
+                    setShow(true);
+                    setTimeout(() => { setShowDetail(false) }, 10)
                 }}
             >
                 <div

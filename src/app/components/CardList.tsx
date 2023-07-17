@@ -53,9 +53,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
         };
         if (cardListRef.current.length === Object.keys(imgObj).length) {
             setImgSize(imgObj)
-
             setTimeout(() => (macyInfo()), 500)
-
         }
 
         macyInfo()
