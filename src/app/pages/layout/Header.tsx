@@ -8,11 +8,11 @@ import Search from "./Search";
 import { useActiveProfile } from '@lens-protocol/react-web';
 import { useActiveWallet } from '@lens-protocol/react-web';
 import { formatPicture } from "@/app/utils/utils";
-
+import RegisterButton from "@/app/components/RegisterButton";
 export default function Header({ }) {
 
     const { data: wallet, loading } = useActiveWallet();
-    const { data, error, loadingProfile } = useActiveProfile();
+    const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
     const titleList = [
         { text: '业务合作', src: '' },
@@ -20,7 +20,12 @@ export default function Header({ }) {
         { text: '关于我们', src: '' },
     ];
     const { t } = useTranslation();
-      
+
+
+    // if(error){
+    //     return  <LoginButton />;
+    // }
+
     return (
         <header className='w-full px-10 fixed bg-white top-0 min-w-[1250px] z-50'>
             <div className='items-center flex justify-between'>
@@ -37,14 +42,7 @@ export default function Header({ }) {
                         </span>
                     ))}
                     {wallet ?
-                        <Popover content={ProfileSetting} title="">
-                            <div className='ml-[20px] flex cursor-pointer items-center'>
-                                <div className='w-[32px] rounded-3xl overflow-hidden'>
-                                    <img className='w-full' src={data && formatPicture(data.picture)}/>
-                                </div>
-                                <i className='iconfont icon-icon-down text-[20px] mr-3' />
-                            </div>
-                        </Popover> : <LoginButton></LoginButton>
+                        profile ? <ProfileSetting /> : <RegisterButton /> : <LoginButton />
                     }
                 </div>
             </div>

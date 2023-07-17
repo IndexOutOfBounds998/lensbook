@@ -36,5 +36,6 @@
   "followButton":"follow",
   "unfollowButton":"unfollow",
   "collectSuccess":"collect success",
-  "unlike":"unlike"
+  "unlike":"unlike",
+  "register":"register"
 }
