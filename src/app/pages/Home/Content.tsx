@@ -25,7 +25,7 @@ export default function LayoutContent({ cardClick }) {
             timestamp: 1,
             offset: 0,
             filter: JSON.stringify({
-                mainContentFocus: ['IMAGE',"VIDEO"]
+                mainContentFocus: [PublicationMainFocus.Image, PublicationMainFocus.Video]
             })
         }),
         sortCriteria: PublicationSortCriteria.Latest,
@@ -132,7 +132,7 @@ export default function LayoutContent({ cardClick }) {
             </Tab.Group>
             <CardList
                 cardClick={cardClick}
-                dataObj={{ data, loading, hasMore, next,reset }}
+                dataObj={{ data, loading, hasMore, next, reset }}
             >
             </CardList>
         </div>
