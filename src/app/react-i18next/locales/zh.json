@@ -37,5 +37,6 @@
   "unfollowButton":"取消关注",
   "collectSuccess":"成功收藏",
   "unlike":"不喜欢",
-  "register":"注册"
+  "register":"注册",
+  "registerLoading":"注册中..."
 }
