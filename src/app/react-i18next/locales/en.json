@@ -37,5 +37,6 @@
   "unfollowButton":"unfollow",
   "collectSuccess":"collect success",
   "unlike":"unlike",
-  "register":"register"
+  "register":"register",
+  "registerLoading":"Register in progress.."
 }

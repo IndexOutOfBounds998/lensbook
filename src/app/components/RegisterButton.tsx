@@ -7,10 +7,7 @@ import { Button, Modal, Form, Input, message, notification, Popover } from 'antd
 import { useEffect, useState } from 'react';
 
 import LoginButton from './LoginButton';
-
-import ProfileSetting from './ProfileSetting';
-
-import { formatPicture } from '../utils/utils';
+ 
 import { useTranslation } from "react-i18next";
 export default function RegisterButton() {
     const { t } = useTranslation();
@@ -47,7 +44,7 @@ export default function RegisterButton() {
 
         messageApi.open({
             type: 'loading',
-            content: 'Register in progress..',
+            content: t('registerLoading'),
             duration: 0,
         });
 
@@ -68,7 +65,7 @@ export default function RegisterButton() {
             } else {
                 api.success({
                     message: 'success',
-                    description: '注册成功',
+                    description: t('regSuccess'),
                     icon: <SmileOutlined style={{ color: '#108ee9' }} />,
                 });
                 handleOk();
