@@ -1,23 +1,15 @@
 "use client";
-import ReactQuill, { Quill } from 'react-quill';
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import './ReactQuill.css';
+import '../../style/ReactQuill.css';
 import UploadButton from "../../components/UploadButton/UploadButton";
-import { Radio, Input, Button, message, Modal, Switch } from 'antd';
+import { Radio, Input, Button } from 'antd';
 import React, { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import {uuid} from "@walletconnect/legacy-utils";
+
 import { usePost } from '../../hooks/usePost'
-import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-
-export default function Strategy({type, data}: useUpData) {
+// @ts-ignore
+export default function Strategy() {
     const [sumbitButtonLoading, setSumbitButtonLoading] = useState(false);
-
-    const [messageApi, contextHolder] = message.useMessage();
-
-    const { t } = useTranslation();
-
 
     const btnClass =
         "w-[80px] inline-block mr-[80px] text-center font-bold text-[#fff] rounded p-2 cursor-pointer";
@@ -61,8 +53,8 @@ export default function Strategy({type, data}: useUpData) {
 
     let [ipfsHash, setIpfsHash] = useState('');
 
-    let quillRef = useRef();
-    let titleRef = useRef();
+    let quillRef = useRef(undefined);
+    let titleRef = useRef(undefined);
 
     const loadCategory = async () => {
         setRadioGroup([
@@ -119,19 +111,21 @@ export default function Strategy({type, data}: useUpData) {
 
     const { submit: post } = usePost();
     const onSubmit = async () => {
-        const obj = {
-            title: titleRef.current.input.value,
-            image: "ipfs://" + ipfsHash,
-            content: quillRef.current.value,
-            state: stateValue,
-            description: quillRef.current.value,
-        };
-        post(obj);
+        if (titleRef.current && quillRef.current) {
+            const obj = {
+                title: titleRef.current.input.value,
+                image: "ipfs://" + ipfsHash,
+                content: quillRef.current.value,
+                state: stateValue,
+                description: quillRef.current.value,
+            };
+            post(obj);
+        }
+
     };
 
     return (
         <>
-            {contextHolder}
             <div className="w-full h-full bg-white overflow-y-scroll p-[30px] pl-[30px]">
                 <div className="text-[20px] flex items-center">
                     <div className="w-[10px] h-[25px] inline-block bg-[blueviolet] rounded-3xl mr-1" />

@@ -21,8 +21,6 @@ type CollectButtonProps = {
 
 export default function CollectButton({ collector, publication }: CollectButtonProps) {
 
-     if (!publication) return ''
-
     const [messageApi, contextHolder] = message.useMessage();
 
     const { t } = useTranslation();

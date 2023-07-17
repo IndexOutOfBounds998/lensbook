@@ -63,18 +63,19 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
     }
 
     const macyInfo = () => {
-        const columns = cardSizeRef.current;
-
-        let elem = document.querySelector('.scrollableDiv');
-        let msnry = new Masonry( elem, {
-            // options
-            itemSelector: '.CardAnt',
-            columnWidth: cardWidth,
-        });
-        let msnry2 = new Masonry( '.scrollableDiv', {
-            gutter: 20
-        });
-
+        if (typeof window !== 'undefined') {
+            const columns = cardSizeRef.current;
+    
+            let elem = document.querySelector('.scrollableDiv');
+            let msnry = new Masonry( elem, {
+                // options
+                itemSelector: '.CardAnt',
+                columnWidth: cardWidth,
+            });
+            let msnry2 = new Masonry( '.scrollableDiv', {
+                gutter: 20
+            });
+        }
     }
 
     const loadMore = async () => {

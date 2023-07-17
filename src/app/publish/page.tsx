@@ -1,5 +1,4 @@
 "use client";
-import LayoutSider from "../utils/layout/Sider";
 import React from "react";
 import Link from "next/link";
 
@@ -10,7 +9,7 @@ export default function Page() {
         <>
             <div className="w-full h-full bg-white flex items-center justify-evenly bg-[#eef1f8]'">
                 <Link
-                    href="/publish/strategy"
+                    href="/publish/Strategy"
                     className={className}
                 >
                     <p className='text-[25px] mb-[20px] text-center'>旅游攻略</p>

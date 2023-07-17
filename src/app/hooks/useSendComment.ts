@@ -2,17 +2,19 @@ import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { useUpIpfs } from "./useUpIpfs";
 import { getAuthenticatedClient } from "../shared/getAuthenticatedClient";
-import {useSignTypedData} from "wagmi";
+import { useSignTypedData } from "wagmi";
 import { useActiveProfile } from '@lens-protocol/react-web';
-import {uuid} from "@walletconnect/legacy-utils";
+import { uuid } from "@walletconnect/legacy-utils";
 type commentData = {
     publication: any;
 };
 
-export function useSendComment({publication}: commentData) {
-    const {data: profile, error, loading: profileLoading} = useActiveProfile();
+export function useSendComment({ publication }: commentData) {
+    const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
-    const {signTypedDataAsync, isLoading: typedDataLoading} = useSignTypedData();
+    const { signTypedDataAsync, isLoading: typedDataLoading } = useSignTypedData();
+
+    const { execute, loading, url } = useUpIpfs({ type: 'upJsonContent' });
 
     const submit = async (commentValue) => {
 
@@ -32,14 +34,14 @@ export function useSendComment({publication}: commentData) {
             tags: null,
             name: `Comment by ${profile.handle}`,
         }
-        const contentURI = await useUpIpfs({type: 'upJsonContent', data: obj});
-        if (contentURI) {
+        await execute(obj);
+        if (url) {
             // lensClient.explore.publications()
             const lensClient = await getAuthenticatedClient();
             const typedDataResult = await lensClient.publication.createCommentTypedData({
                 profileId: profile.id,
                 publicationId: publication.id,
-                contentURI: contentURI, // or arweave
+                contentURI: url, // or arweave
                 collectModule: {
                     revertCollectModule: true, // collect disabled
                 },
@@ -74,5 +76,5 @@ export function useSendComment({publication}: commentData) {
         }
     }
 
-    return {submit}
+    return { submit }
 }

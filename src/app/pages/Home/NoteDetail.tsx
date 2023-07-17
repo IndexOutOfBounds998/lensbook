@@ -172,9 +172,9 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         { icon: isCollectionStatus ? 'star-fill' : 'star', text: collectionCount, color: '#ec4899', onClick: clickCollection }
     ];
 
-    // if (publication_loading) {
-    //     return <Skeleton />;
-    // }
+    if (publication_loading) {
+        return <Skeleton />;
+    }
 
     return (
         <>

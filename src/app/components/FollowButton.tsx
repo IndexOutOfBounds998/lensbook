@@ -12,7 +12,7 @@ type FollowButtonProps = {
 };
 
 export default function FollowButton({ followee, follower }: FollowButtonProps) {
-    if (!followee || !follower) return '';
+    
     const [messageApi, contextHolder] = message.useMessage();
     const { t } = useTranslation();
     const {

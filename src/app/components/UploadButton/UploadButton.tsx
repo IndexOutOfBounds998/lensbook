@@ -1,34 +1,32 @@
-import { PlusOutlined, LoadingOutlined  } from '@ant-design/icons';
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useUpIpfs } from "../../hooks/useUpIpfs";
 import { Upload, message } from 'antd';
 import { useState } from 'react';
 import { IPFS_API_KEY } from "../../constants/constant";
 
-export default function UploadButton({setIpfsHash, setSize}) {
+export default function UploadButton({ setIpfsHash }) {
 
     const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState();
+    const [imageUrl, setImageUrl] = useState('');
+
+    const { execute, loading: ipfsLoading, url } = useUpIpfs({ type: 'upLoadImg' });
+
     const beforeUpload = async (file) => {
         setLoading(true);
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
             message.error('You can only upload JPG/PNG file!');
         }
-        const config = {
-            headers:{
-                Authorization: `Bearer ${IPFS_API_KEY}`
-            }
-        };
         const formData = new FormData();
         formData.append('file', file);
-        const res = await useUpIpfs({type: 'upLoadImg', data: formData});
-        if(res) {
-            const url = `https://ipfs.io/ipfs/${res.IpfsHash}`;
-            setIpfsHash(res.IpfsHash);
+        await execute(formData);
+        if (url) {
+            const ipfsUrl = `https://ipfs.io/ipfs/${url}`;
+            setIpfsHash(url);
             let img = new Image();
             img.src = url;
             img.onload = () => {
-                setImageUrl(url);
+                setImageUrl(ipfsUrl);
                 // if (setSize) setSize(img)
             }
             setLoading(false);
