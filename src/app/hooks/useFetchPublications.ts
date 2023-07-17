@@ -68,6 +68,7 @@ export function useFetchPublications({
     setLoading(false);
     setData(prevData => [...prevData, ...res.items]);
     setNextCursor(res.pageInfo.next);
+    setHasMore(res.items.length > 0);
   };
 
   const reset = async () => {
