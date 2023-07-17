@@ -31,9 +31,7 @@ export default function LoginButton() {
 
   const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
-  if (profile) {
-    return <ProfileSetting></ProfileSetting>
-  }
+ 
   useEffect(() => {
 
     if (chain) {
@@ -45,6 +43,11 @@ export default function LoginButton() {
     }
 
   }, [chain, switchNetwork])
+
+  if (profile) {
+    return <ProfileSetting></ProfileSetting>
+  }
+  
   const onLoginClick = async () => {
     if (isConnected) {
       await disconnectAsync();
