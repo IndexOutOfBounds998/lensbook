@@ -1,4 +1,4 @@
-import { useWalletLogin } from '@lens-protocol/react-web';
+import { useWalletLogin, useActiveProfile } from '@lens-protocol/react-web';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { Button } from 'antd';
@@ -10,6 +10,8 @@ import {
   polygonMumbai
 } from 'wagmi/chains';
 import { useEffect } from 'react';
+import ProfileSetting from './ProfileSetting';
+
 export default function LoginButton() {
   const { chain } = useNetwork()
 
@@ -27,6 +29,9 @@ export default function LoginButton() {
     connector: new InjectedConnector(),
   });
 
+  const { data: profile, error, loading: profileLoading } = useActiveProfile();
+
+ 
   useEffect(() => {
 
     if (chain) {
@@ -38,6 +43,11 @@ export default function LoginButton() {
     }
 
   }, [chain, switchNetwork])
+
+  if (profile) {
+    return <ProfileSetting></ProfileSetting>
+  }
+  
   const onLoginClick = async () => {
     if (isConnected) {
       await disconnectAsync();
@@ -45,18 +55,21 @@ export default function LoginButton() {
 
     const { connector } = await connectAsync();
 
-    if (connector instanceof InjectedConnector) {
-      const walletClient = await connector.getWalletClient();
-      await login({
-        address: walletClient.account.address,
-      });
-    }
+    const walletClient = await connector.getWalletClient();
+    await login({
+      address: walletClient.account.address,
+    });
   };
 
   return (
     <div>
-      {!isConnected ? <ConnectButton /> :
-        <Button loading={isLoginPending} disabled={isLoginPending} onClick={onLoginClick}>{t('login')}</Button>}
+
+      {profile ? <ProfileSetting></ProfileSetting> : !isConnected ? <ConnectButton /> :
+
+        <Button loading={isLoginPending} disabled={isLoginPending} onClick={onLoginClick}>{t('login')}</Button>
+      }
+
+
 
     </div>
   );

@@ -28,7 +28,6 @@ import {
     }
   
     if (profile === null || error) {
-      // TODO guide user to create profile
       return null;
     }
   
