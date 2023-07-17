@@ -21,6 +21,7 @@ import {
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { MAIN_NETWORK } from "@/app/constants/constant";
+import { Analytics } from '@vercel/analytics/react';
 const { chains, publicClient } = configureChains(
   [MAIN_NETWORK ? polygon : polygonMumbai],
   [
@@ -67,6 +68,7 @@ export default function RootLayout({
                 <LayoutHeader />
                 <div className='flex flex-row pt-20 h-full'>
                   {children}
+                  <Analytics />
                 </div>
               </div>
           </LensProvider>
