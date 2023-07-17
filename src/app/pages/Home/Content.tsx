@@ -1,8 +1,9 @@
-import React, {useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { useExplorePublications, PublicationTypes, PublicationMainFocus } from '@lens-protocol/react-web';
 import CardList from "../../components/CardList";
-
+import { PublicationSortCriteria } from '@lens-protocol/client';
+import { useFetchPublications } from '@/app/hooks/useFetchPublications';
 // import dynamic from 'next/dynamic';
 //
 // const CardList = dynamic(import("../../components/CardList"), {
@@ -14,18 +15,36 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function LayoutContent({cardClick}) {
+export default function LayoutContent({ cardClick }) {
 
     let [categories, setCategory] = useState([]);
 
 
-    const { data, loading, hasMore, next } = useExplorePublications({
+    const explorePublicationRequest = {
+        cursor: JSON.stringify({
+            timestamp: 1,
+            offset: 0,
+            filter: JSON.stringify({
+                mainContentFocus: [PublicationMainFocus.Image, PublicationMainFocus.Video]
+            })
+        }),
+        sortCriteria: PublicationSortCriteria.Latest,
         limit: 20,
         publicationTypes: [PublicationTypes.Post],
-        metadataFilter: {
-            restrictPublicationMainFocusTo: [PublicationMainFocus.Image]
-        }
+        sources: ['lenster', 'lenstrip']
+    };
+
+    const { data, loading, hasMore, next, reset } = useFetchPublications({
+        explorePublicationRequest
     });
+
+    // const { data, loading, hasMore, next } = useExplorePublications({
+    //     limit: 20,
+    //     publicationTypes: [PublicationTypes.Post],
+    //     metadataFilter: {
+    //         restrictPublicationMainFocusTo: [PublicationMainFocus.Image]
+    //     }
+    // });
 
     const tabCheck = (index) => {
 
@@ -113,7 +132,7 @@ export default function LayoutContent({cardClick}) {
             </Tab.Group>
             <CardList
                 cardClick={cardClick}
-                dataObj={{ data, loading, hasMore, next }}
+                dataObj={{ data, loading, hasMore, next, reset }}
             >
             </CardList>
         </div>

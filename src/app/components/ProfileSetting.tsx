@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useWalletLogout, useActiveProfile } from '@lens-protocol/react-web';
 import { formatNickName, formatPicture } from "@/app/utils/utils";
-import { Skeleton } from 'antd';
+import { Skeleton, Popover } from 'antd';
 import { useNetwork } from 'wagmi'
 import {
     polygonMumbai
@@ -11,7 +11,7 @@ import { useEffect } from "react";
 export default function ProfileSetting() {
     const { execute: logout, isPending } = useWalletLogout();
 
-    const { data, error, loading } = useActiveProfile();
+    const { data:profile, error, loading } = useActiveProfile();
 
     const { chain, chains } = useNetwork()
 
@@ -27,10 +27,10 @@ export default function ProfileSetting() {
     const { t } = useTranslation();
 
     const list = [
-        { value: data && data.stats.totalFollowing, title: t('follow') },
-        { value: data && data.stats.totalFollowers, title: t('fans') },
-        { value: data && data.stats.totalPosts, title: t('post') },
-        { value: data && data.stats.totalCollects, title: t('collect') },
+        { value: profile && profile.stats.totalFollowing, title: t('follow') },
+        { value: profile && profile.stats.totalFollowers, title: t('fans') },
+        { value: profile && profile.stats.totalPosts, title: t('post') },
+        { value: profile && profile.stats.totalCollects, title: t('collect') },
     ]
 
     const exit = () => {
@@ -43,19 +43,17 @@ export default function ProfileSetting() {
         { icon: 'tuichu-x', title: t('exit'), router: '', click: exit },
     ]
 
-    return (
-
-
-        <div className='p-[15px] w-[300px]'>
+    const content = () => {
+       return <div className='p-[15px] w-[300px]'>
             <Skeleton loading={loading} avatar paragraph={{ rows: 4 }}>
                 <div className='flex items-center mb-[20px]'>
-                    <img className='w-[50px] h-[50px] cursor-pointer rounded-3xl mr-[15px]' src={data && formatPicture(data.picture)} />
+                    <img className='w-[50px] h-[50px] cursor-pointer rounded-3xl mr-[15px]' src={profile && formatPicture(profile.picture)} />
                     <div className='leading-7'>
                         <div className='hover:text-[#3339] cursor-pointer'>
-                            <span className='text-[20px] font-bold'>{data && formatNickName(data.handle)}</span>
+                            <span className='text-[20px] font-bold'>{profile && formatNickName(profile.handle)}</span>
                             <i className='iconfont icon-icon-right text-[20px]' />
                         </div>
-                        <p className='truncate w-[200px] text-[#3339] cursor-pointer hover:text-[#000]'>{data && data.bio}</p>
+                        <p className='truncate w-[200px] text-[#3339] cursor-pointer hover:text-[#000]'>{profile && profile.bio}</p>
                     </div>
                 </div>
                 <div className='flex justify-around mb-[30px]'>
@@ -82,6 +80,19 @@ export default function ProfileSetting() {
                 </div>
             </Skeleton>
         </div>
+    }
+
+    return (
+        <>
+            <Popover content={content} title="">
+                <div className='ml-[20px] flex cursor-pointer items-center'>
+                    <div className='w-[32px] rounded-3xl overflow-hidden'>
+                        <img className='w-full' src={profile && formatPicture(profile.picture)} />
+                    </div>
+                    <i className='iconfont icon-icon-down text-[20px] mr-3' />
+                </div>
+            </Popover>
+        </>
 
 
     )
