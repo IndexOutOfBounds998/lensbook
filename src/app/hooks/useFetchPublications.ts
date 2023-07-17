@@ -73,6 +73,7 @@ export function useFetchPublications({
 
   const reset = async () => {
     setData([]);
+    execute();
   };
 
   return {

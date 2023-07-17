@@ -161,7 +161,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
                 <FloatButton
                     icon={<SyncOutlined />}
                     onClick={() => {
-                        window.location.reload();
+                       dataObj.reset()
                     }}
                 />
                 <FloatButton.BackTop
