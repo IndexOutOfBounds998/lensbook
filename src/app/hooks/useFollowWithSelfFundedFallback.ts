@@ -21,6 +21,7 @@ import {
     follower,
   }: UseFollowWithSelfFundedFallbackArgs) {
     const [error, setError] = useState<PossibleError>(undefined);
+    
     const gasless = useFollow({ followee, follower });
   
     const selfFunded = useSelfFundedFallback();

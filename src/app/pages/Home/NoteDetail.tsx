@@ -1,7 +1,7 @@
 import user from '../../../assets/user.jpg'
 import Comment from "./Comment";
 import React, { useEffect, useRef, useState } from "react";
-import { message, Button, notification, Spin } from "antd";
+import { message, Button, notification, Spin, Skeleton } from "antd";
 import Input from "antd/es/input";
 import { IPFS_API_KEY } from '../../constants/constant';
 import { upJsonContent } from "../../api/ipfsApi";
@@ -13,10 +13,11 @@ import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 import {
     useComments,
     useActiveProfile,
-    
+
     ReactionType,
-    
+
     usePublication,
+    publicationId,
 
 } from '@lens-protocol/react-web';
 import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
@@ -24,13 +25,19 @@ import FollowButton from '@/app/components/FollowButton';
 import CollectButton from '@/app/components/CollectButton';
 import ReactionButton from '@/app/components/ReactionButton';
 import { useSignTypedData } from 'wagmi';
+import { useGetPublication } from '@/app/hooks/useGetPublication';
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
-    const { data: publication, loading: publication_loading } = usePublication({
-        publicationId: item.id,
-    });
+
+    const { data: publication, loading: publication_loading } = usePublication(
+        {
+            publicationId: item.id
+        }
+    );
+
 
     const [messageApi, contextHolder] = message.useMessage();
+
     const [notificationApi, contextHolderNotification] = notification.useNotification();
 
     const { t } = useTranslation();
@@ -85,8 +92,10 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
             flag = false;
             setShow(false)
             setTimeout(() => {
-                setContentSize(contentBox.current.offsetWidth)
-                scaleUp();
+                if (contentBox.current) {
+                    setContentSize(contentBox.current.offsetWidth)
+                    scaleUp();
+                }
             }, 100)
         }
     }, [card]);
@@ -99,28 +108,35 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         if (!img) {
             return
         }
-        const detailWidth = window.innerWidth * 0.7;
-        const maxWidth = detailWidth * 0.6;
-        const imgScale = detail.current.clientHeight / img.height;
-        const imgWidth = img.width * imgScale > maxWidth ? maxWidth : img.width * imgScale;
-        setBgSize(imgWidth)
-        const cardWidth = card.current.offsetWidth;
-        const scale = cardWidth / imgWidth;
-        const client = card.current.getBoundingClientRect();
-        detail.current.style.border = 'none';
-        detail.current.style.boxShadow = 'none';
-        detail.current.style.transform = `translate(${client.x}px,${client.y - 32}px) scale(${scale})`;
-        detail.current.style.transformOrigin = 'left top';
-        imgBox.current.style.backgroundPosition = '';
+        if (detail.current && imgBox.current) {
+            const detailWidth = window.innerWidth * 0.7;
+            const maxWidth = detailWidth * 0.6;
+            const imgScale = detail.current.clientHeight / img.height;
+            const imgWidth = img.width * imgScale > maxWidth ? maxWidth : img.width * imgScale;
+            setBgSize(imgWidth)
+            const cardWidth = card.current.offsetWidth;
+            const scale = cardWidth / imgWidth;
+            const client = card.current.getBoundingClientRect();
+            detail.current.style.border = 'none';
+            detail.current.style.boxShadow = 'none';
+            detail.current.style.transform = `translate(${client.x}px,${client.y - 32}px) scale(${scale})`;
+            detail.current.style.transformOrigin = 'left top';
+            imgBox.current.style.backgroundPosition = '';
+        }
+
     }
 
     const scaleUp = () => {
-        const detailWidth = (window.innerWidth - window.innerWidth * 0.7) / 2;
-        detail.current.style.border = '1px solid #00000014';
-        detail.current.style.boxShadow = '0 0 100px rgba(0,0,0,.1)';
-        detail.current.style.transition = 'all 0.5s ease';
-        detail.current.style.transform = `translate(${detailWidth}px,0) scale(1)`;
-        imgBox.current.style.backgroundPosition = '50%';
+        if (detail.current && imgBox.current) {
+            const detailWidth = (window.innerWidth - window.innerWidth * 0.7) / 2;
+
+            detail.current.style.border = '1px solid #00000014';
+            detail.current.style.boxShadow = '0 0 100px rgba(0,0,0,.1)';
+            detail.current.style.transition = 'all 0.5s ease';
+            detail.current.style.transform = `translate(${detailWidth}px,0) scale(1)`;
+            imgBox.current.style.backgroundPosition = '50%';
+        }
+
     }
 
     //点击收藏
@@ -185,39 +201,14 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         // broadcastResult is a Result object
         const broadcastResultValue = broadcastResult.unwrap();
 
-        if (broadcastResultValue.__typename=="RelayerResult") {
+        if (broadcastResultValue.__typename == "RelayerResult") {
             console.log(
                 `Transaction was successfuly broadcasted with txId ${broadcastResultValue.txId}`
             );
         }
 
-      
-        // const typedDataResult =await lensClient.publication.createCommentTypedData({
-        //     profileId: profile && profile.id,
-        //     publicationId: publication && publication.id,
-        //     contentURI,
-        //     collectModule: {
-        //         revertCollectModule: true, // collect disabled
-        //     },
-        //     referenceModule: {
-        //         followerOnlyReferenceModule: false, // anybody can comment or mirror
-        //     },
-        // });
 
-        // if (commentRef.current.input.value) {
-        //     console.log(commentRef.current.input.value)
-        //     let result = await create({
-        //         publicationId: item.id,
-        //         content: commentRef.current.input.value,
-        //         profileId: profile.id,
-        //         contentFocus: ContentFocus.TEXT,
-        //         locale: 'en',
-        //         collect: {
-        //             type: CollectPolicyType.NO_COLLECT
-        //         },
-        //     })
-        //     console.log(result)
-        // }
+
     }
 
     //加载更多评论
@@ -230,6 +221,10 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         { icon: isFavouriteStatus ? 'heart-fill' : 'heart', text: favouriteCount, color: '#ff2442', onClick: clickLike },
         { icon: isCollectionStatus ? 'star-fill' : 'star', text: collectionCount, color: '#ec4899', onClick: clickCollection }
     ];
+
+    if (publication_loading) {
+        return <Skeleton />;
+    }
 
 
     return (
@@ -284,16 +279,16 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                             <div className='flex items-center'>
                                 <img
                                     className='rounded-3xl w-[40px] h-[40px] mx-2'
-                                    src={publication.profile.picture ? formatPicture(publication.profile.picture) : user}
+                                    src={publication && publication.profile.picture ? formatPicture(publication && publication.profile.picture) : user}
                                     alt=""
                                 />
-                                <span>{publication.profile.name ? publication.profile.name : formatNickName(publication.profile.handle)}</span>
+                                <span>{publication && publication.profile.name ? publication && publication.profile.name : formatNickName(publication && publication.profile.handle)}</span>
                             </div>
 
 
                             <WhenLoggedInWithProfile>
                                 {({ profile }) =>
-                                    <FollowButton followee={publication.profile} follower={profile} />}
+                                    <FollowButton followee={publication && publication.profile} follower={profile} />}
                             </WhenLoggedInWithProfile>
 
 
@@ -318,15 +313,15 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                     style={{ borderBottom: '0.5px solid rgba(0,0,0,.1)' }}
                                 >
                                     <div className='mb-5 font-semibold text-[20px] leading-8'>
-                                        {publication.metadata.title && publication.metadata.title}
+                                        {publication && publication.metadata.title && publication && publication.metadata.title}
                                     </div>
                                     <div
                                         className='text-[17px] whitespace-pre-wrap'
-                                        dangerouslySetInnerHTML={{ __html: publication.metadata.content && publication.metadata.content }}
+                                        dangerouslySetInnerHTML={{ __html: publication && publication.metadata.content && publication && publication.metadata.content }}
                                     >
                                     </div>
                                     <div className='mt-2 text-[14px] leading-6 text-[#33333399]'>
-                                        {formatDate(publication.createdAt)}
+                                        {formatDate(publication && publication.createdAt)}
                                     </div>
                                 </div>
                                 <div className='px-[30px] py-[20px]'>
