@@ -3,29 +3,22 @@ import Comment from "./Comment";
 import React, { useEffect, useRef, useState } from "react";
 import { message, Button, notification, Spin, Skeleton } from "antd";
 import Input from "antd/es/input";
-import { IPFS_API_KEY } from '../../constants/constant';
-import { upJsonContent } from "../../api/ipfsApi";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { formatNickName, formatDate } from "../../utils/FormatContent";
 import { useTranslation } from "react-i18next";
 import { formatPicture } from '@/app/utils/utils';
-import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 import {
     useComments,
     useActiveProfile,
-
     ReactionType,
-
     usePublication,
-    publicationId,
-
 } from '@lens-protocol/react-web';
 import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
 import FollowButton from '@/app/components/FollowButton';
 import CollectButton from '@/app/components/CollectButton';
 import ReactionButton from '@/app/components/ReactionButton';
 import { useSignTypedData } from 'wagmi';
-import { useGetPublication } from '@/app/hooks/useGetPublication';
+import { useSendComment } from '../../hooks/useSendComment'
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
@@ -100,30 +93,24 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         }
     }, [card]);
 
-    useEffect(() => {
-        console.log(show)
-    }, [show])
-
     const scaleDown = () => {
+
         if (!img) {
             return
         }
-        if (detail.current && imgBox.current) {
-            const detailWidth = window.innerWidth * 0.7;
-            const maxWidth = detailWidth * 0.6;
-            const imgScale = detail.current.clientHeight / img.height;
-            const imgWidth = img.width * imgScale > maxWidth ? maxWidth : img.width * imgScale;
-            setBgSize(imgWidth)
-            const cardWidth = card.current.offsetWidth;
-            const scale = cardWidth / imgWidth;
-            const client = card.current.getBoundingClientRect();
-            detail.current.style.border = 'none';
-            detail.current.style.boxShadow = 'none';
-            detail.current.style.transform = `translate(${client.x}px,${client.y - 32}px) scale(${scale})`;
-            detail.current.style.transformOrigin = 'left top';
-            imgBox.current.style.backgroundPosition = '';
-        }
-
+        const detailWidth = window.innerWidth * 0.7;
+        const maxWidth = detailWidth * 0.6;
+        const imgScale = (window.innerHeight - 64) / img.height;
+        const imgWidth = img.width * imgScale > maxWidth ? maxWidth : img.width * imgScale;
+        setBgSize(imgWidth)
+        const cardWidth = card.current.offsetWidth;
+        const scale = cardWidth / imgWidth;
+        const client = card.current.getBoundingClientRect();
+        detail.current.style.border = 'none';
+        detail.current.style.boxShadow = 'none';
+        detail.current.style.transform = `translate(${client.x}px,${client.y - 32}px) scale(${scale})`;
+        detail.current.style.transformOrigin = 'left top';
+        if (imgBox.current) imgBox.current.style.backgroundPosition = '';
     }
 
     const scaleUp = () => {
@@ -147,68 +134,15 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const clickLike = async () => {
 
     }
-    async function upLoad(data) {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${IPFS_API_KEY}`
-            }
-        };
-        const res = await upJsonContent(data, config)
-        if (res && res.data) {
-            return res.data.IpfsHash;
-        }
-        return '';
-    }
 
     const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
     const { signTypedDataAsync, isLoading: typedDataLoading } = useSignTypedData();
 
-
-
     //发布评论
+    const { submit: send } = useSendComment({ publication: publication });
     const sendComment = async () => {
-        const contentURI = 'ar://Y3M4T88IXIBYt63FEpeAUQzSreioCli1A7LYabPV6Vk';
-        const lensClient = await getAuthenticatedClient();
-        lensClient.explore.publications()
-        const typedDataResult = await lensClient.publication.createCommentTypedData({
-            profileId: profile.id,
-            publicationId: publication.id,
-            contentURI: contentURI, // or arweave
-            collectModule: {
-                revertCollectModule: true, // collect disabled
-            },
-            referenceModule: {
-                followerOnlyReferenceModule: false, // anybody can comment or mirror
-            },
-        });
-        // typedDataResult is a Result object
-        const data = typedDataResult.unwrap();
-        // sign with the wallet
-        const signTypedData = await signTypedDataAsync({
-            primaryType: 'CommentWithSig',
-            domain: (data.typedData.domain),
-            message: data.typedData.value,
-            types: (data.typedData.types),
-            value: (data.typedData.value)
-        });
-        // broadcast
-        const broadcastResult = await lensClient.transaction.broadcast({
-            id: data.id,
-            signature: signTypedData,
-        });
-
-        // broadcastResult is a Result object
-        const broadcastResultValue = broadcastResult.unwrap();
-
-        if (broadcastResultValue.__typename == "RelayerResult") {
-            console.log(
-                `Transaction was successfuly broadcasted with txId ${broadcastResultValue.txId}`
-            );
-        }
-
-
-
+        send(commentRef.current.input.value);
     }
 
     //加载更多评论
@@ -222,10 +156,10 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         { icon: isCollectionStatus ? 'star-fill' : 'star', text: collectionCount, color: '#ec4899', onClick: clickCollection }
     ];
 
-    if (publication_loading) {
-        return <Skeleton />;
-    }
 
+    // if (publication_loading) {
+    //     return <Skeleton />;
+    // }
 
     return (
         <>
@@ -238,8 +172,8 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                     transition: 'all 0.5s ease'
                 }}
                 onClick={() => {
-                    setShow(true);
                     scaleDown();
+                    setShow(true);
                     setTimeout(() => { setShowDetail(false) }, 500)
                 }}
             >
@@ -261,7 +195,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                             ref={imgBox}
                             className='bg-no-repeat bg-contain h-full'
                             style={{
-                                backgroundImage: `url(${img && img.src})`,
+                                backgroundImage: `url(${img.src})`,
                                 width: `${bgSize}px`
                             }}
                         >
@@ -287,8 +221,9 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
                             <WhenLoggedInWithProfile>
-                                {({ profile }) =>
-                                    <FollowButton followee={publication && publication.profile} follower={profile} />}
+                                {({ profile }) => {
+                                   return publication_loading ? '' : <FollowButton followee={publication && publication.profile} follower={profile}/>
+                                }}
                             </WhenLoggedInWithProfile>
 
 
@@ -344,13 +279,16 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
                                 <WhenLoggedInWithProfile>
-                                    {({ profile }) =>
-                                        <ReactionButton publication={publication} profileId={profile.id} reactionType={ReactionType.UPVOTE} />}
+                                    {({ profile }) => {
+                                        return publication_loading ? '' : <ReactionButton publication={publication} profileId={profile.id}
+                                                        reactionType={ReactionType.UPVOTE}/>
+                                    }}
                                 </WhenLoggedInWithProfile>
 
                                 <WhenLoggedInWithProfile>
-                                    {({ profile }) =>
-                                        <CollectButton collector={profile} publication={publication} />}
+                                    {({ profile }) => {
+                                        return publication_loading ? '' : <CollectButton collector={profile} publication={publication}/>
+                                    }}
                                 </WhenLoggedInWithProfile>
 
 
