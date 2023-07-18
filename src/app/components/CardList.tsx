@@ -62,8 +62,6 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
 
     const macyInfo = () => {
         if (typeof window !== 'undefined') {
-            const columns = cardSizeRef.current;
-    
             let elem = document.querySelector('.scrollableDiv');
             let msnry = new Masonry( elem, {
                 // options

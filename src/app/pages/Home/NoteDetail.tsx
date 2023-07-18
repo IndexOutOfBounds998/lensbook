@@ -49,7 +49,6 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     let [bgSize, setBgSize] = useState(0);
     let [contentSize, setContentSize] = useState(0);
     let [commentPage, setCommentPage] = useState([]);
-    let [detailStyle, setDetailStyle] = useState({});
 
     const detail = useRef();
     const imgBox = useRef();
@@ -72,17 +71,17 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     );
 
     useEffect(() => {
-        if (flag || publication) {
+        if (flag) {
             scaleDown();
         }
-    }, [publication]);
+    }, []);
 
     useEffect(() => {
         setCommentPage(comments || [])
     }, [comments]);
 
     useEffect(() => {
-        if ((card && flag) || publication) {
+        if (card && flag) {
             flag = false;
             setShow(false)
             setTimeout(() => {
@@ -92,11 +91,11 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                 }
             }, 100)
         }
-    }, [card, publication]);
+    }, [card]);
 
     const scaleDown = () => {
 
-        if (!img || !publication) {
+        if (!img) {
             return
         }
         const detailWidth = window.innerWidth * 0.7;
@@ -107,12 +106,6 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         const cardWidth = card.current.offsetWidth;
         const scale = cardWidth / imgWidth;
         const client = card.current.getBoundingClientRect();
-        setDetailStyle({
-            border: 'none',
-            boxShadow: 'none',
-            transform: `translate(${client.x}px,${client.y - 32}px) scale(${scale})`,
-            transformOrigin: 'left top',
-        })
         detail.current.style.border = 'none';
         detail.current.style.boxShadow = 'none';
         detail.current.style.transform = `translate(${client.x}px,${client.y - 32}px) scale(${scale})`;
@@ -128,12 +121,6 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
             detail.current.style.boxShadow = '0 0 100px rgba(0,0,0,.1)';
             detail.current.style.transition = 'all 0.5s ease';
             detail.current.style.transform = `translate(${detailWidth}px,0) scale(1)`;
-            setDetailStyle({
-                border: '1px solid #00000014',
-                boxShadow: '0 0 100px rgba(0,0,0,.1)',
-                transition: 'all 0.5s ease',
-                transform: `translate(${detailWidth}px,0) scale(1)`,
-            })
             imgBox.current.style.backgroundPosition = '50%';
         }
 
@@ -170,9 +157,9 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     ];
 
 
-    if (publication_loading) {
-        return <Skeleton />;
-    }
+    // if (publication_loading) {
+    //     return <Skeleton />;
+    // }
 
     return (
         <>
@@ -187,7 +174,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                 onClick={() => {
                     scaleDown();
                     setShow(true);
-                    setTimeout(() => { setShowDetail(false) }, 10)
+                    setTimeout(() => { setShowDetail(false) }, 500)
                 }}
             >
                 <div
@@ -234,8 +221,9 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
                             <WhenLoggedInWithProfile>
-                                {({ profile }) =>
-                                    <FollowButton followee={publication && publication.profile} follower={profile} />}
+                                {({ profile }) => {
+                                   return publication_loading ? '' : <FollowButton followee={publication && publication.profile} follower={profile}/>
+                                }}
                             </WhenLoggedInWithProfile>
 
 
@@ -291,13 +279,16 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
                                 <WhenLoggedInWithProfile>
-                                    {({ profile }) =>
-                                        <ReactionButton publication={publication} profileId={profile.id} reactionType={ReactionType.UPVOTE} />}
+                                    {({ profile }) => {
+                                        return publication_loading ? '' : <ReactionButton publication={publication} profileId={profile.id}
+                                                        reactionType={ReactionType.UPVOTE}/>
+                                    }}
                                 </WhenLoggedInWithProfile>
 
                                 <WhenLoggedInWithProfile>
-                                    {({ profile }) =>
-                                        <CollectButton collector={profile} publication={publication} />}
+                                    {({ profile }) => {
+                                        return publication_loading ? '' : <CollectButton collector={profile} publication={publication}/>
+                                    }}
                                 </WhenLoggedInWithProfile>
 
 

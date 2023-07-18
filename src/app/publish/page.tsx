@@ -9,7 +9,7 @@ export default function Page() {
         <>
             <div className="w-full h-full bg-white flex items-center justify-evenly bg-[#eef1f8]'">
                 <Link
-                    href="/publish/Strategy"
+                    href="/publish/strategy"
                     className={className}
                 >
                     <p className='text-[25px] mb-[20px] text-center'>旅游攻略</p>

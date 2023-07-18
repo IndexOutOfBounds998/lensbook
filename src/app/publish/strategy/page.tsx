@@ -1,12 +1,12 @@
 "use client";
-import ReactQuill from 'react-quill';
+// import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import '../../style/ReactQuill.css';
+// import '../../style/ReactQuill.css';
 import UploadButton from "../../components/UploadButton/UploadButton";
 import { Radio, Input, Button } from 'antd';
 import React, { useEffect, useRef, useState } from "react";
-
 import { usePost } from '../../hooks/usePost'
+const { TextArea } = Input;
 // @ts-ignore
 export default function Strategy() {
     const [sumbitButtonLoading, setSumbitButtonLoading] = useState(false);
@@ -49,11 +49,11 @@ export default function Strategy() {
     let [radioGroup, setRadioGroup] = useState([]);
     let [isModalOpen, setIsModalOpen] = useState(false);
     let [stateValue, setStateValue] = useState('public');
-    let [collectData, setCollectData] = useState();
+    let [quillRef, setQuillRef] = useState();
 
     let [ipfsHash, setIpfsHash] = useState('');
 
-    let quillRef = useRef(undefined);
+    // let quillRef = useRef(undefined);
     let titleRef = useRef(undefined);
 
     const loadCategory = async () => {
@@ -125,7 +125,7 @@ export default function Strategy() {
     };
 
     return (
-        <>
+        <div>
             <div className="w-full h-full bg-white overflow-y-scroll p-[30px] pl-[30px]">
                 <div className="text-[20px] flex items-center">
                     <div className="w-[10px] h-[25px] inline-block bg-[blueviolet] rounded-3xl mr-1" />
@@ -155,11 +155,15 @@ export default function Strategy() {
                             className="mb-[16px]"
                             placeholder="填写产品标题"
                         />
-                        <ReactQuill
-                            ref={quillRef}
-                            theme="snow"
-                            modules={modules}
-                            formats={formats}
+                        <TextArea
+                            value={quillRef}
+                            onChange={(e) => setQuillRef(e.target.value)}
+                            placeholder="Controlled autosize"
+                            maxLength={1000}
+                            showCount
+                            autoSize={{
+                                minRows: 4,
+                            }}
                         />
                     </div>
                     <div className="text-[13px]">
@@ -201,6 +205,6 @@ export default function Strategy() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
