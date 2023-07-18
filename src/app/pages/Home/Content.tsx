@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Tab } from '@headlessui/react'
-import { useExplorePublications, PublicationTypes, PublicationMainFocus } from '@lens-protocol/react-web';
+import { PublicationTypes, PublicationMainFocus } from '@lens-protocol/react-web';
 import CardList from "../../components/CardList";
 import { PublicationSortCriteria } from '@lens-protocol/client';
 import { useFetchPublications } from '@/app/hooks/useFetchPublications';
-// import dynamic from 'next/dynamic';
-//
-// const CardList = dynamic(import("../../components/CardList"), {
-//   ssr: true,
-//   loading: () => <p>Loading ...</p>, //异步加载组件前的loading状态
-// });
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -18,7 +12,6 @@ function classNames(...classes) {
 export default function LayoutContent({ cardClick }) {
 
     let [categories, setCategory] = useState([]);
-
 
     const explorePublicationRequest = {
         cursor: JSON.stringify({
@@ -38,22 +31,11 @@ export default function LayoutContent({ cardClick }) {
         explorePublicationRequest
     });
 
-    // const { data, loading, hasMore, next } = useExplorePublications({
-    //     limit: 20,
-    //     publicationTypes: [PublicationTypes.Post],
-    //     metadataFilter: {
-    //         restrictPublicationMainFocusTo: [PublicationMainFocus.Image]
-    //     }
-    // });
 
     const tabCheck = (index) => {
 
     }
-
-    useEffect(() => {
-        loadCategory();
-    }, []);
-
+    
     const loadCategory = async () => {
         setCategory([
             {
@@ -103,6 +85,12 @@ export default function LayoutContent({ cardClick }) {
             }
         ])
     }
+
+    useEffect(() => {
+        loadCategory();
+    }, []);
+
+  
 
     return (
         <div className="w-[calc(100%-20rem)] pl-8 pr-3 h-full">

@@ -27,19 +27,14 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
     let [avatarImg, setAvatarImg] = useState('');
     let [favouriteStatus, setFavouriteStatus] = useState(false);
 
-    //点赞
-    // const [addLike] = useMutation(API.LIKE({profileId: parseInt(item.profileId), pubId: parseInt(item.pubId)}))
-    //取消点赞
-    // const [disLike] = useMutation(API.DISLIKE({profileId: parseInt(item.profileId), pubId: parseInt(item.pubId)}))
-
     useEffect(() => {
         if (item.metadata) {
             setContentItem(item.metadata)
             setFavouriteStatus(false)
-            const image = formatPicture(item.metadata.media[0])
-            if (image) {
+            const imageUrl = formatPicture(item.metadata.media[0])
+            if (imageUrl) {
                 let img = new Image();
-                img.src = image;
+                img.src = imageUrl;
                 img.onload = () => {
                     setContentImg(img.src);
                     setImgInfo(img);
@@ -53,7 +48,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
             }
             avatarLoad();
         }
-    }, []);
+    }, [item]);
 
     const avatarLoad = async () => {
         const url = formatPicture(item.profile.picture);
