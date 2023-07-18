@@ -20,8 +20,9 @@ export function useUpIpfs({ type }: useUpData) {
         const res = await ipfsApi[type](data, config);
         if (res && res.IpfsHash) {
             setUrl("ipfs://" + res.IpfsHash);
+            setLoad(false);
+            return res.IpfsHash;
         }
-        setLoad(false);
     }
 
     return {

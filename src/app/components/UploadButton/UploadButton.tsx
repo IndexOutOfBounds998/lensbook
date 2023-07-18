@@ -20,7 +20,7 @@ export default function UploadButton({ setIpfsHash }) {
         }
         const formData = new FormData();
         formData.append('file', file);
-        await execute(formData);
+        const url = await execute(formData);
         if (url) {
             const ipfsUrl = `https://ipfs.io/ipfs/${url}`;
             setIpfsHash(url);

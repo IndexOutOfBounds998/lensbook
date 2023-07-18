@@ -20,7 +20,7 @@ export function usePost() {
     const submit = async (postObj) => {
 
         let current_locale = i18n.language
-        
+
         let mediaObject = {
             cover: "ipfs://" + postObj.image,
             item: "ipfs://" + postObj.image,
@@ -43,7 +43,7 @@ export function usePost() {
             name: `Post by ${profile.handle}`,
             contentWarning: ContentWarning.NSFW,
         }
-        await execute(obj);
+        const url = await execute(obj);
         if (url) {
             // lensClient.explore.publications()
             const lensClient = await getAuthenticatedClient();
