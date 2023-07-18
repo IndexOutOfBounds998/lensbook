@@ -3,8 +3,12 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { useUpIpfs } from "./useUpIpfs";
 import { getAuthenticatedClient } from "../shared/getAuthenticatedClient";
 import { useSignTypedData } from "wagmi";
-import { useActiveProfile } from '@lens-protocol/react-web';
+import {
+    useActiveProfile, appId, CollectPolicyType, ContentWarning,
+    ReferencePolicyType, ContentFocus, ImageType
+} from '@lens-protocol/react-web';
 import { uuid } from "@walletconnect/legacy-utils";
+
 
 export function usePost() {
     const { data: profile, error, loading: profileLoading } = useActiveProfile();
@@ -15,20 +19,30 @@ export function usePost() {
 
     const submit = async (postObj) => {
 
+        let current_locale = i18n.language
+        
+        let mediaObject = {
+            cover: "ipfs://" + postObj.image,
+            item: "ipfs://" + postObj.image,
+            type: ImageType.JPEG
+        }
+
         const obj = {
+            version: "1.0.0",
             metadata_id: uuid(),
             appId: "lenstrip",
-            version: "1.0.0",
             title: postObj.title,
             image: "ipfs://" + postObj.image,
             content: postObj.content,
             attributes: profile.attributes,
             state: postObj.state,
-            locale: "en-us",
+            locale: current_locale,
             mainContentFocus: "IMAGE",
+            media: [mediaObject],
+            tags: ["trip"],
             name: `Post by ${profile.handle}`,
+            contentWarning: ContentWarning.NSFW,
         }
-
         await execute(obj);
         if (url) {
             // lensClient.explore.publications()
