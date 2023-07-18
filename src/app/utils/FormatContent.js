@@ -30,19 +30,19 @@ export function formatPicture(picture) {
         return picture;
     }
     if (picture.__typename === 'MediaSet') {
-    
-        if (picture.original.mimeType && picture.original.mimeType.indexOf("video") >= 0) {
-             
-            if (picture.original.cover.startsWith('ipfs://')) {
-                let result = picture.original.cover.substring(7, picture.original.cover.length)
-                return `http://lens.infura-ipfs.io/ipfs/${result}`
-            } else if (picture.original.cover.startsWith('ar://')) {
-                let result = picture.original.cover.substring(4, picture.original.cover.length)
-                return `http://arweave.net/${result}`
-            } else {
-                return picture.original.cover
-            }
 
+        if (picture.original.mimeType && picture.original.mimeType.indexOf("video") >= 0) {
+            if (picture.original.cover) {
+                if (picture.original.cover.startsWith('ipfs://')) {
+                    let result = picture.original.cover.substring(7, picture.original.cover.length)
+                    return `http://lens.infura-ipfs.io/ipfs/${result}`
+                } else if (picture.original.cover.startsWith('ar://')) {
+                    let result = picture.original.cover.substring(4, picture.original.cover.length)
+                    return `http://arweave.net/${result}`
+                } else {
+                    return picture.original.cover
+                }
+            }
         } else {
             if (picture.original.url.startsWith('ipfs://')) {
                 let result = picture.original.url.substring(7, picture.original.url.length)
