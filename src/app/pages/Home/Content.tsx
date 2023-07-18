@@ -24,7 +24,7 @@ export default function LayoutContent({ cardClick }) {
         sortCriteria: PublicationSortCriteria.Latest,
         limit: 20,
         publicationTypes: [PublicationTypes.Post],
-        sources: ['lenster', 'lenstrip']
+        sources: ['lenster', 'lenstrip', "lenstube", "orb", "buttrfly", "lensplay"]
     };
 
     const { data, loading, hasMore, next, reset } = useFetchPublications({
@@ -35,7 +35,7 @@ export default function LayoutContent({ cardClick }) {
     const tabCheck = (index) => {
 
     }
-    
+
     const loadCategory = async () => {
         setCategory([
             {
@@ -90,7 +90,7 @@ export default function LayoutContent({ cardClick }) {
         loadCategory();
     }, []);
 
-  
+
 
     return (
         <div className="w-[calc(100%-20rem)] pl-8 pr-3 h-full">
