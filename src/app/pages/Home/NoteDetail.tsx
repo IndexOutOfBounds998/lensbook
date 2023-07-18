@@ -3,29 +3,22 @@ import Comment from "./Comment";
 import React, { useEffect, useRef, useState } from "react";
 import { message, Button, notification, Spin, Skeleton } from "antd";
 import Input from "antd/es/input";
-import { IPFS_API_KEY } from '../../constants/constant';
-import { upJsonContent } from "../../api/ipfsApi";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { formatNickName, formatDate } from "../../utils/FormatContent";
 import { useTranslation } from "react-i18next";
 import { formatPicture } from '@/app/utils/utils';
-import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 import {
     useComments,
     useActiveProfile,
-
     ReactionType,
-
     usePublication,
-    publicationId,
-
 } from '@lens-protocol/react-web';
 import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
 import FollowButton from '@/app/components/FollowButton';
 import CollectButton from '@/app/components/CollectButton';
 import ReactionButton from '@/app/components/ReactionButton';
 import { useSignTypedData } from 'wagmi';
-import { useGetPublication } from '@/app/hooks/useGetPublication';
+import { useSendComment } from '../../hooks/useSendComment'
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
@@ -100,30 +93,24 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         }
     }, [card]);
 
-    useEffect(() => {
-        console.log(show)
-    }, [show])
-
     const scaleDown = () => {
+
         if (!img) {
             return
         }
-        if (detail.current && imgBox.current) {
-            const detailWidth = window.innerWidth * 0.7;
-            const maxWidth = detailWidth * 0.6;
-            const imgScale = detail.current.clientHeight / img.height;
-            const imgWidth = img.width * imgScale > maxWidth ? maxWidth : img.width * imgScale;
-            setBgSize(imgWidth)
-            const cardWidth = card.current.offsetWidth;
-            const scale = cardWidth / imgWidth;
-            const client = card.current.getBoundingClientRect();
-            detail.current.style.border = 'none';
-            detail.current.style.boxShadow = 'none';
-            detail.current.style.transform = `translate(${client.x}px,${client.y - 32}px) scale(${scale})`;
-            detail.current.style.transformOrigin = 'left top';
-            imgBox.current.style.backgroundPosition = '';
-        }
-
+        const detailWidth = window.innerWidth * 0.7;
+        const maxWidth = detailWidth * 0.6;
+        const imgScale = (window.innerHeight - 64) / img.height;
+        const imgWidth = img.width * imgScale > maxWidth ? maxWidth : img.width * imgScale;
+        setBgSize(imgWidth)
+        const cardWidth = card.current.offsetWidth;
+        const scale = cardWidth / imgWidth;
+        const client = card.current.getBoundingClientRect();
+        detail.current.style.border = 'none';
+        detail.current.style.boxShadow = 'none';
+        detail.current.style.transform = `translate(${client.x}px,${client.y - 32}px) scale(${scale})`;
+        detail.current.style.transformOrigin = 'left top';
+        if (imgBox.current) imgBox.current.style.backgroundPosition = '';
     }
 
     const scaleUp = () => {
@@ -147,68 +134,15 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const clickLike = async () => {
 
     }
-    async function upLoad(data) {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${IPFS_API_KEY}`
-            }
-        };
-        const res = await upJsonContent(data, config)
-        if (res && res.data) {
-            return res.data.IpfsHash;
-        }
-        return '';
-    }
 
     const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
     const { signTypedDataAsync, isLoading: typedDataLoading } = useSignTypedData();
 
-
-
     //发布评论
+    const { submit: send } = useSendComment({ publication: publication });
     const sendComment = async () => {
-        const contentURI = 'ar://Y3M4T88IXIBYt63FEpeAUQzSreioCli1A7LYabPV6Vk';
-        const lensClient = await getAuthenticatedClient();
-        lensClient.explore.publications()
-        const typedDataResult = await lensClient.publication.createCommentTypedData({
-            profileId: profile.id,
-            publicationId: publication.id,
-            contentURI: contentURI, // or arweave
-            collectModule: {
-                revertCollectModule: true, // collect disabled
-            },
-            referenceModule: {
-                followerOnlyReferenceModule: false, // anybody can comment or mirror
-            },
-        });
-        // typedDataResult is a Result object
-        const data = typedDataResult.unwrap();
-        // sign with the wallet
-        const signTypedData = await signTypedDataAsync({
-            primaryType: 'CommentWithSig',
-            domain: (data.typedData.domain),
-            message: data.typedData.value,
-            types: (data.typedData.types),
-            value: (data.typedData.value)
-        });
-        // broadcast
-        const broadcastResult = await lensClient.transaction.broadcast({
-            id: data.id,
-            signature: signTypedData,
-        });
-
-        // broadcastResult is a Result object
-        const broadcastResultValue = broadcastResult.unwrap();
-
-        if (broadcastResultValue.__typename == "RelayerResult") {
-            console.log(
-                `Transaction was successfuly broadcasted with txId ${broadcastResultValue.txId}`
-            );
-        }
-
-
-
+        send(commentRef.current.input.value);
     }
 
     //加载更多评论
@@ -223,162 +157,164 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     ];
 
 
-
+    // if (publication_loading) {
+    //     return <Skeleton />;
+    // }
 
     return (
         <>
             {contextHolder}
             {contextHolderNotification}
-            
+            <div
+                className='h-full w-full fixed top-0 z-[100]'
+                style={{
+                    background: show ? '' : 'hsla(0,0%,100%,.98)',
+                    transition: 'all 0.5s ease'
+                }}
+                onClick={() => {
+                    scaleDown();
+                    setShow(true);
+                    setTimeout(() => { setShowDetail(false) }, 500)
+                }}
+            >
                 <div
-                    className='h-full w-full fixed top-0 z-[100]'
-                    style={{
-                        background: show ? '' : 'hsla(0,0%,100%,.98)',
-                        transition: 'all 0.5s ease'
-                    }}
-                    onClick={() => {
-                        setShow(true);
-                        scaleDown();
-                        setTimeout(() => { setShowDetail(false) }, 500)
+                    ref={detail}
+                    className='h-[calc(100%-64px)] w-[70%] my-[32px] flex rounded-3xl overflow-hidden'
+                    onClick={(e) => {
+                        e.stopPropagation();
                     }}
                 >
-                    <Skeleton loading={publication_loading} >
                     <div
-                        ref={detail}
-                        className='h-[calc(100%-64px)] w-[70%] my-[32px] flex rounded-3xl overflow-hidden'
-                        onClick={(e) => {
-                            e.stopPropagation();
+                        className='w-[auto] bg-[#f8f8f8] flex'
+                        style={{
+                            background: show ? 'rgba(233,245,250,0)' : '',
+                            borderRadius: show ? 'none' : '1rem',
                         }}
                     >
                         <div
-                            className='w-[auto] bg-[#f8f8f8] flex'
+                            ref={imgBox}
+                            className='bg-no-repeat bg-contain h-full'
                             style={{
-                                background: show ? 'rgba(233,245,250,0)' : '',
-                                borderRadius: show ? 'none' : '1rem',
+                                backgroundImage: `url(${img.src})`,
+                                width: `${bgSize}px`
                             }}
                         >
-                            <div
-                                ref={imgBox}
-                                className='bg-no-repeat bg-contain h-full'
-                                style={{
-                                    backgroundImage: `url(${img && img.src})`,
-                                    width: `${bgSize}px`
-                                }}
-                            >
-                            </div>
                         </div>
+                    </div>
+                    <div
+                        ref={contentBox}
+                        style={{ display: show ? 'none' : '', transition: 'none' }}
+                        className='bg-white mb-[131px] w-full'
+                    >
                         <div
-                            ref={contentBox}
-                            style={{ display: show ? 'none' : '', transition: 'none' }}
-                            className='bg-white mb-[131px] w-full'
+                            className='flex py-5 px-6 justify-between'
+                            style={{ borderBottom: '0.5px solid rgba(0,0,0,.1)' }}
                         >
-                            <div
-                                className='flex py-5 px-6 justify-between'
-                                style={{ borderBottom: '0.5px solid rgba(0,0,0,.1)' }}
+                            <div className='flex items-center'>
+                                <img
+                                    className='rounded-3xl w-[40px] h-[40px] mx-2'
+                                    src={publication && publication.profile.picture ? formatPicture(publication && publication.profile.picture) : user}
+                                    alt=""
+                                />
+                                <span>{publication && publication.profile.name ? publication && publication.profile.name : formatNickName(publication && publication.profile.handle)}</span>
+                            </div>
+
+
+                            <WhenLoggedInWithProfile>
+                                {({ profile }) => {
+                                   return publication_loading ? '' : <FollowButton followee={publication && publication.profile} follower={profile}/>
+                                }}
+                            </WhenLoggedInWithProfile>
+
+
+                        </div>
+                        <div id='noteDetail' className='h-[calc(100%-81px)] overflow-auto'>
+                            <InfiniteScroll
+                                dataLength={commentPage.length}
+                                next={moreComment}
+                                hasMore={hasMore}
+                                loader={
+                                    <div
+                                        className='w-full flex items-center justify-center h-[50px] mb-[20px]'
+                                    >
+                                        <Spin tip="Loading" size="large" />
+                                        <span className='text-[13px] ml-[15px]'>加载中</span>
+                                    </div>
+                                }
+                                scrollableTarget='noteDetail'
                             >
-                                <div className='flex items-center'>
-                                    <img
-                                        className='rounded-3xl w-[40px] h-[40px] mx-2'
-                                        src={publication && publication.profile.picture ? formatPicture(publication && publication.profile.picture) : user}
-                                        alt=""
-                                    />
-                                    <span>{publication && publication.profile.name ? publication && publication.profile.name : formatNickName(publication && publication.profile.handle)}</span>
+                                <div
+                                    className='mx-[30px] pb-[30px] pt-[10px]'
+                                    style={{ borderBottom: '0.5px solid rgba(0,0,0,.1)' }}
+                                >
+                                    <div className='mb-5 font-semibold text-[20px] leading-8'>
+                                        {publication && publication.metadata.title && publication && publication.metadata.title}
+                                    </div>
+                                    <div
+                                        className='text-[17px] whitespace-pre-wrap'
+                                        dangerouslySetInnerHTML={{ __html: publication && publication.metadata.content && publication && publication.metadata.content }}
+                                    >
+                                    </div>
+                                    <div className='mt-2 text-[14px] leading-6 text-[#33333399]'>
+                                        {formatDate(publication && publication.createdAt)}
+                                    </div>
                                 </div>
+                                <div className='px-[30px] py-[20px]'>
+                                    <div className='mt-[16px]'>
+                                        <Comment
+                                            ref={appendReplyRef}
+                                            item={commentPage}
+                                            total={item.stats ? item.stats.totalAmountOfComments : 0}
+                                        >
+                                        </Comment>
+                                    </div>
+                                </div>
+                            </InfiniteScroll>
+                        </div>
+                        <footer
+                            className='border-t fixed bottom-[0] bg-white py-[10px] px-[30px]'
+                            style={{ width: `${contentSize}px` }}
+                        >
+                            <div className='h-[50px] rounded-3xl shadow w-full mb-[10px] py-[7px] px-[15px] flex justify-between'>
 
 
                                 <WhenLoggedInWithProfile>
-                                    {({ profile }) =>
-                                        <FollowButton followee={publication && publication.profile} follower={profile} />}
+                                    {({ profile }) => {
+                                        return publication_loading ? '' : <ReactionButton publication={publication} profileId={profile.id}
+                                                        reactionType={ReactionType.UPVOTE}/>
+                                    }}
+                                </WhenLoggedInWithProfile>
+
+                                <WhenLoggedInWithProfile>
+                                    {({ profile }) => {
+                                        return publication_loading ? '' : <CollectButton collector={profile} publication={publication}/>
+                                    }}
                                 </WhenLoggedInWithProfile>
 
 
-                            </div>
-                            <div id='noteDetail' className='h-[calc(100%-81px)] overflow-auto'>
-                                <InfiniteScroll
-                                    dataLength={commentPage.length}
-                                    next={moreComment}
-                                    hasMore={hasMore}
-                                    loader={
-                                        <div
-                                            className='w-full flex items-center justify-center h-[50px] mb-[20px]'
-                                        >
-                                            <Spin tip="Loading" size="large" />
-                                            <span className='text-[13px] ml-[15px]'>加载中</span>
-                                        </div>
-                                    }
-                                    scrollableTarget='noteDetail'
-                                >
-                                    <div
-                                        className='mx-[30px] pb-[30px] pt-[10px]'
-                                        style={{ borderBottom: '0.5px solid rgba(0,0,0,.1)' }}
-                                    >
-                                        <div className='mb-5 font-semibold text-[20px] leading-8'>
-                                            {publication && publication.metadata.title && publication && publication.metadata.title}
-                                        </div>
-                                        <div
-                                            className='text-[17px] whitespace-pre-wrap'
-                                            dangerouslySetInnerHTML={{ __html: publication && publication.metadata.content && publication && publication.metadata.content }}
-                                        >
-                                        </div>
-                                        <div className='mt-2 text-[14px] leading-6 text-[#33333399]'>
-                                            {formatDate(publication && publication.createdAt)}
-                                        </div>
-                                    </div>
-                                    <div className='px-[30px] py-[20px]'>
-                                        <div className='mt-[16px]'>
-                                            <Comment
-                                                ref={appendReplyRef}
-                                                item={commentPage}
-                                                total={item.stats ? item.stats.totalAmountOfComments : 0}
-                                            >
-                                            </Comment>
-                                        </div>
-                                    </div>
-                                </InfiniteScroll>
-                            </div>
-                            <footer
-                                className='border-t fixed bottom-[0] bg-white py-[10px] px-[30px]'
-                                style={{ width: `${contentSize}px` }}
-                            >
-                                <div className='h-[50px] rounded-3xl shadow w-full mb-[10px] py-[7px] px-[15px] flex justify-between'>
 
-
-                                    <WhenLoggedInWithProfile>
-                                        {({ profile }) =>
-                                            <ReactionButton publication={publication} profileId={profile.id} reactionType={ReactionType.UPVOTE} />}
-                                    </WhenLoggedInWithProfile>
-
-                                    <WhenLoggedInWithProfile>
-                                        {({ profile }) =>
-                                            <CollectButton collector={profile} publication={publication} />}
-                                    </WhenLoggedInWithProfile>
-
-
-
-                                    <div className='w-[70px] rounded-3xl bg-[#50b674] cursor-pointer p-[5px] text-[#fff] text-center'>
-                                        分享
-                                    </div>
+                                <div className='w-[70px] rounded-3xl bg-[#50b674] cursor-pointer p-[5px] text-[#fff] text-center'>
+                                    分享
                                 </div>
-                                <div className='h-[50px] rounded-3xl w-full flex'>
-                                    <div className='w-[calc(100%-95px)] mr-[15px] shadow p-[5px] h-[50px] bg-[#f9f9f9] rounded-3xl'>
-                                        <Input
-                                            ref={commentRef}
-                                            className='h-full text-[16px]'
-                                            placeholder="期待您的精彩评论"
-                                            bordered={false}
-                                        />
-                                    </div>
-                                    <Button loading={messageReplyButtonLoading} className='h-full bg-[#6790db] cursor-pointer w-[80px] rounded-3xl flex justify-center items-center text-[#fff] text-[16px]'
-                                        onClick={sendComment}>
-                                        发送
-                                    </Button>
+                            </div>
+                            <div className='h-[50px] rounded-3xl w-full flex'>
+                                <div className='w-[calc(100%-95px)] mr-[15px] shadow p-[5px] h-[50px] bg-[#f9f9f9] rounded-3xl'>
+                                    <Input
+                                        ref={commentRef}
+                                        className='h-full text-[16px]'
+                                        placeholder="期待您的精彩评论"
+                                        bordered={false}
+                                    />
                                 </div>
-                            </footer>
-                        </div>
+                                <Button loading={messageReplyButtonLoading} className='h-full bg-[#6790db] cursor-pointer w-[80px] rounded-3xl flex justify-center items-center text-[#fff] text-[16px]'
+                                    onClick={sendComment}>
+                                    发送
+                                </Button>
+                            </div>
+                        </footer>
                     </div>
-                    </Skeleton>
-                </div >
-          
+                </div>
+            </div >
         </>
     );
 }

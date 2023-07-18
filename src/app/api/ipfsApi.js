@@ -13,5 +13,12 @@ instance.interceptors.response.use(
   (err) => Promise.reject(err)
 );
 
-export const upJsonContent = (data, config) =>
-  instance.post("/pinning/pinJSONToIPFS", data, config);
+const ipfsApi = {
+    upLoadImg: (data, config) =>
+        instance.post("/pinning/pinFileToIPFS", data, config),
+
+    upJsonContent: (data, config) =>
+        instance.post("/pinning/pinJSONToIPFS", data, config)
+}
+
+export default ipfsApi;
