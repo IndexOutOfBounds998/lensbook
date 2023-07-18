@@ -22,8 +22,8 @@ export function usePost() {
         let current_locale = i18n.language
 
         let mediaObject = {
-            cover: "ipfs://" + postObj.image,
-            item: "ipfs://" + postObj.image,
+            cover: postObj.image,
+            item: postObj.image,
             type: ImageType.JPEG
         }
 
@@ -32,7 +32,7 @@ export function usePost() {
             metadata_id: uuid(),
             appId: "lenstrip",
             title: postObj.title,
-            image: "ipfs://" + postObj.image,
+            image: postObj.image,
             content: postObj.content,
             attributes: profile.attributes,
             state: postObj.state,
@@ -40,8 +40,7 @@ export function usePost() {
             mainContentFocus: "IMAGE",
             media: [mediaObject],
             tags: ["trip"],
-            name: `Post by ${profile.handle}`,
-            contentWarning: ContentWarning.NSFW,
+            name: `Post by ${profile.handle}`
         }
         const url = await execute(obj);
         if (url) {
