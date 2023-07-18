@@ -135,10 +135,6 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
     }
 
-    const { data: profile, error, loading: profileLoading } = useActiveProfile();
-
-    const { signTypedDataAsync, isLoading: typedDataLoading } = useSignTypedData();
-
     //发布评论
     const { submit: send } = useSendComment({ publication: publication });
     const sendComment = async () => {

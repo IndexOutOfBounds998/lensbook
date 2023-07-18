@@ -111,13 +111,13 @@ export default function Strategy() {
 
     const { submit: post } = usePost();
     const onSubmit = async () => {
-        if (titleRef.current && quillRef.current) {
+        if (titleRef.current && quillRef) {
             const obj = {
                 title: titleRef.current.input.value,
                 image: "ipfs://" + ipfsHash,
-                content: quillRef.current.value,
+                content: quillRef,
                 state: stateValue,
-                description: quillRef.current.value,
+                description: quillRef,
             };
             post(obj);
         }
