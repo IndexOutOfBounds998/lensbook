@@ -7,18 +7,27 @@ import {
     polygonMumbai
 } from 'wagmi/chains';
 import { useEffect } from "react";
-
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
 export default function ProfileSetting() {
     const { execute: logout, isPending } = useWalletLogout();
 
-    const { data:profile, error, loading } = useActiveProfile();
+    const { data: profile, error, loading } = useActiveProfile();
 
     const { chain, chains } = useNetwork()
+
+    const { address, isConnected } = useAccount();
+
+    const { disconnectAsync } = useDisconnect();
 
     useEffect(() => {
         if (chain) {
             if (chain.id !== polygonMumbai.id) {
                 logout()
+
+                if (isConnected) {
+                    disconnectAsync();
+                }
+
             }
         }
 
@@ -44,7 +53,7 @@ export default function ProfileSetting() {
     ]
 
     const content = () => {
-       return <div className='p-[15px] w-[300px]'>
+        return <div className='p-[15px] w-[300px]'>
             <Skeleton loading={loading} avatar paragraph={{ rows: 4 }}>
                 <div className='flex items-center mb-[20px]'>
                     <img className='w-[50px] h-[50px] cursor-pointer rounded-3xl mr-[15px]' src={profile && formatPicture(profile.picture)} />

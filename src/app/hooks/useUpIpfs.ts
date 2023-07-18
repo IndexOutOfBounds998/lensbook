@@ -15,13 +15,14 @@ export function useUpIpfs({ type }: useUpData) {
         }
     };
 
-    const execute = async ({ data }: any) => {
+    const execute = async (data: any) => {
         setLoad(true);
         const res = await ipfsApi[type](data, config);
         if (res && res.IpfsHash) {
             setUrl("ipfs://" + res.IpfsHash);
+            setLoad(false);
+            return "ipfs://" + res.IpfsHash;
         }
-        setLoad(false);
     }
 
     return {

@@ -31,6 +31,7 @@
     "i18next-browser-languagedetector": "^7.1.0",
     "lokijs": "^1.5.12",
     "macy": "^2.5.1",
+    "masonry-layout": "^4.2.2",
     "next": "13.4.9",
     "pino-pretty": "^10.0.1",
     "postcss": "8.4.25",

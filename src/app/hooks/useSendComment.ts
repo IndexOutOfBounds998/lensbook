@@ -34,7 +34,7 @@ export function useSendComment({ publication }: commentData) {
             tags: null,
             name: `Comment by ${profile.handle}`,
         }
-        await execute(obj);
+        const url = await execute(obj);
         if (url) {
             // lensClient.explore.publications()
             const lensClient = await getAuthenticatedClient();

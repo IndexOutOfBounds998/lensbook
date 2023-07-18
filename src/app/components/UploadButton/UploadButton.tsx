@@ -16,10 +16,11 @@ export default function UploadButton({ setIpfsHash }) {
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
             message.error('You can only upload JPG/PNG file!');
+            return;
         }
         const formData = new FormData();
         formData.append('file', file);
-        await execute(formData);
+        const url = await execute(formData);
         if (url) {
             const ipfsUrl = `https://ipfs.io/ipfs/${url}`;
             setIpfsHash(url);

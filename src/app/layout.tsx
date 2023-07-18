@@ -7,7 +7,6 @@ import "@/app/react-i18next/i18n";
 import LayoutHeader from "./pages/layout/Header";
 import React from "react";
 import { ALCHEMY_KEY, RB_PID } from "@/app/constants/constant"
-
 import '@rainbow-me/rainbowkit/styles.css';
 import {
   getDefaultWallets,

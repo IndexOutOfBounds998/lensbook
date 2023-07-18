@@ -11,7 +11,7 @@ import {
 } from 'wagmi/chains';
 import { useEffect } from 'react';
 import ProfileSetting from './ProfileSetting';
-
+import { getWalletClient } from '@wagmi/core'
 export default function LoginButton() {
   const { chain } = useNetwork()
 
@@ -21,14 +21,12 @@ export default function LoginButton() {
 
   const { execute: login, error: loginError, isPending: isLoginPending } = useWalletLogin();
 
-  const { isConnected } = useAccount();
+  const { address,isConnected } = useAccount();
 
   const { disconnectAsync } = useDisconnect();
 
-  const { connectAsync } = useConnect({
-    connector: new InjectedConnector(),
-  });
-
+  const { connectAsync, connectors, isLoading, pendingConnector } =useConnect();
+ 
   const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
  
@@ -49,13 +47,9 @@ export default function LoginButton() {
   }
   
   const onLoginClick = async () => {
-    if (isConnected) {
-      await disconnectAsync();
-    }
 
-    const { connector } = await connectAsync();
+    const walletClient = await getWalletClient();
 
-    const walletClient = await connector.getWalletClient();
     await login({
       address: walletClient.account.address,
     });
