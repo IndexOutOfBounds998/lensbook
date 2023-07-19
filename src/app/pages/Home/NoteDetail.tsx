@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { message, Button, notification, Spin, Skeleton } from "antd";
 import Input from "antd/es/input";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { formatNickName, formatDate } from "../../utils/FormatContent";
+import {formatNickName, formatDate, formatVideoUrl} from "../../utils/FormatContent";
 import { useTranslation } from "react-i18next";
 import { formatPicture } from '@/app/utils/utils';
 import {
@@ -19,6 +19,7 @@ import FollowButton from '@/app/components/FollowButton';
 import CollectButton from '@/app/components/CollectButton';
 import ReactionButton from '@/app/components/ReactionButton';
 import { useSendComment } from '../../hooks/useSendComment'
+import ReactPlayer from "react-player";
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
@@ -41,6 +42,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     let [show, setShow] = useState(true);
     let [bgSize, setBgSize] = useState(0);
     let [contentSize, setContentSize] = useState(0);
+    let [isVideo, setIsVideo] = useState(false);
 
     const detail = useRef<HTMLDivElement>(null);
     const imgBox = useRef<HTMLDivElement>(null);
@@ -57,6 +59,8 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     useEffect(() => {
         if (flag) {
             scaleDown();
+            setIsVideo(item.metadata.mainContentFocus === 'VIDEO')
+            console.log(item)
         }
     }, []);
 
@@ -95,14 +99,14 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     }
 
     const scaleUp = () => {
-        if (detail.current && imgBox.current) {
+        if (detail.current) {
             const detailWidth = (window.innerWidth - window.innerWidth * 0.7) / 2;
 
             detail.current.style.border = '1px solid #00000014';
             detail.current.style.boxShadow = '0 0 100px rgba(0,0,0,.1)';
             detail.current.style.transition = 'all 0.5s ease';
             detail.current.style.transform = `translate(${detailWidth}px,0) scale(1)`;
-            imgBox.current.style.backgroundPosition = '50%';
+            if (imgBox.current) imgBox.current.style.backgroundPosition = '50%';
         }
 
     }
@@ -119,7 +123,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const moreComment = () => {
         next();
     }
- 
+
     return (
         <>
             {contextHolder}
@@ -148,17 +152,26 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                         style={{
                             background: show ? 'rgba(233,245,250,0)' : '',
                             borderRadius: show ? 'none' : '1rem',
+                            alignItems: (isVideo && !show)? 'center' : '',
                         }}
                     >
-                        <div
-                            ref={imgBox}
-                            className='bg-no-repeat bg-contain h-full'
-                            style={{
-                                backgroundImage: `url(${img.src})`,
-                                width: `${bgSize}px`
-                            }}
-                        >
-                        </div>
+                        {
+                            isVideo ?
+                                <ReactPlayer
+                                    url={formatVideoUrl(item.metadata.media[0].original.url)}
+                                    controls
+                                    loop
+                                /> :
+                                <div
+                                    ref={imgBox}
+                                    className='bg-no-repeat bg-contain h-full'
+                                    style={{
+                                        backgroundImage: `url(${img.src})`,
+                                        width: `${bgSize}px`
+                                    }}
+                                >
+                                </div>
+                        }
                     </div>
                     <div
                         ref={contentBox}

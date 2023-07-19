@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4072718 */
-  src: url('iconfont.woff2?t=1688549555815') format('woff2'),
-       url('iconfont.woff?t=1688549555815') format('woff'),
-       url('iconfont.ttf?t=1688549555815') format('truetype');
+  src: url('iconfont.woff2?t=1689773247557') format('woff2'),
+       url('iconfont.woff?t=1689773247557') format('woff'),
+       url('iconfont.ttf?t=1689773247557') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-bofang:before {
+  content: "\e663";
 }
 
 .icon-zuoce-yubeifeiyong:before {

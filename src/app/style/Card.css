@@ -6,6 +6,7 @@
     height: 290px !important;
 }
 .ant-card-cover {
+    position: relative;
     max-height: 360px;
     overflow: hidden;
 }

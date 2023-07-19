@@ -61,6 +61,21 @@ export function formatPicture(picture) {
     }
 }
 
+export function formatVideoUrl(url) {
+    if (url) {
+        if (url.startsWith('ipfs://')) {
+            let result = url.substring(7, url.length)
+            return `http://lens.infura-ipfs.io/ipfs/${result}`
+        } else if (url.startsWith('ar://')) {
+            let result = url.substring(4, url.length)
+            return `http://arweave.net/${result}`
+        } else {
+            return url
+        }
+    }
+    return "";
+}
+
 
 export function formatNickName(nickname) {
     if (!nickname) {
