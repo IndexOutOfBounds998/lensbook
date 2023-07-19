@@ -8,6 +8,5 @@ import type { NextRequest } from 'next/server'
 // const { data: wallet, loading: walletLoading } = useActiveWallet();
 // const { data: profile, error, loading: profileLoading } = useActiveProfile();
 export function middleware(request: NextRequest) {
-    console.log('拦截wallet')
-    console.log('拦截profile')
+    console.log('拦截')
 }
