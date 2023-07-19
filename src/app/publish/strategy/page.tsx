@@ -114,7 +114,7 @@ export default function Strategy() {
         if (titleRef.current && quillRef) {
             const obj = {
                 title: titleRef.current.input.value,
-                image: "ipfs://" + ipfsHash,
+                image: ipfsHash,
                 content: quillRef,
                 state: stateValue,
                 description: quillRef,
