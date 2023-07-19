@@ -1,4 +1,5 @@
 import {
+    AnyPublication,
     CollectState,
     Comment,
     Post,
@@ -16,7 +17,7 @@ import { useEffect, useState } from "react";
 
 type CollectButtonProps = {
     collector: ProfileOwnedByMe;
-    publication: Post | Comment;
+    publication: Post | Comment ;
 };
 
 export default function CollectButton({ collector, publication }: CollectButtonProps) {
