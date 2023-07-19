@@ -29,6 +29,7 @@ export function useFetchPublications({
   explorePublicationRequest,
 }: useFetchPublicationsArgs) {
   const [loading, setLoading] = useState(false);
+  const [firstLoading, setFirstLoading] = useState(false);
   const [data, setData] = useState([]);
   const [nextCursor, setNextCursor] = useState('');
   const [hasMore, setHasMore] = useState(false);
@@ -36,8 +37,10 @@ export function useFetchPublications({
   const prevExplorePublicationRequest = useRef<ExplorePublicationRequest>();
 
   const execute = async () => {
+    setFirstLoading(true);
     setRequest(explorePublicationRequest);
     fetchData(setLoading, explorePublicationRequest, setData, setNextCursor, setHasMore);
+    setFirstLoading(false);
   };
 
   useEffect(() => {
@@ -96,6 +99,7 @@ export function useFetchPublications({
     hasMore,
     data,
     loading,
+    firstLoading
   };
 }
 

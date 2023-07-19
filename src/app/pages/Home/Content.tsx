@@ -52,7 +52,7 @@ export default function LayoutContent({ cardClick }) {
         sources: ['lenster', 'lenstrip', "lenstube", "orb", "buttrfly", "lensplay"]
     };
 
-    const { data, loading, hasMore, next, reset, changeFilter } = useFetchPublications({
+    const { data, loading,firstLoading, hasMore, next, reset, changeFilter } = useFetchPublications({
         explorePublicationRequest
     });
 
@@ -159,7 +159,7 @@ export default function LayoutContent({ cardClick }) {
                     options={options}
                 />
             </div>
-            {loading ? <ContentHomeLoader /> :
+            {firstLoading ? <ContentHomeLoader /> :
                 <CardList
                     cardClick={cardClick}
                     dataObj={{ data, loading, hasMore, next, reset }}
