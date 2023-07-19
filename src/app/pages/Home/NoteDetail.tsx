@@ -11,7 +11,8 @@ import {
     useComments,
     ReactionType,
     usePublication,
-    ContentPublication
+    ContentPublication,
+    Post
 } from '@lens-protocol/react-web';
 import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
 import FollowButton from '@/app/components/FollowButton';
@@ -105,19 +106,8 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         }
 
     }
-
-    //点击收藏
-    const clickCollection = () => {
-
-    }
-    //点击点赞
-    const clickLike = async () => {
-
-    }
-
     //发布评论
     const { submit: send } = useSendComment({ publication: publication });
-
 
     const sendComment = async () => {
         if (commentRef.current) {
@@ -129,12 +119,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const moreComment = () => {
         next();
     }
-
-
-    // if (publication_loading) {
-    //     return <Skeleton />;
-    // }
-
+ 
     return (
         <>
             {contextHolder}
@@ -213,7 +198,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                             className='w-full flex items-center justify-center h-[50px] mb-[20px]'
                                         >
                                             <Spin tip="Loading" size="large" />
-                                            <span className='text-[13px] ml-[15px]'>加载中</span>
+                                            <span className='text-[13px] ml-[15px]'>{t('loading')}</span>
                                         </div>
                                     }
                                     scrollableTarget='noteDetail'
@@ -223,11 +208,11 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                         style={{ borderBottom: '0.5px solid rgba(0,0,0,.1)' }}
                                     >
                                         <div className='mb-5 font-semibold text-[20px] leading-8'>
-                                            {publication && publication.metadata.title}
+                                            {publication && (publication as Post) .metadata.title}
                                         </div>
                                         <div
                                             className='text-[17px] whitespace-pre-wrap'
-                                            dangerouslySetInnerHTML={{ __html: publication && publication.metadata.content }}
+                                            dangerouslySetInnerHTML={{ __html: publication && (publication as Post).metadata.content }}
                                         >
                                         </div>
                                         <div className='mt-2 text-[14px] leading-6 text-[#33333399]'>
@@ -277,13 +262,13 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                     <Input
                                         ref={commentRef}
                                         className='h-full text-[16px]'
-                                        placeholder="期待您的精彩评论"
+                                        placeholder={t('commentsTip')}
                                         bordered={false}
                                     />
                                 </div>
                                 <Button loading={messageReplyButtonLoading} className='h-full bg-[#6790db] cursor-pointer w-[80px] rounded-3xl flex justify-center items-center text-[#fff] text-[16px]'
                                     onClick={sendComment}>
-                                    发送
+                                    {t('sendMessageBtn')}
                                 </Button>
                             </div>
                         </footer>
