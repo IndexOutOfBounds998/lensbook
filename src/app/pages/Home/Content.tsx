@@ -4,6 +4,7 @@ import { PublicationTypes, PublicationMainFocus } from '@lens-protocol/react-web
 import CardList from "../../components/CardList";
 import { PublicationSortCriteria } from '@lens-protocol/client';
 import { useFetchPublications } from '@/app/hooks/useFetchPublications';
+import ContentHomeLoader from '@/app/components/loading/ContentHomeLoader';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -118,11 +119,14 @@ export default function LayoutContent({ cardClick }) {
                     ))}
                 </Tab.List>
             </Tab.Group>
-            <CardList
-                cardClick={cardClick}
-                dataObj={{ data, loading, hasMore, next, reset }}
-            >
-            </CardList>
+            {loading ? <ContentHomeLoader /> :
+                <CardList
+                    cardClick={cardClick}
+                    dataObj={{ data, loading, hasMore, next, reset }}
+                >
+                </CardList>
+            }
+
         </div>
     )
 }
