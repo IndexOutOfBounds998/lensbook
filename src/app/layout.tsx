@@ -41,10 +41,11 @@ const wagmiConfig = createConfig({
   publicClient
 })
 
+// 'lenster', 'lenstrip', "lenstube", "orb", "buttrfly", "lensplay"
 const lensConfig: LensConfig = {
   bindings: wagmiBindings(),
   environment: MAIN_NETWORK ? production : development,
-  sources: [appId('lenster'), appId('lenstrip')],
+  sources: [appId('lenster'), appId('lenstrip'), appId('lenstube'), appId('orb'), appId('buttrfly'), appId('lensplay')],
   appId: appId('lenstrip')
 };
 
@@ -56,13 +57,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-    <head>
-      <script src="https://cdn.bootcdn.net/ajax/libs/masonry/4.2.2/masonry.pkgd.js"></script>
-    </head>
-    <body>
-    <WagmiConfig config={wagmiConfig}>
-        <RainbowKitProvider chains={chains} coolMode={true}>
-          <LensProvider config={lensConfig}>
+      <head>
+        <script src="https://cdn.bootcdn.net/ajax/libs/masonry/4.2.2/masonry.pkgd.js"></script>
+      </head>
+      <body>
+        <WagmiConfig config={wagmiConfig}>
+          <RainbowKitProvider chains={chains} coolMode={true}>
+            <LensProvider config={lensConfig}>
               <div className='min-w-[1280px] h-full'>
                 <LayoutHeader />
                 <div className='flex flex-row pt-20 h-full'>
@@ -70,10 +71,10 @@ export default function RootLayout({
                   <Analytics />
                 </div>
               </div>
-          </LensProvider>
-        </RainbowKitProvider>
-      </WagmiConfig>
-    </body>
+            </LensProvider>
+          </RainbowKitProvider>
+        </WagmiConfig>
+      </body>
     </html>
   );
 }
