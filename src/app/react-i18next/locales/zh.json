@@ -41,5 +41,9 @@
   "registerLoading":"注册中...",
   "loading":"加载中...",
   "sendMessageBtn":"发送",
-  "commentsTip":"期待您的精彩评论"
+  "commentsTip":"期待您的精彩评论",
+  "LatestSort":"最新排序",
+  "TopCollectedSort":"收藏量排序",
+  "TopCommentedSort":"评论量排序",
+  "TopMirroredSort":"转发量排序"
 }

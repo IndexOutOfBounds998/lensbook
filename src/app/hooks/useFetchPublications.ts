@@ -1,5 +1,5 @@
-import { useState, useEffect,useRef } from 'react';
-import { ExplorePublicationRequest } from '@lens-protocol/client';
+import { useState, useEffect, useRef } from 'react';
+import { ExplorePublicationRequest, PublicationSortCriteria } from '@lens-protocol/client';
 import { getAuthenticatedClient } from '../shared/getAuthenticatedClient';
 import { isEqual } from 'lodash';
 type useFetchPublicationsArgs = {
@@ -20,7 +20,7 @@ type useFetchPublicationsArgs = {
 //     publicationTypes: [PublicationTypes.Post],
 //     sources: ['lenster', 'lenstrip']
 //   };
-  
+
 //   const { data, loading, hasMore, next ,reset} = useFetchPublications({
 //     explorePublicationRequest
 //   });
@@ -29,6 +29,7 @@ export function useFetchPublications({
   explorePublicationRequest,
 }: useFetchPublicationsArgs) {
   const [loading, setLoading] = useState(false);
+  const [firstLoading, setFirstLoading] = useState(false);
   const [data, setData] = useState([]);
   const [nextCursor, setNextCursor] = useState('');
   const [hasMore, setHasMore] = useState(false);
@@ -36,14 +37,10 @@ export function useFetchPublications({
   const prevExplorePublicationRequest = useRef<ExplorePublicationRequest>();
 
   const execute = async () => {
+    setFirstLoading(true);
     setRequest(explorePublicationRequest);
-    setLoading(true);
-    const lensClient = await getAuthenticatedClient();
-    let res = await lensClient.explore.publications(explorePublicationRequest);
-    setLoading(false);
-    setData(prevData => [...prevData, ...res.items]);
-    setNextCursor(res.pageInfo.next);
-    setHasMore(res.items.length > 0);
+    fetchData(setLoading, explorePublicationRequest, setData, setNextCursor, setHasMore);
+    setFirstLoading(false);
   };
 
   useEffect(() => {
@@ -76,11 +73,34 @@ export function useFetchPublications({
     execute();
   };
 
+  async function fetchData(setLoading, request: any, setData, setNextCursor, setHasMore) {
+    setLoading(true);
+    const lensClient = await getAuthenticatedClient();
+    let res = await lensClient.explore.publications(request);
+    setLoading(false);
+    setData(prevData => [...prevData, ...res.items]);
+    setNextCursor(res.pageInfo.next);
+    setHasMore(res.items.length > 0);
+  }
+
+  const changeFilter = async (sort: PublicationSortCriteria) => {
+    request.sortCriteria = sort;
+    setRequest(request);
+    setData([]);
+   
+    fetchData(setLoading, request, setData, setNextCursor, setHasMore);
+
+  };
+
   return {
     next,
     reset,
+    changeFilter,
     hasMore,
     data,
     loading,
+    firstLoading
   };
 }
+
+

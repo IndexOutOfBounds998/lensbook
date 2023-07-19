@@ -4,9 +4,9 @@ import { PublicationTypes, PublicationMainFocus } from '@lens-protocol/react-web
 import CardList from "../../components/CardList";
 import { PublicationSortCriteria } from '@lens-protocol/client';
 import { useFetchPublications } from '@/app/hooks/useFetchPublications';
-import {Select} from "antd";
+import { Select } from "antd";
 import ContentHomeLoader from '@/app/components/loading/ContentHomeLoader';
-
+import { useTranslation } from "react-i18next";
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
@@ -14,16 +14,27 @@ function classNames(...classes) {
 export default function LayoutContent({ cardClick }) {
 
     let [categories, setCategory] = useState([]);
-    const [selectedOption, setSelectedOption] = useState('default');
+
+    const { t } = useTranslation();
+
+    const [selectedOption, setSelectedOption] = useState(PublicationSortCriteria.Latest);
 
     const options = [
         {
-            value: 'default',
-            label: '综合排序',
+            value: PublicationSortCriteria.Latest,
+            label: t('LatestSort'),
         },
         {
-            value: 'time',
-            label: '时间排序',
+            value: PublicationSortCriteria.TopCollected,
+            label: t('TopCollectedSort'),
+        },
+        {
+            value: PublicationSortCriteria.TopCommented,
+            label: t('TopCommentedSort'),
+        },
+        {
+            value: PublicationSortCriteria.TopMirrored,
+            label: t('TopMirroredSort'),
         },
     ];
 
@@ -35,13 +46,13 @@ export default function LayoutContent({ cardClick }) {
                 mainContentFocus: [PublicationMainFocus.Image, PublicationMainFocus.Video]
             })
         }),
-        sortCriteria: PublicationSortCriteria.TopCommented,
+        sortCriteria: selectedOption,
         limit: 20,
         publicationTypes: [PublicationTypes.Post],
         sources: ['lenster', 'lenstrip', "lenstube", "orb", "buttrfly", "lensplay"]
     };
 
-    const { data, loading, hasMore, next, reset } = useFetchPublications({
+    const { data, loading,firstLoading, hasMore, next, reset, changeFilter } = useFetchPublications({
         explorePublicationRequest
     });
 
@@ -51,7 +62,7 @@ export default function LayoutContent({ cardClick }) {
     }
 
     const selectChange = (value) => {
-        console.log(value)
+        changeFilter(value);
     }
 
     const onMenuOpen = (value) => {
@@ -142,19 +153,19 @@ export default function LayoutContent({ cardClick }) {
                     </Tab.List>
                 </Tab.Group>
                 <Select
-                    defaultValue="default"
+                    defaultValue={selectedOption}
                     onChange={selectChange}
                     style={{ width: 120 }}
                     options={options}
                 />
             </div>
-            {loading ? <ContentHomeLoader /> :
-                            <CardList
-                                cardClick={cardClick}
-                                dataObj={{ data, loading, hasMore, next, reset }}
-                            >
-                            </CardList>
-                        }
+            {firstLoading ? <ContentHomeLoader /> :
+                <CardList
+                    cardClick={cardClick}
+                    dataObj={{ data, loading, hasMore, next, reset }}
+                >
+                </CardList>
+            }
         </div>
     )
 }
