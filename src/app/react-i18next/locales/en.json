@@ -41,5 +41,9 @@
   "registerLoading":"Register in progress..",
   "loading":"loading...",
   "sendMessageBtn":"send",
-  "commentsTip":"Looking forward to your exciting comments"
+  "commentsTip":"Looking forward to your exciting comments",
+  "LatestSort":"LatestSort",
+  "TopCollectedSort":"TopCollectedSort",
+  "TopCommentedSort":"TopCommentedSort",
+  "TopMirroredSort":"TopMirroredSort"
 }
