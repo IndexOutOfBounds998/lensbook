@@ -1,4 +1,5 @@
 import {
+  AnyPublication,
     Comment,
     FollowOperation,
     Post,
@@ -12,7 +13,7 @@ import {
   
   type UseCollectWithSelfFundedFallbackArgs = {
     collector: ProfileOwnedByMe;
-    publication: Post | Comment;
+    publication: Post | Comment ;
   };
   
   type PossibleError = FollowOperation['error'] | SelfFundedOperation['error'];

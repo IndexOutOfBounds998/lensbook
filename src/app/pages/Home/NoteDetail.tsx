@@ -9,15 +9,15 @@ import { useTranslation } from "react-i18next";
 import { formatPicture } from '@/app/utils/utils';
 import {
     useComments,
-    useActiveProfile,
     ReactionType,
     usePublication,
+    ContentPublication,
+    Post
 } from '@lens-protocol/react-web';
 import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
 import FollowButton from '@/app/components/FollowButton';
 import CollectButton from '@/app/components/CollectButton';
 import ReactionButton from '@/app/components/ReactionButton';
-import { useSignTypedData } from 'wagmi';
 import { useSendComment } from '../../hooks/useSendComment'
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
@@ -37,38 +37,22 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const [messageReplyButtonLoading, setMessageReplyButtonLoading] = useState(false);
 
     let flag = true;
-    let [contentDetail, setContentDetail] = useState({});//帖子详情
-    //不要放到一个对象里 容易混淆 各自负责各自的职责
-
-    let [isCollectionStatus, setIsCollected] = useState(false);//是否收藏
-    let [isFavouriteStatus, setIsFavourite] = useState(false);//是否点赞
-    let [favouriteCount, setFavouriteCount] = useState(0);//点赞数
-    let [collectionCount, setCollectionCount] = useState(0);//收藏数
 
     let [show, setShow] = useState(true);
     let [bgSize, setBgSize] = useState(0);
     let [contentSize, setContentSize] = useState(0);
-    let [commentPage, setCommentPage] = useState([]);
 
-    const detail = useRef();
-    const imgBox = useRef();
-    const contentBox = useRef();
-    const commentRef = useRef();
+    const detail = useRef<HTMLDivElement>(null);
+    const imgBox = useRef<HTMLDivElement>(null);
+    const contentBox = useRef<HTMLDivElement>(null);
+    const commentRef = useRef(null);
 
 
-    const appendReplyRef = useRef(null);
 
     const { data: comments, loading: commentsLoading, hasMore, next } = useComments({
         commentsOf: item.id,
         limit: 10,
     });
-
-    const Icon = (item) => (
-        <div className='flex items-center' style={{ color: item.color }}>
-            <i className={`iconfont icon-${item.icon} cursor-pointer text-[25px] mr-3`} />
-            <span className='font-bold'>{item.text}</span>
-        </div>
-    );
 
     useEffect(() => {
         if (flag) {
@@ -76,9 +60,6 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         }
     }, []);
 
-    useEffect(() => {
-        setCommentPage(comments || [])
-    }, [comments]);
 
     useEffect(() => {
         if (card && flag) {
@@ -125,38 +106,20 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         }
 
     }
-
-    //点击收藏
-    const clickCollection = () => {
-
-    }
-    //点击点赞
-    const clickLike = async () => {
-
-    }
-
     //发布评论
     const { submit: send } = useSendComment({ publication: publication });
+
     const sendComment = async () => {
-        send(commentRef.current.input.value);
+        if (commentRef.current) {
+            send(commentRef.current.input.value);
+        }
     }
 
     //加载更多评论
     const moreComment = () => {
-
+        next();
     }
-
-    const operate = [
-        { icon: 'icon-message', text: contentDetail.commentCount || 0, color: '#3c82f6' },
-        { icon: isFavouriteStatus ? 'heart-fill' : 'heart', text: favouriteCount, color: '#ff2442', onClick: clickLike },
-        { icon: isCollectionStatus ? 'star-fill' : 'star', text: collectionCount, color: '#ec4899', onClick: clickCollection }
-    ];
-
-
-    // if (publication_loading) {
-    //     return <Skeleton />;
-    // }
-
+ 
     return (
         <>
             {contextHolder}
@@ -218,55 +181,56 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
                             <WhenLoggedInWithProfile>
                                 {({ profile }) => {
-                                   return publication_loading ? '' : <FollowButton followee={publication && publication.profile} follower={profile}/>
+                                    return publication_loading ? '' : <FollowButton followee={publication && publication.profile} follower={profile} />
                                 }}
                             </WhenLoggedInWithProfile>
 
 
                         </div>
-                        <div id='noteDetail' className='h-[calc(100%-81px)] overflow-auto'>
-                            <InfiniteScroll
-                                dataLength={commentPage.length}
-                                next={moreComment}
-                                hasMore={hasMore}
-                                loader={
-                                    <div
-                                        className='w-full flex items-center justify-center h-[50px] mb-[20px]'
-                                    >
-                                        <Spin tip="Loading" size="large" />
-                                        <span className='text-[13px] ml-[15px]'>加载中</span>
-                                    </div>
-                                }
-                                scrollableTarget='noteDetail'
-                            >
-                                <div
-                                    className='mx-[30px] pb-[30px] pt-[10px]'
-                                    style={{ borderBottom: '0.5px solid rgba(0,0,0,.1)' }}
-                                >
-                                    <div className='mb-5 font-semibold text-[20px] leading-8'>
-                                        {publication && publication.metadata.title && publication && publication.metadata.title}
-                                    </div>
-                                    <div
-                                        className='text-[17px] whitespace-pre-wrap'
-                                        dangerouslySetInnerHTML={{ __html: publication && publication.metadata.content && publication && publication.metadata.content }}
-                                    >
-                                    </div>
-                                    <div className='mt-2 text-[14px] leading-6 text-[#33333399]'>
-                                        {formatDate(publication && publication.createdAt)}
-                                    </div>
-                                </div>
-                                <div className='px-[30px] py-[20px]'>
-                                    <div className='mt-[16px]'>
-                                        <Comment
-                                            ref={appendReplyRef}
-                                            item={commentPage}
-                                            total={item.stats ? item.stats.totalAmountOfComments : 0}
+                        <Skeleton loading={commentsLoading}>
+                            <div id='noteDetail' className='h-[calc(100%-81px)] overflow-auto'>
+                                <InfiniteScroll
+                                    dataLength={commentsLoading ? 0 : comments.length}
+                                    next={moreComment}
+                                    hasMore={hasMore}
+                                    loader={
+                                        <div
+                                            className='w-full flex items-center justify-center h-[50px] mb-[20px]'
                                         >
-                                        </Comment>
+                                            <Spin tip="Loading" size="large" />
+                                            <span className='text-[13px] ml-[15px]'>{t('loading')}</span>
+                                        </div>
+                                    }
+                                    scrollableTarget='noteDetail'
+                                >
+                                    <div
+                                        className='mx-[30px] pb-[30px] pt-[10px]'
+                                        style={{ borderBottom: '0.5px solid rgba(0,0,0,.1)' }}
+                                    >
+                                        <div className='mb-5 font-semibold text-[20px] leading-8'>
+                                            {publication && (publication as Post) .metadata.title}
+                                        </div>
+                                        <div
+                                            className='text-[17px] whitespace-pre-wrap'
+                                            dangerouslySetInnerHTML={{ __html: publication && (publication as Post).metadata.content }}
+                                        >
+                                        </div>
+                                        <div className='mt-2 text-[14px] leading-6 text-[#33333399]'>
+                                            {formatDate(publication && publication.createdAt)}
+                                        </div>
                                     </div>
-                                </div>
-                            </InfiniteScroll>
-                        </div>
+                                    <div className='px-[30px] py-[20px]'>
+                                        <div className='mt-[16px]'>
+                                            <Comment
+                                                item={comments}
+                                                total={item.stats ? item.stats.totalAmountOfComments : 0}
+                                            >
+                                            </Comment>
+                                        </div>
+                                    </div>
+                                </InfiniteScroll>
+                            </div>
+                        </Skeleton>
                         <footer
                             className='border-t fixed bottom-[0] bg-white py-[10px] px-[30px]'
                             style={{ width: `${contentSize}px` }}
@@ -276,14 +240,14 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
                                 <WhenLoggedInWithProfile>
                                     {({ profile }) => {
-                                        return publication_loading ? '' : <ReactionButton publication={publication} profileId={profile.id}
-                                                        reactionType={ReactionType.UPVOTE}/>
+                                        return publication_loading ? '' : <ReactionButton publication={publication as ContentPublication} profileId={profile.id}
+                                            reactionType={ReactionType.UPVOTE} />
                                     }}
                                 </WhenLoggedInWithProfile>
 
                                 <WhenLoggedInWithProfile>
                                     {({ profile }) => {
-                                        return publication_loading ? '' : <CollectButton collector={profile} publication={publication}/>
+                                        return publication_loading ? '' : <CollectButton collector={profile} publication={publication as ContentPublication} />
                                     }}
                                 </WhenLoggedInWithProfile>
 
@@ -298,13 +262,13 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                     <Input
                                         ref={commentRef}
                                         className='h-full text-[16px]'
-                                        placeholder="期待您的精彩评论"
+                                        placeholder={t('commentsTip')}
                                         bordered={false}
                                     />
                                 </div>
                                 <Button loading={messageReplyButtonLoading} className='h-full bg-[#6790db] cursor-pointer w-[80px] rounded-3xl flex justify-center items-center text-[#fff] text-[16px]'
                                     onClick={sendComment}>
-                                    发送
+                                    {t('sendMessageBtn')}
                                 </Button>
                             </div>
                         </footer>
