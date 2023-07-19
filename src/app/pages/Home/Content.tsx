@@ -21,7 +21,7 @@ export default function LayoutContent({ cardClick }) {
                 mainContentFocus: [PublicationMainFocus.Image, PublicationMainFocus.Video]
             })
         }),
-        sortCriteria: PublicationSortCriteria.Latest,
+        sortCriteria: PublicationSortCriteria.TopCommented,
         limit: 20,
         publicationTypes: [PublicationTypes.Post],
         sources: ['lenster', 'lenstrip', "lenstube", "orb", "buttrfly", "lensplay"]
