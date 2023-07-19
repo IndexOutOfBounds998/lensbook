@@ -43,6 +43,7 @@ export function formatPicture(picture) {
                     return picture.original.cover
                 }
             }
+            return "/cover.png";
         } else {
             if (picture.original.url.startsWith('ipfs://')) {
                 let result = picture.original.url.substring(7, picture.original.url.length)
