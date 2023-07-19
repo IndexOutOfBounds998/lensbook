@@ -43,14 +43,6 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
     const avatarLoad = async () => {
         const url = formatPicture(item.profile.picture);
         setAvatarImg(url);
-        // let imgObj = new Image();
-        // imgObj.src = url;
-        // imgObj.onload = () => {
-        //     setAvatarImg(url);
-        // }
-        // imgObj.onerror = () => {
-        //     setAvatarImg('');
-        // }
     }
 
     return (
@@ -72,7 +64,6 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
                         height={300}
                         src={contentImg && contentImg}
                         onLoadingComplete={(img) => {
-                            console.log(img.naturalWidth);
                             setImgInfo(img);
                             setImgLoad(false);
                             cardPosition(img, index)

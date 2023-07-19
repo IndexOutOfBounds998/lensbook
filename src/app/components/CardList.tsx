@@ -7,7 +7,19 @@ import { SyncOutlined } from '@ant-design/icons';
 
 // import Macy from 'macy';
 // @ts-ignore
-const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, dataObj }, ref) => {
+interface CardListProps {
+    cardClick: any;
+    dataObj: {
+        data: any[];
+        loading: boolean;
+        hasMore: boolean;
+        next: () => Promise<void>;
+        reset: () => Promise<void>;
+    };
+    children?: React.ReactNode; // 添加这一行
+}
+
+const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => {
 
     let [cardList, setCardList, cardListRef] = useState([]);
 
@@ -26,10 +38,6 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
     const cards = useRef({
         offsetWidth: undefined
     });
-
-    React.useImperativeHandle(ref, () => ({
-        handleScroll: handleScroll,
-    }));
 
     const bodyWidth = () => {
         // const cardsList = document.getElementsByClassName('scrollableDiv')[0];
@@ -52,12 +60,12 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
     const macyInfo = () => {
         if (typeof window !== 'undefined') {
             let elem = document.querySelector('.scrollableDiv');
-            let msnry = new Masonry( elem, {
+            let msnry = new Masonry(elem, {
                 // options
                 itemSelector: '.CardAnt',
                 columnWidth: cardWidth,
             });
-            let msnry2 = new Masonry( '.scrollableDiv', {
+            let msnry2 = new Masonry('.scrollableDiv', {
                 gutter: 20
             });
         }
@@ -147,7 +155,7 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
                 <FloatButton
                     icon={<SyncOutlined />}
                     onClick={() => {
-                       dataObj.reset()
+                        dataObj.reset()
                     }}
                 />
                 <FloatButton.BackTop
@@ -157,9 +165,6 @@ const LayoutContent = React.forwardRef(({ cardClick, searchParam, setParam, data
             </FloatButton.Group>
         </>
     )
-});
+};
 
-
-LayoutContent.displayName = 'LayoutContent';
-
-export default LayoutContent;
+export default CardList;
