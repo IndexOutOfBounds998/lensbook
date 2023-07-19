@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { formatPicture, formatNickName } from "../utils/FormatContent"
 import { Card, message, Skeleton } from 'antd';
 import '../style/Card.css'
-import { AUTHORIZE_PREFIX } from "../constants/constant";
 import { useTranslation } from "react-i18next";
+import NextImage from 'next/image'
 // @ts-ignore
 export default function CardAnt({ item, index, cardClick, width, position, cardPosition }: {
     item: any,
@@ -17,7 +17,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
     const imgRef = useRef();
     const { t } = useTranslation();
     const [messageApi, contextHolder] = message.useMessage();
-    let [contentImg, setContentImg] = useState('');
+    let [contentImg, setContentImg] = useState('/cover.png');
     let [contentItem, setContentItem] = useState({
         content: undefined,
         favouriteCount:undefined
@@ -33,18 +33,8 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
             setFavouriteStatus(false)
             const imageUrl = formatPicture(item.metadata.media[0])
             if (imageUrl) {
-                let img = new Image();
-                img.src = imageUrl;
-                img.onload = () => {
-                    setContentImg(img.src);
-                    setImgInfo(img);
-                    setImgLoad(false);
-                    cardPosition(img, index)
-                }
-                img.onerror = () => {
-                    setImgInfo(img);
-                    cardPosition({ width: 194, height: 195 }, index);
-                }
+                setContentImg(imageUrl);
+                setImgLoad(false);
             }
             avatarLoad();
         }
@@ -52,29 +42,16 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
 
     const avatarLoad = async () => {
         const url = formatPicture(item.profile.picture);
-        let imgObj = new Image();
-        imgObj.src = url;
-        imgObj.onload = () => {
-            setAvatarImg(url);
-        }
-        imgObj.onerror = () => {
-            setAvatarImg('');
-        }
+        setAvatarImg(url);
+        // let imgObj = new Image();
+        // imgObj.src = url;
+        // imgObj.onload = () => {
+        //     setAvatarImg(url);
+        // }
+        // imgObj.onerror = () => {
+        //     setAvatarImg('');
+        // }
     }
-
-    const isLogin = () => {
-        const jwt = localStorage.getItem(AUTHORIZE_PREFIX);
-        if (jwt) return true;
-        else {
-            messageApi.open({
-                type: 'error',
-                content: t('loginError'),
-            });
-            return false
-        }
-    }
-
-
 
     return (
         <Card
@@ -86,11 +63,20 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
             }}
             cover={
                 <>
-                    <img
+                    <NextImage
                         ref={imgRef}
                         className='w-full'
                         alt="example"
+                        loading='lazy'
+                        width={width}
+                        height={300}
                         src={contentImg && contentImg}
+                        onLoadingComplete={(img) => {
+                            console.log(img.naturalWidth);
+                            setImgInfo(img);
+                            setImgLoad(false);
+                            cardPosition(img, index)
+                        }}
                         style={{ display: imgLoad ? 'none' : 'block' }}
                     />
                     {imgLoad ? <Skeleton.Image className='w-full' active={true} /> : ''}

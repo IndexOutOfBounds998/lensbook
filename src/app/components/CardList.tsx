@@ -54,18 +54,7 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
     }
 
     const cardPosition = (img: { height: number, width: number }, index: number) => {
-        const imgObj = imgSizeRef.current;
-        imgObj[index] = {
-            height: img.height,
-            width: img.width,
-        };
-        if (cardListRef.current.length === Object.keys(imgObj).length) {
-            setImgSize(imgObj)
-            setTimeout(() => (macyInfo()), 500)
-        }
-
         macyInfo()
-
     }
 
     const macyInfo = () => {
