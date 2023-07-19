@@ -38,5 +38,8 @@
   "collectSuccess":"collect success",
   "unlike":"unlike",
   "register":"register",
-  "registerLoading":"Register in progress.."
+  "registerLoading":"Register in progress..",
+  "loading":"loading...",
+  "sendMessageBtn":"send",
+  "commentsTip":"Looking forward to your exciting comments"
 }
