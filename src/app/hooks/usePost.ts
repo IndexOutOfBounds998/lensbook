@@ -1,5 +1,4 @@
 import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
 import { useUpIpfs } from "./useUpIpfs";
 import { getAuthenticatedClient } from "../shared/getAuthenticatedClient";
 import { useSignTypedData } from "wagmi";
@@ -8,17 +7,20 @@ import {
     ReferencePolicyType, ContentFocus, ImageType
 } from '@lens-protocol/react-web';
 import { uuid } from "@walletconnect/legacy-utils";
-
+import { useState } from "react";
 
 export function usePost() {
     const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
     const { signTypedDataAsync, isLoading: typedDataLoading } = useSignTypedData();
 
-    const { execute, loading, url } = useUpIpfs({ type: 'upJsonContent' });
+    const { execute, loading: uploadLoading, url } = useUpIpfs({ type: 'upJsonContent' });
+
+    const [loading, setLoading] = useState(false);
 
     const submit = async (postObj) => {
 
+        setLoading(true);
         let current_locale = i18n.language
 
         let mediaObject = {
@@ -80,8 +82,9 @@ export function usePost() {
                     `Transaction was successfuly broadcasted with txId ${broadcastResultValue.txId}`
                 );
             }
+            setLoading(false);
         }
     }
 
-    return { submit }
+    return { submit, loading }
 }

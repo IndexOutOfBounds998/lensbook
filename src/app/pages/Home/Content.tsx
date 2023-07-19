@@ -5,7 +5,6 @@ import CardList from "../../components/CardList";
 import { PublicationSortCriteria } from '@lens-protocol/client';
 import { useFetchPublications } from '@/app/hooks/useFetchPublications';
 import { Select } from "antd";
-import ContentHomeLoader from '@/app/components/loading/ContentHomeLoader';
 import { useTranslation } from "react-i18next";
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -52,7 +51,7 @@ export default function LayoutContent({ cardClick }) {
         sources: ['lenster', 'lenstrip', "lenstube", "orb", "buttrfly", "lensplay"]
     };
 
-    const { data, loading,firstLoading, hasMore, next, reset, changeFilter } = useFetchPublications({
+    const { data, loading, firstLoading, hasMore, next, reset, changeFilter } = useFetchPublications({
         explorePublicationRequest
     });
 
@@ -159,13 +158,13 @@ export default function LayoutContent({ cardClick }) {
                     options={options}
                 />
             </div>
-            {firstLoading ? <ContentHomeLoader /> :
+           
                 <CardList
                     cardClick={cardClick}
                     dataObj={{ data, loading, hasMore, next, reset }}
                 >
                 </CardList>
-            }
+          
         </div>
     )
 }

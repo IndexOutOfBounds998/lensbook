@@ -2,8 +2,7 @@ import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useUpIpfs } from "../../hooks/useUpIpfs";
 import { Upload, message } from 'antd';
 import { useState } from 'react';
-import { IPFS_API_KEY } from "../../constants/constant";
-
+import NextImage from 'next/image';
 export default function UploadButton({ setIpfsHash }) {
 
     const [loading, setLoading] = useState(false);
@@ -22,14 +21,9 @@ export default function UploadButton({ setIpfsHash }) {
         formData.append('file', file);
         const url = await execute(formData);
         if (url) {
-            const ipfsUrl = `https://ipfs.io/ipfs/${url}`;
+            const ipfsUrl = `https://lens.infura-ipfs.io/ipfs/${url.replace("ipfs://", '')}`;
             setIpfsHash(url);
-            let img = new Image();
-            img.src = url;
-            img.onload = () => {
-                setImageUrl(ipfsUrl);
-                // if (setSize) setSize(img)
-            }
+            setImageUrl(ipfsUrl);
             setLoading(false);
         }
         return isJpgOrPng;
@@ -57,9 +51,12 @@ export default function UploadButton({ setIpfsHash }) {
                 beforeUpload={beforeUpload}
             >
                 {imageUrl ? (
-                    <img
+                    <NextImage
                         src={imageUrl}
-                        alt="avatar"
+                        loading='eager'
+                        width={400}
+                        height={400}
+                        alt={imageUrl}
                         style={{
                             width: '100%',
                         }}

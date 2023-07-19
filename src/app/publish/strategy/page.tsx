@@ -9,8 +9,7 @@ import { usePost } from '../../hooks/usePost'
 const { TextArea } = Input;
 // @ts-ignore
 export default function Strategy() {
-    const [sumbitButtonLoading, setSumbitButtonLoading] = useState(false);
-
+   
     const btnClass =
         "w-[80px] inline-block mr-[80px] text-center font-bold text-[#fff] rounded p-2 cursor-pointer";
 
@@ -109,7 +108,7 @@ export default function Strategy() {
         setIsModalOpen(true);
     };
 
-    const { submit: post } = usePost();
+    const { submit: post ,loading} = usePost();
     const onSubmit = async () => {
         if (titleRef.current && quillRef) {
             const obj = {
@@ -190,7 +189,7 @@ export default function Strategy() {
                                 收藏设置
                             </Button>
                             <Button
-                                loading={sumbitButtonLoading}
+                                loading={loading}
                                 className={`${btnClass} bg-[blueviolet] h-[39px]`}
                                 onClick={onSubmit}
                             >

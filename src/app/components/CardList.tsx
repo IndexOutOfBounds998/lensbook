@@ -4,7 +4,7 @@ import useState from 'react-usestateref'
 import CardAnt from './CardAnt'
 import { FloatButton, Spin } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
-
+import ContentHomeLoader from '@/app/components/loading/ContentHomeLoader';
 // import Macy from 'macy';
 // @ts-ignore
 interface CardListProps {
@@ -35,9 +35,8 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
 
     let [isMax, setIsMax, isMaxRef] = useState(false);
 
-    const cards = useRef({
-        offsetWidth: undefined
-    });
+    const cards = useRef<HTMLElement>(null);
+    
 
     const bodyWidth = () => {
         // const cardsList = document.getElementsByClassName('scrollableDiv')[0];
@@ -54,7 +53,18 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
     }
 
     const cardPosition = (img: { height: number, width: number }, index: number) => {
+        const imgObj = imgSizeRef.current;
+        imgObj[index] = {
+            height: img.height,
+            width: img.width,
+        };
+        if (cardListRef.current.length === Object.keys(imgObj).length) {
+            setImgSize(imgObj)
+            setTimeout(() => (macyInfo()), 500)
+        }
+
         macyInfo()
+
     }
 
     const macyInfo = () => {
@@ -106,6 +116,7 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
 
     //滚动监听
     function handleScroll(e) {
+        console.log('handleScroll triggered');
         if (!isLoadingRef.current && !isMaxRef.current) {
             const top = e.target.scrollTop;
             const height = e.target.clientHeight;
@@ -120,19 +131,22 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
     return (
         <>
             <div className='h-[calc(100%-68px)] overflow-auto' onScroll={handleScroll}>
-                <div ref={cards} id='scrollableDiv' className='scrollableDiv w-full flex justify-between flex-wrap'>
-                    {cardListRef.current.map((item, index) => (
-                        <CardAnt
-                            className='CardAnt'
-                            key={index}
-                            item={item}
-                            index={index}
-                            cardClick={cardClick}
-                            width={cardWidthRef.current}
-                            cardPosition={cardPosition}
-                        />
-                    ))}
-                </div>
+
+                {dataObj.loading ? <ContentHomeLoader /> :
+                    <div ref={cards} id='scrollableDiv' className='scrollableDiv w-full flex justify-between flex-wrap'>
+                        {cardListRef.current.map((item, index) => (
+                            <CardAnt
+                                className='CardAnt'
+                                key={index}
+                                item={item}
+                                index={index}
+                                cardClick={cardClick}
+                                width={cardWidthRef.current}
+                                cardPosition={cardPosition}
+                            />
+                        ))}
+                    </div>
+                }
                 {isMax ? '' :
                     <div
                         className='w-full flex items-center justify-center h-[50px] mb-[20px]'

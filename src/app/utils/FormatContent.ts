@@ -35,10 +35,10 @@ export function formatPicture(picture) {
             if (picture.original.cover) {
                 if (picture.original.cover.startsWith('ipfs://')) {
                     let result = picture.original.cover.substring(7, picture.original.cover.length)
-                    return `http://lens.infura-ipfs.io/ipfs/${result}`
+                    return `https://lens.infura-ipfs.io/ipfs/${result}`.replace('ipfs://', '');
                 } else if (picture.original.cover.startsWith('ar://')) {
                     let result = picture.original.cover.substring(4, picture.original.cover.length)
-                    return `http://arweave.net/${result}`
+                    return `https://arweave.net/${result}`
                 } else {
                     return picture.original.cover
                 }
@@ -47,10 +47,10 @@ export function formatPicture(picture) {
         } else {
             if (picture.original.url.startsWith('ipfs://')) {
                 let result = picture.original.url.substring(7, picture.original.url.length)
-                return `http://lens.infura-ipfs.io/ipfs/${result}`
+                return `https://lens.infura-ipfs.io/ipfs/${result}`.replace('ipfs://', '');
             } else if (picture.original.url.startsWith('ar://')) {
                 let result = picture.original.url.substring(4, picture.original.url.length)
-                return `http://arweave.net/${result}`
+                return `https://arweave.net/${result}`
             } else {
                 return picture.original.url
             }
