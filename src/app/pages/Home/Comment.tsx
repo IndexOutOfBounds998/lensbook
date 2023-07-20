@@ -11,8 +11,8 @@ import { FC } from "react";
 interface CommentArgs {
     item: Comment[];
     total: number;
-    children?: React.ReactNode; 
-  }
+    children?: React.ReactNode;
+}
 const Comment: React.FC<CommentArgs> = (({ item, total }) => {
 
     return (
@@ -25,7 +25,7 @@ const Comment: React.FC<CommentArgs> = (({ item, total }) => {
                     </div>
                     <div className="ml-[12px] flex flex-col w-full">
                         <span className="leading-[18px] text-[#33333399]">
-                            {formatNickName(item.profile.name)}
+                            {item.profile.name ? item.profile.name : formatNickName(item.profile.handle)}
                         </span>
                         <div className="text-[#333333] mt-[7px] leading-[22px]">
                             {item.metadata.content}

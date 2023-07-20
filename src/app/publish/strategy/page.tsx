@@ -2,7 +2,7 @@
 // import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 // import '../../style/ReactQuill.css';
-import UploadButton from "../../components/UploadButton/UploadButton";
+import UploadButton from "../../components/button/UploadButton";
 import { Radio, Input, Button } from 'antd';
 import React, { useEffect, useRef, useState } from "react";
 import { usePost } from '../../hooks/usePost'

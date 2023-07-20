@@ -2,7 +2,6 @@ import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useUpIpfs } from "../../hooks/useUpIpfs";
 import { Upload, message } from 'antd';
 import { useState } from 'react';
-import { IPFS_API_KEY } from "../../constants/constant";
 
 export default function UploadButton({ setIpfsHash }) {
 

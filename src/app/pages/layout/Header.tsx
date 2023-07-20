@@ -1,14 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Popover } from "antd";
 import logo from '../../../assets/logo192.png'
 import ProfileSetting from "@/app/components/ProfileSetting";
-import LoginButton from "@/app/components/LoginButton";
+import LoginButton from "@/app/components/button/LoginButton";
 import Search from "./Search";
 import { useActiveProfile } from '@lens-protocol/react-web';
 import { useActiveWallet } from '@lens-protocol/react-web';
-import { formatPicture } from "@/app/utils/utils";
-import RegisterButton from "@/app/components/RegisterButton";
+import RegisterButton from "@/app/components/button/RegisterButton";
 export default function Header({ }) {
 
     const { data: wallet, loading } = useActiveWallet();

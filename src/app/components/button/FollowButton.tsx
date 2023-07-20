@@ -4,17 +4,27 @@ import {
     useUnfollow,
 } from '@lens-protocol/react-web';
 import { message, Button } from "antd";
-import { useFollowWithSelfFundedFallback } from '../hooks/useFollowWithSelfFundedFallback';
+import { useFollowWithSelfFundedFallback } from '@/app/hooks/useFollowWithSelfFundedFallback';
 import { useTranslation } from "react-i18next";
 type FollowButtonProps = {
     follower: ProfileOwnedByMe;
     followee: Profile;
 };
 
+
 export default function FollowButton({ followee, follower }: FollowButtonProps) {
-    
+
     const [messageApi, contextHolder] = message.useMessage();
+
     const { t } = useTranslation();
+
+    const {
+        execute: unfollow,
+        error: unfollowError,
+        isPending: isUnfollowPending,
+    } = useUnfollow({ follower, followee });
+
+
     const {
         execute: follow,
         error: followError,
@@ -24,12 +34,10 @@ export default function FollowButton({ followee, follower }: FollowButtonProps) 
         follower,
     });
 
-    const {
-        execute: unfollow,
-        error: unfollowError,
-        isPending: isUnfollowPending,
-    } = useUnfollow({ follower, followee });
-
+   
+    if (followee.id === follower.id) {
+        return null;
+    }
     //cant follow self
     if (followee.id === follower.id) {
         return null;
@@ -39,8 +47,6 @@ export default function FollowButton({ followee, follower }: FollowButtonProps) 
     if (followee.followStatus === null) {
         return null;
     }
-
-
 
     if (followee.followStatus.isFollowedByMe) {
 

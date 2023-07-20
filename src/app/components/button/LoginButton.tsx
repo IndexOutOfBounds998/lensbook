@@ -1,6 +1,5 @@
 import { useWalletLogin, useActiveProfile } from '@lens-protocol/react-web';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
-import { InjectedConnector } from 'wagmi/connectors/injected';
 import { Button } from 'antd';
 import { useTranslation } from "react-i18next";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
@@ -10,7 +9,7 @@ import {
   polygonMumbai
 } from 'wagmi/chains';
 import { useEffect } from 'react';
-import ProfileSetting from './ProfileSetting';
+import ProfileSetting from '@/app/components/ProfileSetting';
 import { getWalletClient } from '@wagmi/core'
 export default function LoginButton() {
   const { chain } = useNetwork()
