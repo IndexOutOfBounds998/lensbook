@@ -152,7 +152,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                         style={{
                             background: show ? 'rgba(233,245,250,0)' : '',
                             borderRadius: show ? 'none' : '1rem',
-                            width: `${bgSize}px`
+                            width: `${bgSize}px`,
                             alignItems: (isVideo && !show) ? 'center' : '',
                         }}
                     >
