@@ -1,12 +1,11 @@
 import user from '../../../assets/user.jpg'
 import Comment from "./Comment";
 import React, { useEffect, useRef, useState } from "react";
-import { message, Button, notification, Spin, Skeleton } from "antd";
+import {message, Button, notification, Spin, Skeleton, Carousel} from "antd";
 import Input from "antd/es/input";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {formatNickName, formatDate, formatVideoUrl} from "../../utils/FormatContent";
+import {formatNickName, formatDate, formatVideoUrl, formatPicture} from "../../utils/FormatContent";
 import { useTranslation } from "react-i18next";
-import { formatPicture } from '@/app/utils/utils';
 import {
     useComments,
     ReactionType,
@@ -20,6 +19,7 @@ import CollectButton from '@/app/components/CollectButton';
 import ReactionButton from '@/app/components/ReactionButton';
 import { useSendComment } from '../../hooks/useSendComment'
 import ReactPlayer from "react-player";
+import '../../style/Carousel.css'
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
@@ -39,15 +39,18 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
     let flag = true;
 
+    let [carouselList, setCarouselList] = useState([]);
     let [show, setShow] = useState(true);
     let [bgSize, setBgSize] = useState(0);
     let [contentSize, setContentSize] = useState(0);
     let [isVideo, setIsVideo] = useState(false);
+    let [carouselIndex, setCarouselIndex] = useState(1);
 
     const detail = useRef<HTMLDivElement>(null);
     const imgBox = useRef<HTMLDivElement>(null);
     const contentBox = useRef<HTMLDivElement>(null);
     const commentRef = useRef(null);
+    const carouselRef = useRef<HTMLDivElement>(null);
 
 
 
@@ -60,7 +63,8 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         if (flag) {
             scaleDown();
             setIsVideo(item.metadata.mainContentFocus === 'VIDEO')
-            console.log(item)
+            console.log(item.metadata.media)
+            setCarouselList(item.metadata.media)
         }
     }, []);
 
@@ -68,18 +72,20 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     useEffect(() => {
         if (card && flag) {
             flag = false;
-            setShow(false)
             setTimeout(() => {
-                if (contentBox.current) {
-                    setContentSize(contentBox.current.offsetWidth)
+                if (detail.current) {
+                    setShow(false)
                     scaleUp();
                 }
             }, 100)
         }
     }, [card]);
 
-    const scaleDown = () => {
+    useEffect(() => {
+        setContentSize(window.innerWidth * 0.7 - bgSize);
+    }, [bgSize])
 
+    const scaleDown = () => {
         if (!img) {
             return
         }
@@ -101,7 +107,6 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const scaleUp = () => {
         if (detail.current) {
             const detailWidth = (window.innerWidth - window.innerWidth * 0.7) / 2;
-
             detail.current.style.border = '1px solid #00000014';
             detail.current.style.boxShadow = '0 0 100px rgba(0,0,0,.1)';
             detail.current.style.transition = 'all 0.5s ease';
@@ -148,35 +153,78 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                     }}
                 >
                     <div
-                        className='w-[auto] bg-[#f8f8f8] flex'
+                        className='w-[auto] bg-[#f8f8f8] relative'
                         style={{
                             background: show ? 'rgba(233,245,250,0)' : '',
                             borderRadius: show ? 'none' : '1rem',
-                            alignItems: (isVideo && !show)? 'center' : '',
+                            width: `${bgSize}px`
                         }}
                     >
+                        <Carousel
+                            ref={carouselRef}
+                            className='h-full'
+                            afterChange={(val) => (setCarouselIndex(val + 1))}
+                        >
+                            {
+                                carouselList.map((item, index) => (
+                                    <div
+                                        className={`note-detail-content h-full flex ${(isVideo && !show)? 'items-center' : ''}`}
+                                    >
+                                        {
+                                            isVideo ?
+                                                <ReactPlayer
+                                                    key={index}
+                                                    url={formatVideoUrl(item.original.url)}
+                                                    controls
+                                                    loop
+                                                    width='100%'
+                                                    height='100%'
+                                                />
+                                                :
+                                                <div
+                                                    ref={imgBox}
+                                                    key={index}
+                                                    className='bg-no-repeat bg-contain h-full'
+                                                    style={{
+                                                        backgroundImage: `url(${formatPicture(item)})`,
+                                                        width: `${bgSize}px`
+                                                    }}
+                                                >
+                                                </div>
+                                        }
+                                    </div>
+                                ))
+                            }
+                        </Carousel>
                         {
-                            isVideo ?
-                                <ReactPlayer
-                                    url={formatVideoUrl(item.metadata.media[0].original.url)}
-                                    controls
-                                    loop
-                                /> :
-                                <div
-                                    ref={imgBox}
-                                    className='bg-no-repeat bg-contain h-full'
-                                    style={{
-                                        backgroundImage: `url(${img.src})`,
-                                        width: `${bgSize}px`
-                                    }}
-                                >
+                            carouselList.length > 1 ?
+                            <>
+                                <div className='absolute top-[20px] right-[30px] h-[25px] rounded-xl bg-[#33333399] px-[10px] py-[5px] flex items-center'>
+                                <span className='text-[#fff]'>
+                                  {
+                                    `${carouselIndex}/${carouselList.length}`
+                                  }
+                                </span>
                                 </div>
+                                <div
+                                    className='absolute top-[calc(50%-20px)] flex left-[20px] bg-[#fff] rounded-3xl w-[40px] h-[40px] cursor-pointer items-center border-[2px] justify-center'
+                                    onClick={() => (carouselRef.current.prev())}
+                                >
+                                    <i className={`iconfont icon-icon-left text-[20px]`} />
+                                </div>
+                                <div
+                                    className='absolute top-[calc(50%-20px)] flex right-[20px] bg-[#fff] rounded-3xl w-[40px] h-[40px] cursor-pointer items-center border-[2px] justify-center'
+                                    onClick={() => (carouselRef.current.next())}
+                                >
+                                    <i className={`iconfont icon-icon-right text-[20px]`} />
+                                </div>
+                            </> : ''
                         }
                     </div>
                     <div
                         ref={contentBox}
-                        style={{ display: show ? 'none' : '', transition: 'none' }}
-                        className='bg-white mb-[131px] w-full'
+                        style={{ display: show ? 'none' : '', transition: 'none', width: `${contentSize}px`  }}
+                        className={`bg-white mb-[131px]`}
                     >
                         <div
                             className='flex py-5 px-6 justify-between'
