@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { formatPicture, formatNickName } from "../utils/FormatContent"
-import { Card, message, Skeleton } from 'antd';
+import {formatPicture, formatNickName, formatVideoImage} from "../utils/FormatContent"
+import {Button, Card, message, Skeleton} from 'antd';
 import '../style/Card.css'
 import { useTranslation } from "react-i18next";
 import NextImage from 'next/image'
@@ -31,7 +31,9 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
         if (item.metadata) {
             setContentItem(item.metadata)
             setFavouriteStatus(false)
-            const imageUrl = formatPicture(item.metadata.media[0])
+            let imageUrl;
+            // if (item.metadata.mainContentFocus === 'VIDEO') imageUrl = item.metadata.image;
+            imageUrl = formatPicture(item.metadata.media[0])
             if (imageUrl) {
                 setContentImg(imageUrl);
                 setImgLoad(false);
@@ -70,6 +72,10 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
                         }}
                         style={{ display: imgLoad ? 'none' : 'block' }}
                     />
+                    {
+                        item.metadata.mainContentFocus === 'VIDEO' ? <i className='iconfont icon-bofang cursor-pointer text-[40px] opacity-70
+                     text-[#fff] mr-3 operator mix-blend-difference absolute top-[calc(50%-20px)] left-[calc(50%-20px)]' /> : ''
+                    }
                     {imgLoad ? <Skeleton.Image className='w-full' active={true} /> : ''}
                 </>
             }

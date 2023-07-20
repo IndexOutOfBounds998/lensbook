@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { message, Button, notification, Spin, Skeleton } from "antd";
 import Input from "antd/es/input";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { formatNickName, formatDate } from "../../utils/FormatContent";
+import { formatNickName, formatDate, formatVideoUrl } from "../../utils/FormatContent";
 import { useTranslation } from "react-i18next";
 import { formatPicture } from '@/app/utils/utils';
 import {
@@ -12,13 +12,16 @@ import {
     ReactionType,
     usePublication,
     ContentPublication,
-    Post
+    Post,
+    ProfileOwnedByMe
 } from '@lens-protocol/react-web';
 import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
-import FollowButton from '@/app/components/FollowButton';
-import CollectButton from '@/app/components/CollectButton';
-import ReactionButton from '@/app/components/ReactionButton';
-import { useSendComment } from '../../hooks/useSendComment'
+import FollowButton from '@/app/components/button/FollowButton';
+import CollectButton from '@/app/components/button/CollectButton';
+import ReactionButton from '@/app/components/button/ReactionButton';
+import SendCommentButton from '@/app/components/button/SendCommentButton';
+import ReactPlayer from "react-player";
+import FollowButtonWithOutProfile from '@/app/components/button/FollowButtonWithOutProfile';
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
@@ -34,13 +37,13 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const [notificationApi, contextHolderNotification] = notification.useNotification();
 
     const { t } = useTranslation();
-    const [messageReplyButtonLoading, setMessageReplyButtonLoading] = useState(false);
 
     let flag = true;
 
     let [show, setShow] = useState(true);
     let [bgSize, setBgSize] = useState(0);
     let [contentSize, setContentSize] = useState(0);
+    let [isVideo, setIsVideo] = useState(false);
 
     const detail = useRef<HTMLDivElement>(null);
     const imgBox = useRef<HTMLDivElement>(null);
@@ -54,9 +57,12 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         limit: 10,
     });
 
+
     useEffect(() => {
         if (flag) {
             scaleDown();
+            setIsVideo(item.metadata.mainContentFocus === 'VIDEO')
+            console.log(item)
         }
     }, []);
 
@@ -95,31 +101,24 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     }
 
     const scaleUp = () => {
-        if (detail.current && imgBox.current) {
+        if (detail.current) {
             const detailWidth = (window.innerWidth - window.innerWidth * 0.7) / 2;
 
             detail.current.style.border = '1px solid #00000014';
             detail.current.style.boxShadow = '0 0 100px rgba(0,0,0,.1)';
             detail.current.style.transition = 'all 0.5s ease';
             detail.current.style.transform = `translate(${detailWidth}px,0) scale(1)`;
-            imgBox.current.style.backgroundPosition = '50%';
+            if (imgBox.current) imgBox.current.style.backgroundPosition = '50%';
         }
 
     }
-    //发布评论
-    const { submit: send } = useSendComment({ publication: publication });
 
-    const sendComment = async () => {
-        if (commentRef.current) {
-            send(commentRef.current.input.value);
-        }
-    }
 
     //加载更多评论
     const moreComment = () => {
         next();
     }
- 
+
     return (
         <>
             {contextHolder}
@@ -148,17 +147,26 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                         style={{
                             background: show ? 'rgba(233,245,250,0)' : '',
                             borderRadius: show ? 'none' : '1rem',
+                            alignItems: (isVideo && !show) ? 'center' : '',
                         }}
                     >
-                        <div
-                            ref={imgBox}
-                            className='bg-no-repeat bg-contain h-full'
-                            style={{
-                                backgroundImage: `url(${img.src})`,
-                                width: `${bgSize}px`
-                            }}
-                        >
-                        </div>
+                        {
+                            isVideo ?
+                                <ReactPlayer
+                                    url={formatVideoUrl(item.metadata.media[0].original.url)}
+                                    controls
+                                    loop
+                                /> :
+                                <div
+                                    ref={imgBox}
+                                    className='bg-no-repeat bg-contain h-full'
+                                    style={{
+                                        backgroundImage: `url(${img.src})`,
+                                        width: `${bgSize}px`
+                                    }}
+                                >
+                                </div>
+                        }
                     </div>
                     <div
                         ref={contentBox}
@@ -181,7 +189,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
                             <WhenLoggedInWithProfile>
                                 {({ profile }) => {
-                                    return publication_loading ? '' : <FollowButton followee={publication && publication.profile} follower={profile} />
+                                    return publication_loading ? '' : profile ? <FollowButton followee={publication && publication.profile} follower={profile && profile} /> : <FollowButtonWithOutProfile></FollowButtonWithOutProfile>
                                 }}
                             </WhenLoggedInWithProfile>
 
@@ -208,7 +216,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                         style={{ borderBottom: '0.5px solid rgba(0,0,0,.1)' }}
                                     >
                                         <div className='mb-5 font-semibold text-[20px] leading-8'>
-                                            {publication && (publication as Post) .metadata.title}
+                                            {publication && (publication as Post).metadata.title}
                                         </div>
                                         <div
                                             className='text-[17px] whitespace-pre-wrap'
@@ -240,7 +248,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
                                 <WhenLoggedInWithProfile>
                                     {({ profile }) => {
-                                        return publication_loading ? '' : <ReactionButton publication={publication as ContentPublication} profileId={profile.id}
+                                        return publication_loading ? '' : <ReactionButton publication={publication as ContentPublication} profileId={profile && profile.id}
                                             reactionType={ReactionType.UPVOTE} />
                                     }}
                                 </WhenLoggedInWithProfile>
@@ -266,10 +274,14 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                         bordered={false}
                                     />
                                 </div>
-                                <Button loading={messageReplyButtonLoading} className='h-full bg-[#6790db] cursor-pointer w-[80px] rounded-3xl flex justify-center items-center text-[#fff] text-[16px]'
-                                    onClick={sendComment}>
-                                    {t('sendMessageBtn')}
-                                </Button>
+
+                                <WhenLoggedInWithProfile>
+                                    {({ profile }) => {
+                                        return <SendCommentButton comments={comments} comment={commentRef.current} profile={profile} publication={publication} ></SendCommentButton>
+                                    }}
+                                </WhenLoggedInWithProfile>
+
+
                             </div>
                         </footer>
                     </div>

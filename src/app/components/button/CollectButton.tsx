@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 
 type CollectButtonProps = {
     collector: ProfileOwnedByMe;
-    publication: Post | Comment ;
+    publication: Post | Comment;
 };
 
 export default function CollectButton({ collector, publication }: CollectButtonProps) {
@@ -46,6 +46,9 @@ export default function CollectButton({ collector, publication }: CollectButtonP
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const showModal = () => {
+        if (!collector) {
+            return;
+        }
         setIsModalOpen(true);
     };
 
@@ -60,9 +63,9 @@ export default function CollectButton({ collector, publication }: CollectButtonP
     const ShowCollectModal = ({ publication }: { publication: any }) => {
         return (
             <>
-            <Modal title={t('collect')} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <p>{publication.collectModule.feeOptional ?'付费收藏 '+publication.collectModule.feeOptional.amount.asset.symbol + ' 需要支付 ' + publication.collectModule.feeOptional.amount.value:''}</p>
-                <Button
+                <Modal title={t('collect')} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                    <p>{publication.collectModule.feeOptional ? '付费收藏 ' + publication.collectModule.feeOptional.amount.asset.symbol + ' 需要支付 ' + publication.collectModule.feeOptional.amount.value : ''}</p>
+                    <Button
                         onClick={() => collect()}
                         disabled={isCollected || isPending}
                         loading={isPending}
@@ -73,22 +76,22 @@ export default function CollectButton({ collector, publication }: CollectButtonP
                     >
                         <span className='font-bold'>{publication.stats.totalAmountOfCollects}</span>
                     </Button>
-            </Modal>
+                </Modal>
             </>)
     };
 
     const CollectBtn = ({ title }: { title: string }) => (
         <Button
-          type="link"
-          ghost
-          disabled
-          className='flex items-center'
-          title={title}
+            type="link"
+            ghost
+            disabled
+            className='flex items-center'
+            title={title}
         >
-          <i className={`iconfont icon-star cursor-pointer text-[25px] mr-3`} />
-          <span className='font-bold'>{publication.stats.totalAmountOfCollects}</span>
+            <i className={`iconfont icon-star cursor-pointer text-[25px] mr-3`} />
+            <span className='font-bold'>{publication.stats.totalAmountOfCollects}</span>
         </Button>
-      )
+    )
 
     switch (publication.collectPolicy.state) {
         case CollectState.COLLECT_TIME_EXPIRED:
@@ -104,7 +107,7 @@ export default function CollectButton({ collector, publication }: CollectButtonP
                 <>
                     <ShowCollectModal publication={publication}></ShowCollectModal>
                     <Button
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => showModal()}
                         disabled={isPending}
                         loading={isPending}
                         type="link"

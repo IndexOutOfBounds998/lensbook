@@ -7,7 +7,7 @@ import {
 
 import { Button, message } from 'antd';
 import { useState } from "react";
-import '../style/ReactionButton.css'
+import '../../style/ReactionButton.css'
 import { useTranslation } from "react-i18next";
 type ReactionButtonProps = {
     publication: ContentPublication;
@@ -33,6 +33,9 @@ export default function ReactionButton({ publication, profileId, reactionType }:
     const hasAnyReaction = publication.reaction !== null;
 
     const toggleReaction = async () => {
+        if (!profileId) {
+            return;
+        }
         setLoading(true)
         if (hasReactionType) {
             await removeReaction({

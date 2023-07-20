@@ -3,21 +3,25 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { useUpIpfs } from "./useUpIpfs";
 import { getAuthenticatedClient } from "../shared/getAuthenticatedClient";
 import { useSignTypedData } from "wagmi";
-import { useActiveProfile } from '@lens-protocol/react-web';
+
 import { uuid } from "@walletconnect/legacy-utils";
+import { useState } from "react";
+
 type commentData = {
     publication: any;
 };
 
 export function useSendComment({ publication }: commentData) {
-    const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
     const { signTypedDataAsync, isLoading: typedDataLoading } = useSignTypedData();
 
-    const { execute, loading, url } = useUpIpfs({ type: 'upJsonContent' });
+    const { execute, url } = useUpIpfs({ type: 'upJsonContent' });
 
-    const submit = async (commentValue) => {
+    const [loading, setLoading] = useState(false);
 
+    const submit = async (commentValue, profile) => {
+
+        setLoading(true);
         const obj = {
             metadata_id: uuid(),
             appId: "lenstrip",
@@ -73,8 +77,10 @@ export function useSendComment({ publication }: commentData) {
                     `Transaction was successfuly broadcasted with txId ${broadcastResultValue.txId}`
                 );
             }
+
+            setLoading(false);
         }
     }
 
-    return { submit }
+    return { submit, loading }
 }
