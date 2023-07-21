@@ -4,6 +4,7 @@ import useState from 'react-usestateref'
 import CardAnt from './CardAnt'
 import { FloatButton, Spin } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
+import ContentHomeLoader from './loading/ContentHomeLoader';
 
 // import Macy from 'macy';
 // @ts-ignore
@@ -71,7 +72,7 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
 
     //滚动监听
     function handleScroll(e) {
-        
+
         if (!dataObj.loading && dataObj.hasMore) {
             const top = e.target.scrollTop;
             const height = e.target.clientHeight;
@@ -85,21 +86,24 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
 
     return (
         <>
+
             <div className='h-[calc(100%-68px)] overflow-auto' onScroll={handleScroll}>
-                <div ref={cards} id='scrollableDiv' className='scrollableDiv w-full flex justify-between flex-wrap'>
-                    {dataObj.data.map((item, index) => (
-                        <CardAnt
-                            className='CardAnt'
-                            key={index}
-                            item={item}
-                            index={index}
-                            cardClick={cardClick}
-                            width={cardWidthRef.current}
-                            cardPosition={cardPosition}
-                        />
-                    ))}
-                </div>
-                {!dataObj.hasMore ? '' :
+                {dataObj.loading && dataObj.data.length === 0 ? <ContentHomeLoader></ContentHomeLoader> :
+                    <div ref={cards} id='scrollableDiv' className='scrollableDiv w-full flex justify-between flex-wrap'>
+                        {dataObj.data.map((item, index) => (
+                            <CardAnt
+                                className='CardAnt'
+                                key={index}
+                                item={item}
+                                index={index}
+                                cardClick={cardClick}
+                                width={cardWidthRef.current}
+                                cardPosition={cardPosition}
+                            />
+                        ))}
+                    </div>
+                }
+                {!dataObj.hasMore && dataObj.data.length === 0 ? '' :
                     <div
                         className='w-full flex items-center justify-center h-[50px] mb-[20px]'
                         style={
@@ -122,6 +126,7 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
                     icon={<SyncOutlined />}
                     onClick={() => {
                         dataObj.reset()
+                        macyInfo()
                     }}
                 />
                 <FloatButton.BackTop
