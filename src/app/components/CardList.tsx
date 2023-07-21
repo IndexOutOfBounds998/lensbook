@@ -21,17 +21,9 @@ interface CardListProps {
 
 const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => {
 
-    let [cardList, setCardList, cardListRef] = useState([]);
-
     let [cardSize, setCardSize, cardSizeRef] = useState(4);
 
     let [cardWidth, setCardWidth, cardWidthRef] = useState(0);
-
-    let [imgSize, setImgSize, imgSizeRef] = useState({});
-
-    let [queryParam, setQueryParam, queryParamRef] = useState();
-
-    let [isMax, setIsMax, isMaxRef] = useState(false);
 
     const cards = useRef({
         offsetWidth: undefined
@@ -69,30 +61,9 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
         }
     }
 
-    const loadMore = async () => {
-        setIsMax(false)
-        const data = dataObj.data;
-        if (data) {
-            setCardList(data);
-            if (!dataObj.hasMore) {
-                setIsMax(true)
-            }
-            macyInfo()
-
-        }
-    }
-
     useEffect(() => {
         bodyWidth();
     }, []);
-
-    useEffect(() => {
-        console.log(dataObj.data)
-        if (!dataObj.loading) {
-            console.log(dataObj.data)
-            loadMore();
-        }
-    }, [dataObj.data])
 
     const nextList = async () => {
         await dataObj.next();
@@ -100,7 +71,8 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
 
     //滚动监听
     function handleScroll(e) {
-        if (!dataObj.loading && !isMaxRef.current) {
+        
+        if (!dataObj.loading && dataObj.hasMore) {
             const top = e.target.scrollTop;
             const height = e.target.clientHeight;
             const allHeight = e.target.scrollHeight;
@@ -115,7 +87,7 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
         <>
             <div className='h-[calc(100%-68px)] overflow-auto' onScroll={handleScroll}>
                 <div ref={cards} id='scrollableDiv' className='scrollableDiv w-full flex justify-between flex-wrap'>
-                    {cardListRef.current.map((item, index) => (
+                    {dataObj.data.map((item, index) => (
                         <CardAnt
                             className='CardAnt'
                             key={index}
@@ -127,7 +99,7 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
                         />
                     ))}
                 </div>
-                {isMax ? '' :
+                {!dataObj.hasMore ? '' :
                     <div
                         className='w-full flex items-center justify-center h-[50px] mb-[20px]'
                         style={
