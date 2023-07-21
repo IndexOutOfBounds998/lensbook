@@ -25,9 +25,7 @@ type useFetchPublicationsArgs = {
 //     explorePublicationRequest
 //   });
 
-export function useFetchPublications({
-  explorePublicationRequest,
-}: useFetchPublicationsArgs) {
+export function useFetchPublications({ explorePublicationRequest }: useFetchPublicationsArgs) {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [firstLoading, setFirstLoading] = useState(false);
@@ -35,7 +33,7 @@ export function useFetchPublications({
   const [nextCursor, setNextCursor] = useState('');
   const [hasMore, setHasMore] = useState(false);
   const [request, setRequest] = useState(undefined);
-  
+
   const execute = async () => {
     setFirstLoading(true);
     setRequest(explorePublicationRequest);

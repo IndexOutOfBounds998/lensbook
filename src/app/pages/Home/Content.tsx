@@ -21,6 +21,27 @@ export default function LayoutContent({ cardClick }) {
 
     const [selectedOption, setSelectedOption] = useState(PublicationSortCriteria.Latest);
 
+    const [requestArgs, setRequestArgs] = useState<ExplorePublicationRequest>({
+        cursor: JSON.stringify({
+            timestamp: 1,
+            offset: 0,
+            filter: JSON.stringify({
+                mainContentFocus: [PublicationMainFocus.Image, PublicationMainFocus.Video]
+            })
+        }),
+        sortCriteria: selectedOption,
+        limit: 20,
+        publicationTypes: [PublicationTypes.Post],
+        metadata: {
+            mainContentFocus: [PublicationMainFocus.Image, PublicationMainFocus.Video],
+            tags: {
+                oneOf: []
+            }
+        },
+        sources: ['lenster', 'lenstrip', "lenstube", "orb", "buttrfly", "lensplay"]
+    });
+
+
     const options = [
         {
             value: PublicationSortCriteria.Latest,
@@ -40,44 +61,28 @@ export default function LayoutContent({ cardClick }) {
         },
     ];
 
-    let explorePublicationRequest: ExplorePublicationRequest = {
-        cursor: JSON.stringify({
-            timestamp: 1,
-            offset: 0,
-            filter: JSON.stringify({
-                mainContentFocus: [PublicationMainFocus.Image, PublicationMainFocus.Video]
-            })
-        }),
-        sortCriteria: selectedOption,
-        limit: 20,
-        publicationTypes: [PublicationTypes.Post],
-        metadata: {
-            tags: {
-                all: []
-            }
-        },
-        sources: ['lenster', 'lenstrip', "lenstube", "orb", "buttrfly", "lensplay"]
-    };
 
     const { data, loading, firstLoading, hasMore, next, reset, changeFilter } = useFetchPublications({
-        explorePublicationRequest
+        explorePublicationRequest: requestArgs
     });
 
 
     const tabCheck = (index) => {
         let categoryItem = categories[index];
         if (categoryItem && categoryItem.tag !== 'All') {
-            explorePublicationRequest.metadata.tags.all = [categoryItem.tag];
-            changeFilter(explorePublicationRequest);
+            requestArgs.metadata.tags.oneOf = [categoryItem.tag];
+            changeFilter(requestArgs);
         } else {
-            explorePublicationRequest.metadata.tags.all = [];
-            changeFilter(explorePublicationRequest);
+            requestArgs.metadata.tags.oneOf = [];
+            changeFilter(requestArgs);
         }
+
     }
 
     const selectChange = (value) => {
-        explorePublicationRequest.sortCriteria = value;
-        changeFilter(explorePublicationRequest);
+        requestArgs.sortCriteria = value;
+        changeFilter(requestArgs);
+
     }
 
     const onMenuOpen = (value) => {
