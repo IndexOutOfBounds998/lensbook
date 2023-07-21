@@ -1,4 +1,5 @@
 export const API_BASE_URL = 'http://47.243.92.5:9005';
+
 export const PINATA_API_BASE_URL = 'https://api.pinata.cloud';
 
 export const AUTHORIZE_PREFIX = 'JWT';
@@ -21,18 +22,16 @@ export const REVERT_COLLECT_MODULE = '0xed8a7E95d4CC8627d24178db30d7B92b56c04Fff
 
 export const IPFS_GATEWAY = "https://lens.infura-ipfs.io/ipfs/";
 
-export const EVN = ".test";
-
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
-export const OPENSEA_URL="https://testnets.opensea.io/";
+export const OPENSEA_URL = "https://testnets.opensea.io/";
 
-export const RARIBLE_URL="https://testnet.rarible.com/user/";
+export const RARIBLE_URL = "https://testnet.rarible.com/user/";
 
-export const IPFS_API_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI4ZTY0NTJlYi0yYTQxLTQxZjktYWI4Yy02YmZiZTNkOWNkYmEiLCJlbWFpbCI6Ijk3NTk2NTI3OUBxcS5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX0seyJpZCI6Ik5ZQzEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlLCJzdGF0dXMiOiJBQ1RJVkUifSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiZTQ2ZDZjNTA4MGE2NWFkZDQ0OTQiLCJzY29wZWRLZXlTZWNyZXQiOiJmZDE3NjFiOWY1Y2RkNDIzMzZiZGZhYzJmYWEyOWM2MGFhMjYxNjc3ODhiZDUzNjVjNGE0Zjg5ODE3OTM1YjhhIiwiaWF0IjoxNjg5MTQ2NzgwfQ.1eG1LA1I6wtnMiDDQiemlGZG1lpH1A0zYMKqLQWa4Qw";
+export const IPFS_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI4ZTY0NTJlYi0yYTQxLTQxZjktYWI4Yy02YmZiZTNkOWNkYmEiLCJlbWFpbCI6Ijk3NTk2NTI3OUBxcS5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX0seyJpZCI6Ik5ZQzEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlLCJzdGF0dXMiOiJBQ1RJVkUifSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiZTQ2ZDZjNTA4MGE2NWFkZDQ0OTQiLCJzY29wZWRLZXlTZWNyZXQiOiJmZDE3NjFiOWY1Y2RkNDIzMzZiZGZhYzJmYWEyOWM2MGFhMjYxNjc3ODhiZDUzNjVjNGE0Zjg5ODE3OTM1YjhhIiwiaWF0IjoxNjg5MTQ2NzgwfQ.1eG1LA1I6wtnMiDDQiemlGZG1lpH1A0zYMKqLQWa4Qw";
 
+export const RB_PID = "9298e5d1a1cfc4d8bdeb76ecc8748084";
 
-export const RB_PID="9298e5d1a1cfc4d8bdeb76ecc8748084";
+export const MAIN_NETWORK = true;
 
-export const MAIN_NETWORK=true;
-
+export const EVN = MAIN_NETWORK ? '.lensbook' : ".test";
