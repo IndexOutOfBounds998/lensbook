@@ -57,15 +57,11 @@ export default function LoginButton() {
   };
 
   return (
-    <div>
-
+    <>
       {profile ? <ProfileSetting></ProfileSetting> : !isConnected ? <ConnectButton /> :
 
         <Button loading={isLoginPending} disabled={isLoginPending} onClick={onLoginClick}>{t('login')}</Button>
       }
-
-
-
-    </div>
+    </>
   );
 }
