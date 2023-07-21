@@ -31,7 +31,7 @@ export default function Header({ }) {
                     <img className='w-20 h-16' src={logo} alt="" />
                 </div>
                 <div className='w-[30%] h-10 fixed left-1/2 translate-x-[-50%]'>
-                    <Search setSearchValue={''} />
+                    <Search />
                 </div>
                 <div className='flex items-center'>
                     {titleList.map((item, index) => (
