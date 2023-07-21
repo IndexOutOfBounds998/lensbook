@@ -6,11 +6,13 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useNetwork, useSwitchNetwork } from 'wagmi';
 
 import {
+  polygon,
   polygonMumbai
 } from 'wagmi/chains';
 import { useEffect } from 'react';
 import ProfileSetting from '@/app/components/ProfileSetting';
-import { getWalletClient } from '@wagmi/core'
+import { getWalletClient } from '@wagmi/core';
+import { MAIN_NETWORK } from '@/app/constants/constant';
 export default function LoginButton() {
   const { chain } = useNetwork()
 
@@ -20,31 +22,31 @@ export default function LoginButton() {
 
   const { execute: login, error: loginError, isPending: isLoginPending } = useWalletLogin();
 
-  const { address,isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
 
   const { disconnectAsync } = useDisconnect();
 
-  const { connectAsync, connectors, isLoading, pendingConnector } =useConnect();
- 
+  const { connectAsync, connectors, isLoading, pendingConnector } = useConnect();
+
   const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
- 
+
   useEffect(() => {
 
-    if (chain) {
-      if (chain.id !== polygonMumbai.id) {
-        if (switchNetwork) {
-          switchNetwork(polygonMumbai.id);
-        }
+    if (chain && switchNetwork) {
+      const targetNetworkId = MAIN_NETWORK ? polygon.id : polygonMumbai.id;
+      if (chain.id !== targetNetworkId) {
+        switchNetwork(targetNetworkId);
       }
     }
+
 
   }, [chain, switchNetwork])
 
   if (profile) {
     return <ProfileSetting></ProfileSetting>
   }
-  
+
   const onLoginClick = async () => {
 
     const walletClient = await getWalletClient();
