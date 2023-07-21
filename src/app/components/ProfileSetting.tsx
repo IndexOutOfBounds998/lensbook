@@ -60,7 +60,7 @@ export default function ProfileSetting() {
                     <div className='leading-7'>
                         <div className='hover:text-[#3339] cursor-pointer'>
                             <span className='text-[20px] font-bold'>{profile && formatNickName(profile.handle)}</span>
-                            <i className='iconfont icon-icon-right text-[20px]' />
+                            <i className='iconfont icon-icon-right text-[10px]' />
                         </div>
                         <p className='truncate w-[200px] text-[#3339] cursor-pointer hover:text-[#000]'>{profile && profile.bio}</p>
                     </div>
