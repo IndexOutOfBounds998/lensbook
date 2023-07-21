@@ -31,8 +31,6 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
 
     let [queryParam, setQueryParam, queryParamRef] = useState();
 
-    let [isLoading, setIsLoading, isLoadingRef] = useState(false);
-
     let [isMax, setIsMax, isMaxRef] = useState(false);
 
     const cards = useRef({
@@ -73,15 +71,12 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
 
     const loadMore = async () => {
         setIsMax(false)
-        setIsLoading(true)
         const data = dataObj.data;
         if (data) {
             setCardList(data);
             if (!dataObj.hasMore) {
                 setIsMax(true)
             }
-            setTimeout(() => (setIsLoading(false)), 500)
-
             macyInfo()
 
         }
@@ -100,13 +95,12 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
     }, [dataObj.data])
 
     const nextList = async () => {
-        setIsLoading(true)
         await dataObj.next();
     }
 
     //滚动监听
     function handleScroll(e) {
-        if (!isLoadingRef.current && !isMaxRef.current) {
+        if (!dataObj.loading && !isMaxRef.current) {
             const top = e.target.scrollTop;
             const height = e.target.clientHeight;
             const allHeight = e.target.scrollHeight;
@@ -137,7 +131,7 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
                     <div
                         className='w-full flex items-center justify-center h-[50px] mb-[20px]'
                         style={
-                            isLoadingRef.current ?
+                            dataObj.loading ?
                                 { display: 'flex' } :
                                 { display: 'none', height: '50px' }
                         }
