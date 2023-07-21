@@ -15,11 +15,11 @@ export function useGetPublication({
   const [load, setLoad] = useState(false);
   
   const execute = async () => {
-    setLoading(false);
+    setLoading(true);
     const lensClient = await getAuthenticatedClient();
     const result = await lensClient.publication.fetch(publicationQueryRequest);
     setData(result);
-    setLoading(true);
+    setLoading(false);
   };
 
   useEffect(() => {

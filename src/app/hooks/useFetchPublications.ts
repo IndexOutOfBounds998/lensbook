@@ -29,13 +29,13 @@ export function useFetchPublications({
   explorePublicationRequest,
 }: useFetchPublicationsArgs) {
   const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [firstLoading, setFirstLoading] = useState(false);
   const [data, setData] = useState([]);
   const [nextCursor, setNextCursor] = useState('');
   const [hasMore, setHasMore] = useState(false);
   const [request, setRequest] = useState(undefined);
-  const prevExplorePublicationRequest = useRef<ExplorePublicationRequest>();
-
+  
   const execute = async () => {
     setFirstLoading(true);
     setRequest(explorePublicationRequest);
@@ -44,18 +44,11 @@ export function useFetchPublications({
   };
 
   useEffect(() => {
-    if (
-      !prevExplorePublicationRequest.current ||
-      !isEqual(
-        prevExplorePublicationRequest.current,
-        explorePublicationRequest
-      )
-    ) {
+    if (!loaded) {
       execute();
+      setLoaded(true);
     }
-
-    prevExplorePublicationRequest.current = explorePublicationRequest;
-  }, [explorePublicationRequest]);
+  }, [firstLoading]);
 
   const next = async () => {
     setLoading(true);
@@ -73,7 +66,7 @@ export function useFetchPublications({
     execute();
   };
 
-  async function fetchData(setLoading, request: any, setData, setNextCursor, setHasMore) {
+  async function fetchData(setLoading, request: ExplorePublicationRequest, setData, setNextCursor, setHasMore) {
     setLoading(true);
     const lensClient = await getAuthenticatedClient();
     let res = await lensClient.explore.publications(request);
@@ -83,13 +76,10 @@ export function useFetchPublications({
     setHasMore(res.items.length > 0);
   }
 
-  const changeFilter = async (sort: PublicationSortCriteria) => {
-    request.sortCriteria = sort;
-    setRequest(request);
+  const changeFilter = async (requestNew: ExplorePublicationRequest) => {
+    setRequest(requestNew);
     setData([]);
-   
-    fetchData(setLoading, request, setData, setNextCursor, setHasMore);
-
+    fetchData(setLoading, requestNew, setData, setNextCursor, setHasMore);
   };
 
   return {

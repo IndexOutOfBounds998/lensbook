@@ -35,3 +35,5 @@ export const RB_PID = "9298e5d1a1cfc4d8bdeb76ecc8748084";
 export const MAIN_NETWORK = true;
 
 export const EVN = MAIN_NETWORK ? '.lensbook' : ".test";
+
+export const LENS_API_BASE_URL = !MAIN_NETWORK ? 'https://api-mumbai.lens.dev' : 'https://api.lens.dev';
