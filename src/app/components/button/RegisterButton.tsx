@@ -7,8 +7,16 @@ import { Button, Modal, Form, Input, message, notification, Popover } from 'antd
 import { useEffect, useState } from 'react';
 
 import LoginButton from './LoginButton';
- 
+
 import { useTranslation } from "react-i18next";
+
+import { MAIN_NETWORK } from '@/app/constants/constant';
+
+import {
+    SignInWithLens, Theme, Size
+} from '@lens-protocol/widgets-react'
+
+
 export default function RegisterButton() {
     const { t } = useTranslation();
     const [messageApi, contextHolder] = message.useMessage();
@@ -33,6 +41,15 @@ export default function RegisterButton() {
         setIsModalOpen(false);
     };
 
+    async function onSignIn(tokens, profile) {
+         
+        console.log('tokens: ', tokens)
+        console.log('profile: ', profile)
+
+        if(!profile){
+           alert("您似乎没有 lens 的账号，请去 lens 官网进行申请后 再返回登录");
+        }
+      }
 
     if (registerStatus) {
         return <LoginButton></LoginButton>
@@ -111,9 +128,12 @@ export default function RegisterButton() {
 
             </Modal>
         </>
-            <Button onClick={showModal} loading={isPending}>
+            {MAIN_NETWORK ? <SignInWithLens
+                onSignIn={onSignIn}
+            /> : <Button onClick={showModal} loading={isPending}>
                 {t('register')}
-            </Button>
+            </Button>}
+
         </>
     );
 }
