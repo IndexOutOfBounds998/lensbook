@@ -164,6 +164,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                             {
                                 carouselList.map((item, index) => (
                                     <div
+                                    key={index}
                                         className={`note-detail-content h-full flex ${(isVideo && !show)? 'items-center' : ''}`}
                                     >
                                         {
