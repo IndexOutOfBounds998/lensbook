@@ -24,10 +24,7 @@ export default function LayoutContent({ cardClick }) {
     const [requestArgs, setRequestArgs] = useState<ExplorePublicationRequest>({
         cursor: JSON.stringify({
             timestamp: 1,
-            offset: 0,
-            filter: JSON.stringify({
-                mainContentFocus: [PublicationMainFocus.Image, PublicationMainFocus.Video]
-            })
+            offset: 0
         }),
         sortCriteria: selectedOption,
         limit: 20,
