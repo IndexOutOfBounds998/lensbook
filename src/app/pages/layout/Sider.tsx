@@ -1,6 +1,8 @@
 import Link from "next/link";
-
+import { useTranslation } from "react-i18next";
 export default function LayoutSider({ titleList, styleWidth, registerClick }) {
+
+    const { t } = useTranslation();
 
     const icon = (item) => (
         <>
@@ -9,9 +11,9 @@ export default function LayoutSider({ titleList, styleWidth, registerClick }) {
         </>
     );
     titleList = titleList || [
-        { text: '发现', icon: 'icon-home', router: '/', needLogin: false },
-        { text: '发布', icon: 'icon-add', router: '/publish', needLogin: true },
-        { text: '我', icon: 'icon-user', router: '', needLogin: false },
+        { text: t('explore'), icon: 'icon-home', router: '/', needLogin: false },
+        { text: t('publish'), icon: 'icon-add', router: '/publish', needLogin: true },
+        { text: t('mine'), icon: 'icon-user', router: '', needLogin: false },
     ];
     return (
         <div className={styleWidth || 'w-80 pl-10'}>

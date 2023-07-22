@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { useTranslation } from "react-i18next";
 import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 
 export default function Search() {
@@ -7,7 +7,7 @@ export default function Search() {
         <i className={`iconfont icon-${icon} cursor-pointer text-[18px] hover:text-black`} />
     );
 
-
+    const { t } = useTranslation();
 
     const [inputValue, setInputValue] = useState('');
 
@@ -30,7 +30,7 @@ export default function Search() {
                 value={inputValue}
                 onInput={onInput}
                 className="w-full h-full pl-5 pr-20 text-black caret-red-500 text-[16px] absolute rounded-3xl bg-gray-100 focus:outline-none border-none focus:border-gray-100"
-                placeholder="搜索用户/标签" />
+                placeholder={t('searchBar')} />
             <div className='h-full flex items-center justify-end font-normal text-slate-500'>
                 {
                     inputValue ? (

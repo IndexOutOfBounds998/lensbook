@@ -7,15 +7,16 @@ import Search from "./Search";
 import { useActiveProfile } from '@lens-protocol/react-web';
 import { useActiveWallet } from '@lens-protocol/react-web';
 import RegisterButton from "@/app/components/button/RegisterButton";
+
 export default function Header({ }) {
 
     const { data: wallet, loading } = useActiveWallet();
     const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
     const titleList = [
-        { text: '业务合作', src: '' },
-        { text: '创作者服务', src: '' },
-        { text: '关于我们', src: '' },
+        // { text: '业务合作', src: '' },
+        // { text: '创作者服务', src: '' },
+        // { text: '关于我们', src: '' },
     ];
     const { t } = useTranslation();
 
