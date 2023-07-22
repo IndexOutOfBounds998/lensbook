@@ -7,15 +7,16 @@ import Search from "./Search";
 import { useActiveProfile } from '@lens-protocol/react-web';
 import { useActiveWallet } from '@lens-protocol/react-web';
 import RegisterButton from "@/app/components/button/RegisterButton";
+
 export default function Header({ }) {
 
     const { data: wallet, loading } = useActiveWallet();
     const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
     const titleList = [
-        { text: '业务合作', src: '' },
-        { text: '创作者服务', src: '' },
-        { text: '关于我们', src: '' },
+        // { text: '业务合作', src: '' },
+        // { text: '创作者服务', src: '' },
+        // { text: '关于我们', src: '' },
     ];
     const { t } = useTranslation();
 
@@ -31,7 +32,7 @@ export default function Header({ }) {
                     <img className='w-20 h-16' src={logo} alt="" />
                 </div>
                 <div className='w-[30%] h-10 fixed left-1/2 translate-x-[-50%]'>
-                    <Search setSearchValue={''} />
+                    <Search />
                 </div>
                 <div className='flex items-center'>
                     {titleList.map((item, index) => (

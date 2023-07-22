@@ -164,6 +164,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                             {
                                 carouselList.map((item, index) => (
                                     <div
+                                    key={index}
                                         className={`note-detail-content h-full flex ${(isVideo && !show)? 'items-center' : ''}`}
                                     >
                                         {
@@ -311,7 +312,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
                                 <div className='w-[70px] rounded-3xl bg-[#50b674] cursor-pointer p-[5px] text-[#fff] text-center'>
-                                    分享
+                                    { t('sharebtn')}
                                 </div>
                             </div>
                             <div className='h-[50px] rounded-3xl w-full flex'>

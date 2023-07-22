@@ -1,30 +1,36 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 
-export default function Search({setSearchValue}) {
+export default function Search() {
     const icon = (icon) => (
-        <i className={`iconfont icon-${icon} cursor-pointer text-[18px] hover:text-black`}/>
+        <i className={`iconfont icon-${icon} cursor-pointer text-[18px] hover:text-black`} />
     );
+
+    const { t } = useTranslation();
 
     const [inputValue, setInputValue] = useState('');
 
-    const onInput = (e) => {
+    const onInput = async (e) => {
         setInputValue(e.target.value)
+        const lensClient = await getAuthenticatedClient();
+        const result = await lensClient.search.profiles({
+            query: e.target.value,
+            limit: 10,
+        });
+        console.log(result);
     }
     const onDel = () => {
         setInputValue('')
     }
 
-    useEffect(() => {
-
-    }, []);
-
     return (
         <div className='w-full h-10 absolute'>
             <input type="text"
-                   value={inputValue}
-                   onInput={onInput}
-                   className="w-full h-full pl-5 pr-20 text-black caret-red-500 text-[16px] absolute rounded-3xl bg-gray-100 focus:outline-none border-none focus:border-gray-100"
-                   placeholder="搜索攻略"/>
+                value={inputValue}
+                onInput={onInput}
+                className="w-full h-full pl-5 pr-20 text-black caret-red-500 text-[16px] absolute rounded-3xl bg-gray-100 focus:outline-none border-none focus:border-gray-100"
+                placeholder={t('searchBar')} />
             <div className='h-full flex items-center justify-end font-normal text-slate-500'>
                 {
                     inputValue ? (
