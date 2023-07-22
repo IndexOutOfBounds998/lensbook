@@ -40,10 +40,15 @@
   "register":"register",
   "registerLoading":"Register in progress..",
   "loading":"loading...",
-  "sendMessageBtn":"send",
+  "sendMessageBtn":"Send",
   "commentsTip":"Looking forward to your exciting comments",
   "LatestSort":"LatestSort",
   "TopCollectedSort":"TopCollectedSort",
   "TopCommentedSort":"TopCommentedSort",
-  "TopMirroredSort":"TopMirroredSort"
+  "TopMirroredSort":"TopMirroredSort",
+  "explore":"Explore",
+  "publish":"Publish",
+  "mine":"Mine",
+  "searchBar":"Search profiles or posts by tags",
+  "sharebtn":"Share"
 }

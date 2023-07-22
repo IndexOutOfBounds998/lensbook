@@ -45,5 +45,10 @@
   "LatestSort":"最新排序",
   "TopCollectedSort":"收藏量排序",
   "TopCommentedSort":"评论量排序",
-  "TopMirroredSort":"转发量排序"
+  "TopMirroredSort":"转发量排序",
+  "explore":"发现",
+  "publish":"发布",
+  "mine":"我",
+  "searchBar":"通过标签搜索用户/帖子",
+  "sharebtn":"分享"
 }
