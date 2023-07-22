@@ -1,10 +1,10 @@
 import user from '../../../assets/user.jpg'
 import Comment from "./Comment";
 import React, { useEffect, useRef, useState } from "react";
-import {message, Button, notification, Spin, Skeleton, Carousel} from "antd";
+import { message, Button, notification, Spin, Skeleton, Carousel } from "antd";
 import Input from "antd/es/input";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {formatNickName, formatDate, formatVideoUrl, formatPicture} from "../../utils/FormatContent";
+import { formatNickName, formatDate, formatVideoUrl, formatPicture } from "../../utils/FormatContent";
 import { useTranslation } from "react-i18next";
 import {
     useComments,
@@ -22,6 +22,7 @@ import SendCommentButton from '@/app/components/button/SendCommentButton';
 import ReactPlayer from "react-player";
 import FollowButtonWithOutProfile from '@/app/components/button/FollowButtonWithOutProfile';
 import '../../style/Carousel.css'
+import { NextSeo } from 'next-seo';
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
@@ -128,6 +129,34 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
         <>
             {contextHolder}
             {contextHolderNotification}
+
+
+            <NextSeo
+                title={item.metadata.content}
+                description="lens book"
+                canonical="https://testnet.0xtrip.xyz/"
+                openGraph={{
+                    url: 'https://testnet.0xtrip.xyz/',
+                    title: item.metadata.content,
+                    description: item.metadata.content,
+                    images: [
+                        {
+                            url: item.metadata.media[0].original.url,
+                            width: 300,
+                            height: 400,
+                            alt: item.metadata.media[0].original.altTag,
+                            type: item.metadata.media[0].original.mimeType,
+                        }
+                    ],
+                    siteName: 'lensbook',
+                }}
+                twitter={{
+                    handle: '@lensbook',
+                    site: '@https://testnet.0xtrip.xyz',
+                    cardType: 'summary_large_image',
+                }}
+            />
+
             <div
                 className='h-full w-full fixed top-0 z-[100]'
                 style={{
@@ -164,8 +193,8 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                             {
                                 carouselList.map((item, index) => (
                                     <div
-                                    key={index}
-                                        className={`note-detail-content h-full flex ${(isVideo && !show)? 'items-center' : ''}`}
+                                        key={index}
+                                        className={`note-detail-content h-full flex ${(isVideo && !show) ? 'items-center' : ''}`}
                                     >
                                         {
                                             isVideo ?
@@ -195,32 +224,32 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                         </Carousel>
                         {
                             carouselList.length > 1 ?
-                            <>
-                                <div className='absolute top-[20px] right-[30px] h-[25px] rounded-xl bg-[#33333399] px-[10px] py-[5px] flex items-center'>
-                                <span className='text-[#fff]'>
-                                  {
-                                    `${carouselIndex}/${carouselList.length}`
-                                  }
-                                </span>
-                                </div>
-                                <div
-                                    className='absolute top-[calc(50%-20px)] flex left-[20px] bg-[#fff] rounded-3xl w-[40px] h-[40px] cursor-pointer items-center border-[2px] justify-center'
-                                    onClick={() => (carouselRef.current.prev())}
-                                >
-                                    <i className={`iconfont icon-icon-left text-[20px]`} />
-                                </div>
-                                <div
-                                    className='absolute top-[calc(50%-20px)] flex right-[20px] bg-[#fff] rounded-3xl w-[40px] h-[40px] cursor-pointer items-center border-[2px] justify-center'
-                                    onClick={() => (carouselRef.current.next())}
-                                >
-                                    <i className={`iconfont icon-icon-right text-[20px]`} />
-                                </div>
-                            </> : ''
+                                <>
+                                    <div className='absolute top-[20px] right-[30px] h-[25px] rounded-xl bg-[#33333399] px-[10px] py-[5px] flex items-center'>
+                                        <span className='text-[#fff]'>
+                                            {
+                                                `${carouselIndex}/${carouselList.length}`
+                                            }
+                                        </span>
+                                    </div>
+                                    <div
+                                        className='absolute top-[calc(50%-20px)] flex left-[20px] bg-[#fff] rounded-3xl w-[40px] h-[40px] cursor-pointer items-center border-[2px] justify-center'
+                                        onClick={() => (carouselRef.current.prev())}
+                                    >
+                                        <i className={`iconfont icon-icon-left text-[20px]`} />
+                                    </div>
+                                    <div
+                                        className='absolute top-[calc(50%-20px)] flex right-[20px] bg-[#fff] rounded-3xl w-[40px] h-[40px] cursor-pointer items-center border-[2px] justify-center'
+                                        onClick={() => (carouselRef.current.next())}
+                                    >
+                                        <i className={`iconfont icon-icon-right text-[20px]`} />
+                                    </div>
+                                </> : ''
                         }
                     </div>
                     <div
                         ref={contentBox}
-                        style={{ display: show ? 'none' : '', transition: 'none', width: `${contentSize}px`  }}
+                        style={{ display: show ? 'none' : '', transition: 'none', width: `${contentSize}px` }}
                         className={`bg-white mb-[131px]`}
                     >
                         <div
@@ -312,7 +341,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
                                 <div className='w-[70px] rounded-3xl bg-[#50b674] cursor-pointer p-[5px] text-[#fff] text-center'>
-                                    { t('sharebtn')}
+                                    {t('sharebtn')}
                                 </div>
                             </div>
                             <div className='h-[50px] rounded-3xl w-full flex'>

@@ -49,6 +49,7 @@ export default function Strategy() {
     let [radioGroup, setRadioGroup] = useState([]);
     let [isModalOpen, setIsModalOpen] = useState(false);
     let [stateValue, setStateValue] = useState('public');
+    let [timeValue, setTimeValue] = useState('just');
     let [quillRef, setQuillRef] = useState();
 
     let [ipfsHash, setIpfsHash] = useState('');
@@ -129,29 +130,18 @@ export default function Strategy() {
             <div className="w-full h-full bg-white overflow-y-scroll p-[30px] pl-[30px]">
                 <div className="text-[20px] flex items-center">
                     <div className="w-[10px] h-[25px] inline-block bg-[blueviolet] rounded-3xl mr-1" />
-                    <span>旅游攻略</span>
+                    <span>发布图文</span>
                 </div>
                 <div className="p-[20px]">
                     <div className="mb-[10px]">
-                        <p className="mb-[10px]">封面图片</p>
+                        <p className="mb-[10px] text-[18px]">图片编辑&nbsp;&nbsp;<span className="text-[14px] text-[blue]">+上传更多</span></p>
                         <UploadButton setIpfsHash={setIpfsHash} />
                     </div>
                     <div className="mb-[16px]">
-                        <Radio.Group
-                            className="mb-[16px]"
-                            value={radioValue}
-                            onChange={(e) => setRadioValue(e.target.value)}
-                        >
-                            {radioGroup.map((item) => (
-                                <Radio.Button key={item.key} value={item.key}>
-                                    {item.option}
-                                </Radio.Button>
-                            ))}
-                        </Radio.Group>
                         <Input
                             ref={titleRef}
                             showCount
-                            maxLength={100}
+                            maxLength={20}
                             className="mb-[16px]"
                             placeholder="填写产品标题"
                         />
@@ -166,9 +156,34 @@ export default function Strategy() {
                             }}
                         />
                     </div>
+                    <div className='flex justify-between w-[250px]'>
+                        <Button className='px-[15px] py-[0] flex items-center'><span className=''># &nbsp;</span> 话题</Button>
+                        <Button className='px-[15px] py-[0] flex items-center'><span className=''>@ &nbsp;</span> 用户</Button>
+                        <Button className='px-[15px] py-[0] flex items-center'>
+                            <span
+                                className=''
+                                style={{
+                                    width: '14px',
+                                    height: '14px',
+                                    backgroundRepeat: 'no-repeat',
+                                    backgroundSize: '100% 100%',
+                                    backgroundImage: 'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEuMDUgN2E1Ljk1IDUuOTUgMCAxMTExLjkgMCA1Ljk1IDUuOTUgMCAwMS0xMS45IDB6TTcgMGE3IDcgMCAxMDAgMTRBNyA3IDAgMDA3IDB6IiBmaWxsPSIjMzQ1YWU2IiBmaWxsLW9wYWNpdHk9Ii44NSIvPjxwYXRoIGQ9Ik00LjcyNSA2LjY1YS44NzUuODc1IDAgMTAwLTEuNzUuODc1Ljg3NSAwIDAwMCAxLjc1ek05LjI3NSA2LjY1YS44NzUuODc1IDAgMTAwLTEuNzUuODc1Ljg3NSAwIDAwMCAxLjc1ek01LjUxMiA3Ljc3YS41MjUuNTI1IDAgMDEuNzE3LjE5MkEuODc4Ljg3OCAwIDAwNyA4LjRhLjg4Mi44ODIgMCAwMC43NzItLjQ0LjUyNS41MjUgMCAwMS45MDYuNTNjLS4yNy40NjMtLjgzOC45Ni0xLjY3OC45Ni0uODM5IDAtMS40MS0uNDk1LTEuNjgtLjk2MmEuNTI1LjUyNSAwIDAxLjE5Mi0uNzE3eiIgZmlsbD0iIzM0NWFlNiIgZmlsbC1vcGFjaXR5PSIuODUiLz48L3N2Zz4=)'
+                                }}
+                            />&nbsp;表情
+                        </Button>
+                    </div>
                     <div className="text-[13px]">
-                        <p className="text-[18px] text-[#ea9d4e] mb-[10px]">发布设置</p>
-                        <div>
+                        <p className="text-[18px] text-[#ea9d4e] my-[25px]">发布设置</p>
+                        <div className='w-[500px] flex items-center mb-[20px]'>
+                            <span className="w-[60px] text-[14px] mr-3">添加地点</span>
+                            <div  className='w-[440px]'>
+                                <Input
+                                    className=""
+                                    placeholder="请选择"
+                                />
+                            </div>
+                        </div>
+                        <div className='mb-[20px]'>
                             <span className="text-[14px] mr-3">权限设置</span>
                             <Radio.Group
                                 onChange={(e) => setStateValue(e.target.value)}
@@ -179,6 +194,20 @@ export default function Strategy() {
                                 </Radio>
                                 <Radio value="private">
                                     <span className="text-[13px]">私有（仅自己可见）</span>
+                                </Radio>
+                            </Radio.Group>
+                        </div>
+                        <div className='mb-[20px]'>
+                            <span className="text-[14px] mr-3">发布时间</span>
+                            <Radio.Group
+                                onChange={(e) => setTimeValue(e.target.value)}
+                                value={timeValue}
+                            >
+                                <Radio value="just">
+                                    <span className="text-[13px]">立即发布</span>
+                                </Radio>
+                                <Radio value="timeout">
+                                    <span className="text-[13px]">定时发布</span>
                                 </Radio>
                             </Radio.Group>
                         </div>
