@@ -27,6 +27,9 @@ export default function RegisterButton() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const [isModalOpenlens, setIsModalOpenlens] = useState(false);
+
+
     const [registerStatus, setRegisterStatus] = useState(false);
 
     const showModal = () => {
@@ -41,15 +44,23 @@ export default function RegisterButton() {
         setIsModalOpen(false);
     };
 
-    async function onSignIn(tokens, profile) {
-         
-        console.log('tokens: ', tokens)
-        console.log('profile: ', profile)
+    const handleCancellens = () => {
+        setIsModalOpenlens(false);
+    };
 
-        if(!profile){
-           alert("您似乎没有 lens 的账号，请去 lens 官网进行申请后 再返回登录");
+    
+    async function onError(error) {
+        if (error) {
+            setIsModalOpenlens(true);
         }
-      }
+    }
+
+    async function onSignIn(tokens, profile) {
+
+        if (!profile) {
+            setIsModalOpenlens(true);
+        }
+    }
 
     if (registerStatus) {
         return <LoginButton></LoginButton>
@@ -100,7 +111,14 @@ export default function RegisterButton() {
         <><>
             {contextHolder}
             {contextHolder_notification}
-            <Modal title="register" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+
+            <Modal title="claim" open={isModalOpenlens} onCancel={handleCancellens} footer={[]}>
+                <div className="text-base">访问 <a target="_blank" className="text-indigo-500" rel="noreferrer" href="https://claim.lens.xyz/">镜头索取站点</a> 申领您的句柄，然后回到这里。</div>
+            </Modal>
+
+
+            <Modal title="register" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
+                footer={[]}>
                 <Form
                     name="basic"
                     labelCol={{ span: 8 }}
@@ -128,7 +146,7 @@ export default function RegisterButton() {
 
             </Modal>
         </>
-            {MAIN_NETWORK ? <SignInWithLens
+            {MAIN_NETWORK ? <SignInWithLens onError={onError}
                 onSignIn={onSignIn}
             /> : <Button onClick={showModal} loading={isPending}>
                 {t('register')}
