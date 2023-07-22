@@ -87,9 +87,9 @@ const CardList: React.FC<CardListProps> = ({ children, cardClick, dataObj }) => 
     return (
         <>
 
-            <div className='h-[calc(100%-68px)] overflow-auto' onScroll={handleScroll}>
+            <div ref={cards} className='h-[calc(100%-68px)] overflow-auto' onScroll={handleScroll}>
                 {dataObj.loading && dataObj.data.length === 0 ? <ContentHomeLoader></ContentHomeLoader> :
-                    <div ref={cards} id='scrollableDiv' className='scrollableDiv w-full flex justify-between flex-wrap'>
+                    <div id='scrollableDiv' className='scrollableDiv w-full flex justify-between flex-wrap'>
                         {dataObj.data.map((item, index) => (
                             <CardAnt
                                 className='CardAnt'
