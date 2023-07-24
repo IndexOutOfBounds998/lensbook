@@ -1,65 +1,85 @@
 
 import React, { useRef, useEffect, useState } from 'react'
-import type { TabsProps } from 'antd';
-import {useTranslation} from "react-i18next";
-import {Tabs} from "antd";
-import '../../style/SearchResult.css'
-
+import { useTranslation } from "react-i18next";
+import NextImage from 'next/image'
+import { Spin } from "antd";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
+import { formatTextLenth20 } from '@/app/utils/utils';
 // import Macy from 'macy';
 // @ts-ignore
-interface SearchResultProps {
-    cardClick: any;
-    dataObj: {
-        data: any[];
-        loading: boolean;
-        hasMore: boolean;
-        next: () => Promise<void>;
-        reset: () => Promise<void>;
-    };
-    children?: React.ReactNode; // 添加这一行
+interface PostListProps {
+    inputValue: any;
 }
 
-const SearchResult: React.FC<SearchResultProps> = ({  }) => {
+const PostList: React.FC<PostListProps> = ({ inputValue }) => {
 
     const { t } = useTranslation();
 
-    let [cardSize, setCardSize, cardSizeRef] = useState(4);
 
-    let [cardWidth, setCardWidth, cardWidthRef] = useState(0);
+    let [resultObj, setResultObj] = useState({});
+    //列表数据
+    let [dataList, setDataList] = useState([]);
 
-    const items: TabsProps['items'] = [
-        {
-            key: '1',
-            label: t('user'),
-            children: `Content of Tab Pane 1`,
-        },
-        {
-            key: '2',
-            label: t('post'),
-            children: `Content of Tab Pane 2`,
-        },
-    ];
+    useEffect(() => {
+        searchPosts()
+    }, [inputValue]);
 
-    const onChange = (key: string) => {
-        console.log(key);
-    };
+    //查询
+    const searchPosts = async () => {
+        if (inputValue) {
+            console.log(inputValue)
+            const lensClient = await getAuthenticatedClient();
+            const result = await lensClient.search.publications({
+                query: inputValue,
+                limit: 10,
+            });
+            setDataList(result.items)
+            setResultObj(result);
+            console.log(result)
+        }
+    }
+
+    const loadMore = async () => {
+        const result = await resultObj.next();
+        setDataList(dataList.concat(result.items))
+        setResultObj(result);
+        console.log(result)
+    }
 
     return (
-        <div className='w-full'>
-            <div>
-                <Tabs
-                    defaultActiveKey="1"
-                    centered={true}
-                    size='large'
-                    items={items}
-                    onChange={onChange}
-                />
-            </div>
-            <div>
-
-            </div>
+        <div id='post-list' className='w-full h-[300px] overflow-auto'>
+            <InfiniteScroll
+                dataLength={dataList.length}
+                next={loadMore}
+                hasMore={true}
+                loader={
+                    <div
+                        className='w-full flex items-center justify-center h-[25px] mb-[10px]'
+                    >
+                        <Spin tip="Loading" size="middle" />
+                    </div>
+                }
+                scrollableTarget='post-list'
+            >
+                {
+                    dataList.map((item, index) => (
+                        <div key={index} className='px-[15px] py-[5px] hover:bg-[#8a2be236] cursor-pointer'>
+                            <div className='flex justify-between items-center'>
+                                <div>
+                                    <span className='ml-[5px] text-[16px]'>{item.metadata.title ? formatTextLenth20(item.metadata.title) : formatTextLenth20(item.metadata.content)}</span>
+                                </div>
+                                <div className='flex items-stretch'>
+                                    <i className='iconfont icon-heart text-[16px] mr-[3px]' />
+                                    <span>{item.stats.totalUpvotes}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                }
+            </InfiniteScroll>
         </div>
     )
 };
 
-export default SearchResult;
+export default PostList;
