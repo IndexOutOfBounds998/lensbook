@@ -1,0 +1,8 @@
+.ant-tabs-nav-list {
+    width: 100%;
+}
+.ant-tabs-tab {
+    width: 50%;
+    padding-top: 0!important;
+    justify-content: center;
+}
