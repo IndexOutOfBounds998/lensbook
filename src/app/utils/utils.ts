@@ -30,3 +30,15 @@ export function formatNickName(nickname: any) {
     return "";
   }
 }
+
+
+export function formatTextLenth20(text: any) {
+  if (!text) {
+    return "";
+  }
+  let result = text.slice(0, 20);
+  if (text.length > 20) {
+    result += '...';
+  }
+  return result;
+}
