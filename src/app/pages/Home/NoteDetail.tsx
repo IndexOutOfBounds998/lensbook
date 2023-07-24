@@ -1,7 +1,7 @@
 import user from '../../../assets/user.jpg'
 import Comment from "./Comment";
 import React, { useEffect, useRef, useState } from "react";
-import { message, Button, notification, Spin, Skeleton, Carousel } from "antd";
+import { message, notification, Spin, Skeleton, Carousel } from "antd";
 import Input from "antd/es/input";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { formatNickName, formatDate, formatVideoUrl, formatPicture } from "../../utils/FormatContent";
@@ -11,8 +11,7 @@ import {
     ReactionType,
     usePublication,
     ContentPublication,
-    Post,
-    ProfileOwnedByMe
+    Post
 } from '@lens-protocol/react-web';
 import { WhenLoggedInWithProfile } from '@/app/components/auth/WhenLoggedInWithProfile';
 import FollowButton from '@/app/components/button/FollowButton';
@@ -23,12 +22,16 @@ import ReactPlayer from "react-player";
 import FollowButtonWithOutProfile from '@/app/components/button/FollowButtonWithOutProfile';
 import '../../style/Carousel.css'
 import { NextSeo } from 'next-seo';
+import { useActiveProfile } from '@lens-protocol/react-web';
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
+    const { data: profile } = useActiveProfile();
+
     const { data: publication, loading: publication_loading } = usePublication(
         {
-            publicationId: item.id
+            publicationId: item.id,
+            observerId: profile && profile.id
         }
     );
 
