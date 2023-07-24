@@ -14,39 +14,6 @@ export default function Strategy() {
     const btnClass =
         "w-[80px] inline-block mr-[80px] text-center font-bold text-[#fff] rounded p-2 cursor-pointer";
 
-    const modules = {
-        toolbar: [
-            [{ header: [1, 2, false] }],
-            ["bold", "italic", "underline", "strike", "blockquote"],
-            [{ color: [] }, { background: [] }],
-            [
-                { list: "ordered" },
-                { list: "bullet" },
-                { indent: "-1" },
-                { indent: "+1" },
-            ],
-            ["link", "image"],
-        ],
-    };
-
-    const formats = [
-        "header",
-        "bold",
-        "italic",
-        "underline",
-        "strike",
-        "blockquote",
-        "color",
-        "background",
-        "list",
-        "bullet",
-        "indent",
-        "link",
-        "image",
-    ];
-
-    let [radioValue, setRadioValue] = useState(0);
-    let [radioGroup, setRadioGroup] = useState([]);
     let [isModalOpen, setIsModalOpen] = useState(false);
     let [stateValue, setStateValue] = useState('public');
     let [timeValue, setTimeValue] = useState('just');
@@ -56,55 +23,6 @@ export default function Strategy() {
 
     // let quillRef = useRef(undefined);
     let titleRef = useRef(undefined);
-
-    const loadCategory = async () => {
-        setRadioGroup([
-            {
-                "key": 1,
-                "option": "自驾游",
-                "__typename": "ContentTypeSetting"
-            },
-            {
-                "key": 2,
-                "option": "周边游",
-                "__typename": "ContentTypeSetting"
-            },
-            {
-                "key": 3,
-                "option": "风景",
-                "__typename": "ContentTypeSetting"
-            },
-            {
-                "key": 4,
-                "option": "自由行",
-                "__typename": "ContentTypeSetting"
-            },
-            {
-                "key": 5,
-                "option": "三日游",
-                "__typename": "ContentTypeSetting"
-            },
-            {
-                "key": 6,
-                "option": "两日游",
-                "__typename": "ContentTypeSetting"
-            },
-            {
-                "key": 7,
-                "option": "一日游",
-                "__typename": "ContentTypeSetting"
-            },
-            {
-                "key": 8,
-                "option": "景点",
-                "__typename": "ContentTypeSetting"
-            }
-        ])
-    }
-
-    useEffect(() => {
-        loadCategory();
-    }, []);
 
     const showModal = () => {
         setIsModalOpen(true);
