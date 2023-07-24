@@ -1,65 +1,62 @@
 
 import React, { useRef, useEffect, useState } from 'react'
-import type { TabsProps } from 'antd';
 import {useTranslation} from "react-i18next";
-import {Tabs} from "antd";
-import '../../style/SearchResult.css'
+import NextImage from 'next/image'
+import {Spin} from "antd";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 // import Macy from 'macy';
 // @ts-ignore
-interface SearchResultProps {
-    cardClick: any;
-    dataObj: {
-        data: any[];
-        loading: boolean;
-        hasMore: boolean;
-        next: () => Promise<void>;
-        reset: () => Promise<void>;
-    };
-    children?: React.ReactNode; // 添加这一行
+interface PostListProps {
+    inputValue: any;
 }
 
-const SearchResult: React.FC<SearchResultProps> = ({  }) => {
+const PostList: React.FC<PostListProps> = ({ inputValue }) => {
 
     const { t } = useTranslation();
 
-    let [cardSize, setCardSize, cardSizeRef] = useState(4);
+    let [resultObj, setResultObj] = useState({});
+    //列表数据
+    let [dataList, setDataList] = useState([]);
 
-    let [cardWidth, setCardWidth, cardWidthRef] = useState(0);
-
-    const items: TabsProps['items'] = [
-        {
-            key: '1',
-            label: t('user'),
-            children: `Content of Tab Pane 1`,
-        },
-        {
-            key: '2',
-            label: t('post'),
-            children: `Content of Tab Pane 2`,
-        },
-    ];
-
-    const onChange = (key: string) => {
-        console.log(key);
-    };
+    //加载更多
+    const loadMore = () => {
+        setDataList(dataList.concat(dataList))
+    }
 
     return (
-        <div className='w-full'>
-            <div>
-                <Tabs
-                    defaultActiveKey="1"
-                    centered={true}
-                    size='large'
-                    items={items}
-                    onChange={onChange}
-                />
-            </div>
-            <div>
-
-            </div>
+        <div id='post-list' className='w-full h-[300px] overflow-auto'>
+            <InfiniteScroll
+                dataLength={dataList.length}
+                next={loadMore}
+                hasMore={true}
+                loader={
+                    <div
+                        className='w-full flex items-center justify-center h-[25px] mb-[10px]'
+                    >
+                        <Spin tip="Loading" size="middle" />
+                    </div>
+                }
+                scrollableTarget='post-list'
+            >
+            {
+                dataList.map(item => (
+                    <div className='px-[15px] py-[5px] hover:bg-[#8a2be236] cursor-pointer'>
+                        <div className='flex justify-between items-center'>
+                            <div>
+                                <span className='ml-[5px] text-[16px]'>{ item.text }</span>
+                            </div>
+                            <div className='flex items-stretch'>
+                                <i className='iconfont icon-heart text-[16px] mr-[3px]' />
+                                <span>{ item.like }</span>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+            </InfiniteScroll>
         </div>
     )
 };
 
-export default SearchResult;
+export default PostList;

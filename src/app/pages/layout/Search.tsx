@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import SearhResult from "../../components/searchResult/SearhResult";
-import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 import {Popover} from "antd";
 
 export default function Search() {
@@ -12,15 +11,18 @@ export default function Search() {
     const { t } = useTranslation();
 
     const [inputValue, setInputValue] = useState('');
+    const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
 
     const handleOpenChange = (newOpen) => {
         setOpen(newOpen);
     };
-    const onInput = (e) => {
-        setInputValue(e.target.value)
+    const onInput = async (e) => {
+        setInputValue(e.target.value);
         if (e.target.value) {
             setOpen(true);
+            setLoading(true);
+            setLoading(false);
         } else {
             setOpen(false);
         }
@@ -57,8 +59,8 @@ export default function Search() {
             </div>
             <div>
                 <Popover
-                    content={<SearhResult></SearhResult>}
-                    overlayClassName='w-[30%]'
+                    content={<SearhResult inputValue={inputValue}/>}
+                    overlayClassName='w-[30%] overflow-hidden'
                     arrow={false}
                     trigger="click"
                     open={open}

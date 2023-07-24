@@ -3,6 +3,10 @@
 }
 .ant-tabs-tab {
     width: 50%;
-    padding-top: 0!important;
+    padding-top: 10px !important;
     justify-content: center;
+}
+.ant-popover-inner {
+    padding: 0 !important;
+    overflow: hidden;
 }
