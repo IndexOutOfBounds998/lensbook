@@ -1,40 +1,61 @@
 // app/profile/[handle]/page.tsx
 "use client";
 import { useParams } from "next/navigation";
-import { useProfile, usePublications, Profile, PublicationMainFocus } from "@lens-protocol/react-web";
+import { useProfile, usePublications, Profile, PublicationMainFocus, useActiveProfile } from "@lens-protocol/react-web";
 import { formatPicture } from "../../utils/utils";
-
+import { NextSeo } from "next-seo";
 export default function Profile() {
   const { handle } = useParams();
 
   let { data: profile, loading } = useProfile({ handle });
-
+  const { data: currentProfile } = useActiveProfile();
   if (loading) return <p className="p-14">Loading ...</p>;
 
   return (
-    <div>
-      <div className="p-14">
-        {profile?.picture?.__typename === "MediaSet" && (
-          <img
-            width="200"
-            height="200"
-            alt={profile.handle}
-            className="rounded-xl"
-            src={formatPicture(profile.picture)}
-          />
-        )}
-        <h1 className="text-3xl my-3">{profile?.handle}</h1>
-        <h3 className="text-xl mb-4">{profile?.bio}</h3>
-        {profile && <Publications profile={profile} />}
+    <>
+      <NextSeo
+        title={profile.bio}
+        description={profile.bio}
+        canonical={profile.handle}
+        openGraph={{
+          url: 'https://testnet.0xtrip.xyz/',
+          title: profile.bio,
+          description: profile.bio,
+          siteName: 'lensbook',
+        }}
+        twitter={{
+          handle: profile.handle,
+          site: '@https://testnet.0xtrip.xyz',
+          cardType: 'summary_large_image',
+        }}
+      />
+
+      <div>
+        <div className="p-14">
+          {profile?.picture?.__typename === "MediaSet" && (
+            <img
+              width="200"
+              height="200"
+              alt={profile.handle}
+              className="rounded-xl"
+              src={formatPicture(profile.picture)}
+            />
+          )}
+          <h1 className="text-3xl my-3">{profile?.handle}</h1>
+          <h3 className="text-xl mb-4">{profile?.bio}</h3>
+          {profile && <Publications profile={profile} currentProfile={currentProfile} />}
+        </div>
       </div>
-    </div>
+    </>
   );
+
 }
 
-function Publications({ profile }: { profile: Profile }) {
+function Publications({ profile, currentProfile }: { profile: Profile, currentProfile: Profile }) {
   let { data: publications } = usePublications({
     profileId: profile.id,
     limit: 10,
+    observerId: currentProfile && currentProfile.id,
     metadataFilter: {
       restrictPublicationMainFocusTo: [PublicationMainFocus.Image, PublicationMainFocus.Video]
     }
