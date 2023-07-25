@@ -1,8 +1,8 @@
 // app/profile/[handle]/page.tsx
 "use client";
 import { useParams } from "next/navigation";
-import { useProfile, usePublications, Profile } from "@lens-protocol/react-web";
-import { formatPicture } from "../../../utils/utils";
+import { useProfile, usePublications, Profile, PublicationMainFocus } from "@lens-protocol/react-web";
+import { formatPicture } from "../../utils/utils";
 
 export default function Profile() {
   const { handle } = useParams();
@@ -35,6 +35,10 @@ function Publications({ profile }: { profile: Profile }) {
   let { data: publications } = usePublications({
     profileId: profile.id,
     limit: 10,
+    metadataFilter: {
+      restrictPublicationMainFocusTo: [PublicationMainFocus.Image, PublicationMainFocus.Video]
+    }
+
   });
   publications = publications?.map((publication) => {
     if (publication.__typename === "Mirror") {
