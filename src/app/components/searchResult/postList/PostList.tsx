@@ -1,10 +1,11 @@
 
 import React, { useRef, useEffect, useState } from 'react'
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import NextImage from 'next/image'
-import {Spin} from "antd";
+import { Spin } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-
+import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
+import { formatTextLenth20 } from '@/app/utils/utils';
 // import Macy from 'macy';
 // @ts-ignore
 interface PostListProps {
@@ -15,13 +16,36 @@ const PostList: React.FC<PostListProps> = ({ inputValue }) => {
 
     const { t } = useTranslation();
 
+
     let [resultObj, setResultObj] = useState({});
     //列表数据
     let [dataList, setDataList] = useState([]);
 
-    //加载更多
-    const loadMore = () => {
-        setDataList(dataList.concat(dataList))
+    useEffect(() => {
+        searchPosts()
+    }, [inputValue]);
+
+    //查询
+    const searchPosts = async () => {
+        if (inputValue) {
+            console.log(inputValue)
+            const lensClient = await getAuthenticatedClient();
+            const result = await lensClient.search.publications({
+                query: inputValue,
+                limit: 10,
+                sources: ['lenster', 'lenstrip', "lenstube", "orb", "buttrfly", "lensplay"]
+            });
+            setDataList(result.items)
+            setResultObj(result);
+            console.log(result)
+        }
+    }
+
+    const loadMore = async () => {
+        const result = await resultObj.next();
+        setDataList(dataList.concat(result.items))
+        setResultObj(result);
+        console.log(result)
     }
 
     return (
@@ -39,21 +63,21 @@ const PostList: React.FC<PostListProps> = ({ inputValue }) => {
                 }
                 scrollableTarget='post-list'
             >
-            {
-                dataList.map(item => (
-                    <div className='px-[15px] py-[5px] hover:bg-[#8a2be236] cursor-pointer'>
-                        <div className='flex justify-between items-center'>
-                            <div>
-                                <span className='ml-[5px] text-[16px]'>{ item.text }</span>
-                            </div>
-                            <div className='flex items-stretch'>
-                                <i className='iconfont icon-heart text-[16px] mr-[3px]' />
-                                <span>{ item.like }</span>
+                {
+                    dataList.map((item, index) => (
+                        <div key={index} className='px-[15px] py-[5px] hover:bg-[#8a2be236] cursor-pointer'>
+                            <div className='flex justify-between items-center'>
+                                <div>
+                                    <span className='ml-[5px] text-[16px]'>{item.metadata.title ? formatTextLenth20(item.metadata.title) : formatTextLenth20(item.metadata.content)}</span>
+                                </div>
+                                <div className='flex items-stretch'>
+                                    <i className='iconfont icon-heart text-[16px] mr-[3px]' />
+                                    <span>{item.stats.totalUpvotes}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))
-            }
+                    ))
+                }
             </InfiniteScroll>
         </div>
     )

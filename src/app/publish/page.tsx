@@ -4,6 +4,8 @@ import { Radio, Input, Button } from 'antd';
 import React, { useEffect, useRef, useState } from "react";
 import { usePost } from '../hooks/usePost'
 import {useTranslation} from "react-i18next";
+import EmojiPicker from 'emoji-picker-react';
+
 const { TextArea } = Input;
 
 export default function Page() {
@@ -89,6 +91,7 @@ export default function Page() {
                                 }}
                             />&nbsp;{ t('emtoe') }
                         </Button>
+                       
                     </div>
                     <div className="text-[13px]">
                         <p className="text-[18px] text-[#ea9d4e] my-[25px]">{ t('publishSetting') }</p>

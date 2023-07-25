@@ -23,6 +23,7 @@ import FollowButtonWithOutProfile from '@/app/components/button/FollowButtonWith
 import '../../style/Carousel.css'
 import { NextSeo } from 'next-seo';
 import { useActiveProfile } from '@lens-protocol/react-web';
+import Link from 'next/link';
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
@@ -260,12 +261,14 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                             style={{ borderBottom: '0.5px solid rgba(0,0,0,.1)' }}
                         >
                             <div className='flex items-center'>
-                                <img
-                                    className='rounded-3xl w-[40px] h-[40px] mx-2'
-                                    src={publication && publication.profile.picture ? formatPicture(publication && publication.profile.picture) : user}
-                                    alt=""
-                                />
-                                <span>{publication && publication.profile.name ? publication && publication.profile.name : formatNickName(publication && publication.profile.handle)}</span>
+                                <Link href={`/profile/${item.profile.handle}`}>
+                                    <img
+                                        className='rounded-3xl w-[40px] h-[40px] mx-2'
+                                        src={publication && publication.profile.picture ? formatPicture(publication && publication.profile.picture) : user}
+                                        alt=""
+                                    />
+                                    <span>{publication && publication.profile.name ? publication && publication.profile.name : formatNickName(publication && publication.profile.handle)}</span>
+                                </Link>
                             </div>
 
 
