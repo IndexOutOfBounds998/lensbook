@@ -33,6 +33,7 @@ const PostList: React.FC<PostListProps> = ({ inputValue }) => {
             const result = await lensClient.search.publications({
                 query: inputValue,
                 limit: 10,
+                sources: ['lenster', 'lenstrip', "lenstube", "orb", "buttrfly", "lensplay"]
             });
             setDataList(result.items)
             setResultObj(result);

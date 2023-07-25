@@ -4,6 +4,7 @@ import { Button, Card, message, Skeleton } from 'antd';
 import '../style/Card.css'
 import { useTranslation } from "react-i18next";
 import NextImage from 'next/image'
+import Link from "next/link";
 // @ts-ignore
 export default function CardAnt({ item, index, cardClick, width, position, cardPosition }: {
     item: any,
@@ -111,12 +112,15 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
                 </p>
                 <div className='h-[20px] text-[13px] flex justify-between text-gray-500 cursor-pointer'>
                     <div className='flex flex-row items-center'>
-                        <div
-                            className='w-[20px] h-[20px] rounded-2xl mr-[6px] bg-cover'
-                            style={{
-                                backgroundImage: `url(${avatarImg})`,
-                            }}
-                        />
+                        <Link href={`/profile/${item.profile.handle}`}>
+                            <div
+                                className='w-[20px] h-[20px] rounded-2xl mr-[6px] bg-cover'
+                                style={{
+                                    backgroundImage: `url(${avatarImg})`,
+                                }}
+                            />
+                        </Link>
+
                         <span>{formatNickName(item.profile.name ? item.profile.name : item.profile.handle)}</span>
                     </div>
                     <div className='cursor-pointer leading-[2px] text-[14px] flex flex-row items-center'>
