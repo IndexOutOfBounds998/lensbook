@@ -20,21 +20,24 @@ const MuUploadImagButton: React.FC<{
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
 
-
     const handleCancel = () => setPreviewOpen(false);
 
     const handlePreview = async (file: UploadFile) => {
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj as RcFile);
         }
-
+        
         setPreviewImage(file.url || (file.preview as string));
         setPreviewOpen(true);
         setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
     };
 
-    const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
+    const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>{
+        
         setFileList(newFileList);
+    }
+    
+       
 
     const uploadButton = (
         <div>

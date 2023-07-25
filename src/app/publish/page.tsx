@@ -4,8 +4,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { usePost } from '../hooks/usePost'
 import { useTranslation } from "react-i18next";
 import MuUploadImagButton from "../components/button/MuUploadImagButton";
+import i18n from "i18next";
 import type { UploadFile } from 'antd/es/upload/interface';
+import { uuid } from "@walletconnect/legacy-utils";
 
+import {
+    useActiveProfile
+} from '@lens-protocol/react-web';
 const { TextArea } = Input;
 
 export default function Page() {
@@ -22,26 +27,65 @@ export default function Page() {
     let [quillRef, setQuillRef] = useState();
 
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-
     // let quillRef = useRef(undefined);
     let titleRef = useRef(undefined);
+
+    const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
     const showModal = () => {
         setIsModalOpen(true);
     };
+    const callbackOnSuccess = () => {
+        alert("发布成功")
+    }
+    const callbackOnError = (error) => {
+        alert("发布失败" + error)
+    }
 
-    const { submit: post } = usePost();
+    const { submit: post, postLoading } = usePost(callbackOnSuccess, callbackOnError);
+
     const onSubmit = async () => {
-        if (titleRef.current && quillRef) {
-            const obj = {
-                title: titleRef.current.input.value,
-                image: ipfsHash,
-                content: quillRef,
-                state: stateValue,
-                description: quillRef,
-            };
-            post(obj);
+
+        if (fileList && fileList.length === 0) {
+            alert("请上传图片");
+            return
         }
+        if (!titleRef.current || !quillRef) {
+            alert("请填写内容");
+            return
+        }
+        //处理图片
+        let images = fileList.filter((item) => {
+            return item.response.code === 200;
+        }).map((item) => {
+
+            return {
+                cover: "ipfs://" + item.response.data,
+                item: "ipfs://" + item.response.data,
+                type: item.type
+            }
+
+        })
+
+        let current_locale = i18n.language
+
+        let matedata = {
+            version: "1.0.0",
+            metadata_id: uuid(),
+            appId: "lenstrip",
+            title: titleRef.current.input.value,
+            image: images[0].item,
+            content: quillRef,
+            attributes: profile.attributes,
+            state: stateValue,
+            locale: current_locale,
+            mainContentFocus: "IMAGE",
+            media: images,
+            tags: ["trip"],
+            name: `Post by ${profile.handle}`
+        }
+        post(matedata);
+
 
     };
 
@@ -140,7 +184,7 @@ export default function Page() {
                                 {t('favoriteSettings')}
                             </Button>
                             <Button
-                                loading={sumbitButtonLoading}
+                                loading={postLoading}
                                 className={`${btnClass} bg-[blueviolet] h-[39px]`}
                                 onClick={onSubmit}
                             >

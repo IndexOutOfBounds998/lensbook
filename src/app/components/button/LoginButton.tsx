@@ -1,5 +1,5 @@
 import { useWalletLogin, useActiveProfile } from '@lens-protocol/react-web';
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { Button } from 'antd';
 import { useTranslation } from "react-i18next";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
@@ -23,10 +23,6 @@ export default function LoginButton() {
   const { execute: login, error: loginError, isPending: isLoginPending } = useWalletLogin();
 
   const { address, isConnected } = useAccount();
-
-  const { disconnectAsync } = useDisconnect();
-
-  const { connectAsync, connectors, isLoading, pendingConnector } = useConnect();
 
   const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
