@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
-import { ExplorePublicationRequest, PublicationSortCriteria } from '@lens-protocol/client';
+import { useState, useEffect } from 'react';
+import { ExplorePublicationRequest } from '@lens-protocol/client';
 import { getAuthenticatedClient } from '../shared/getAuthenticatedClient';
-import { isEqual } from 'lodash';
+
 type useFetchPublicationsArgs = {
   explorePublicationRequest: ExplorePublicationRequest;
 };
