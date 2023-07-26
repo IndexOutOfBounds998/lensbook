@@ -89,6 +89,12 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
                         width={width}
                         height={300}
                         src={contentImg && contentImg}
+                        loader={({ src, width: w, quality }) => {
+                            const q = quality || 75;
+                            return `/api/custom-loader?url=${encodeURIComponent(
+                              src
+                            )}?w=${w}&q=${q}`;
+                          }}
                         onLoadingComplete={(img) => {
                             setImgInfo(img);
                             setImgLoad(false);

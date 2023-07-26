@@ -1,10 +1,10 @@
-import user from '../../../assets/user.jpg'
+import user from '../../assets/user.jpg'
 import Comment from "./Comment";
 import React, { useEffect, useRef, useState } from "react";
 import { message, notification, Spin, Skeleton, Carousel } from "antd";
 import Input from "antd/es/input";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { formatNickName, formatDate, formatVideoUrl, formatPicture } from "../../utils/FormatContent";
+import { formatNickName, formatDate, formatVideoUrl, formatPicture } from "../../app/utils/FormatContent";
 import { useTranslation } from "react-i18next";
 import {
     useComments,
@@ -20,7 +20,7 @@ import ReactionButton from '@/app/components/button/ReactionButton';
 import SendCommentButton from '@/app/components/button/SendCommentButton';
 import ReactPlayer from "react-player";
 import FollowButtonWithOutProfile from '@/app/components/button/FollowButtonWithOutProfile';
-import '../../style/Carousel.css'
+import '@/app/style/Carousel.css'
 import { NextSeo } from 'next-seo';
 import { useActiveProfile } from '@lens-protocol/react-web';
 import Link from 'next/link';
