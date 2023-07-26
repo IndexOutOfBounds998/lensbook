@@ -63,6 +63,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const { data: comments, loading: commentsLoading, hasMore, next } = useComments({
         commentsOf: item.id,
         limit: 10,
+        observerId: profile && profile.id
     });
 
 
