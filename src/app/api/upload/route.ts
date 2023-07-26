@@ -11,8 +11,6 @@ export async function POST(request: Request) {
    
 
   try {
-    // 替换为你要上传文件的第三方服务的 API 地址
-
     const formData = new FormData();
     formData.append('file', file);
    
@@ -21,8 +19,6 @@ export async function POST(request: Request) {
           Authorization: `Bearer ${IPFS_API_KEY}`
       }
   };
-
-
     const res = await ipfsApi['upLoadImg'](formData, config);
     console.log(res)
     if (res) {
