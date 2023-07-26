@@ -7,7 +7,7 @@ import {
     polygonMumbai
 } from 'wagmi/chains';
 import { useEffect } from "react";
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { useAccount, useDisconnect } from 'wagmi';
 export default function ProfileSetting() {
     const { execute: logout, isPending } = useWalletLogout();
 
@@ -23,11 +23,9 @@ export default function ProfileSetting() {
         if (chain) {
             if (chain.id !== polygonMumbai.id) {
                 logout()
-
-                if (isConnected) {
-                    disconnectAsync();
-                }
-
+                // if (isConnected) {
+                //     disconnectAsync();
+                // }
             }
         }
 
@@ -53,42 +51,45 @@ export default function ProfileSetting() {
     ]
 
     const content = () => {
-        return <div className='p-[15px] w-[300px]'>
-            <Skeleton loading={loading} avatar paragraph={{ rows: 4 }}>
-                <div className='flex items-center mb-[20px]'>
-                    <img className='w-[50px] h-[50px] cursor-pointer rounded-3xl mr-[15px]' src={profile && formatPicture(profile.picture)} />
-                    <div className='leading-7'>
-                        <div className='hover:text-[#3339] cursor-pointer'>
-                            <span className='text-[20px] font-bold'>{profile && formatNickName(profile.handle)}</span>
-                            <i className='iconfont icon-icon-right text-[10px]' />
+        return
+        <>
+            <div className='p-[15px] w-[300px]'>
+                <Skeleton loading={loading} avatar paragraph={{ rows: 4 }}>
+                    <div className='flex items-center mb-[20px]'>
+                        <img className='w-[50px] h-[50px] cursor-pointer rounded-3xl mr-[15px]' src={profile && formatPicture(profile.picture)} />
+                        <div className='leading-7'>
+                            <div className='hover:text-[#3339] cursor-pointer'>
+                                <span className='text-[20px] font-bold'>{profile && formatNickName(profile.handle)}</span>
+                                <i className='iconfont icon-icon-right text-[10px]' />
+                            </div>
+                            <p className='truncate w-[200px] text-[#3339] cursor-pointer hover:text-[#000]'>{profile && profile.bio}</p>
                         </div>
-                        <p className='truncate w-[200px] text-[#3339] cursor-pointer hover:text-[#000]'>{profile && profile.bio}</p>
                     </div>
-                </div>
-                <div className='flex justify-around mb-[30px]'>
-                    {
-                        list.map((item, index) => (
-                            <div key={index} className='text-[#3339] text-center cursor-pointer hover:text-[blueviolet]'>
-                                <p className='text-black'>{item.value}</p> {item.title}
-                            </div>
-                        ))
-                    }
-                </div>
-                <div className='flex justify-between'>
-                    {
-                        tools.map((item, index) => (
-                            <div
-                                key={index}
-                                className='mr-[16px] text-[#333] text-center cursor-pointer hover:text-[blueviolet]' onClick={item.click}
-                            >
-                                <i className={`iconfont icon-${item.icon} text-[25px]`} />
-                                <p>{item.title}</p>
-                            </div>
-                        ))
-                    }
-                </div>
-            </Skeleton>
-        </div>
+                    <div className='flex justify-around mb-[30px]'>
+                        {
+                            list.map((item, index) => (
+                                <div key={index} className='text-[#3339] text-center cursor-pointer hover:text-[blueviolet]'>
+                                    <p className='text-black'>{item.value}</p> {item.title}
+                                </div>
+                            ))
+                        }
+                    </div>
+                    <div className='flex justify-between'>
+                        {
+                            tools.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className='mr-[16px] text-[#333] text-center cursor-pointer hover:text-[blueviolet]' onClick={item.click}
+                                >
+                                    <i className={`iconfont icon-${item.icon} text-[25px]`} />
+                                    <p>{item.title}</p>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </Skeleton>
+            </div>
+        </>
     }
 
     return (

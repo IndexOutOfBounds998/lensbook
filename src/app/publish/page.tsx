@@ -7,14 +7,13 @@ import MuUploadImagButton from "../components/button/MuUploadImagButton";
 import i18n from "i18next";
 import type { UploadFile } from 'antd/es/upload/interface';
 import { uuid } from "@walletconnect/legacy-utils";
-
+import { PublicationMetadataV2Input, PublicationMainFocus, PublicationMetadataDisplayTypes } from '@lens-protocol/client';
 import {
     useActiveProfile
 } from '@lens-protocol/react-web';
 const { TextArea } = Input;
 
 export default function Page() {
-    const [sumbitButtonLoading, setSumbitButtonLoading] = useState(false);
 
     const { t } = useTranslation();
 
@@ -67,23 +66,43 @@ export default function Page() {
 
         })
 
+        //处理属性 让 nft 更加唯一性
+
+        let attributes = fileList.filter((item) => {
+            return item.response.code === 200;
+        }).map((item) => {
+
+            return {
+                displayType: PublicationMetadataDisplayTypes.Number,
+                traitType: "size",
+                value: item.size
+            }
+
+        })
+
         let current_locale = i18n.language
 
-        let matedata = {
-            version: "1.0.0",
+        let matedata: PublicationMetadataV2Input = {
+            version: "2.0.0",
             metadata_id: uuid(),
             appId: "lenstrip",
-            title: titleRef.current.input.value,
             image: images[0].item,
+            imageMimeType: images[0].type,
             content: quillRef,
-            attributes: profile.attributes,
-            state: stateValue,
+            title: titleRef.current.input.value,
+            attributes: attributes,
             locale: current_locale,
-            mainContentFocus: "IMAGE",
+            mainContentFocus: PublicationMainFocus.Image,
             media: images,
             tags: ["trip"],
             name: `Post by ${profile.handle}`
         }
+        //    try {
+        //      await ValidateMetadata(matedata);
+        //    } catch (error) {
+        //        alert("matadata 不标准");
+        //        return
+        //    }
         post(matedata);
 
 
@@ -98,7 +117,7 @@ export default function Page() {
                 </div>
                 <div className="p-[20px]">
                     <div className="mb-[10px]">
-                        <p className="mb-[10px] text-[18px]">{t('imageEditing')}&nbsp;&nbsp;<span className="text-[14px] text-[blue]">+{t('uploadMore')}</span></p>
+                        {/* <p className="mb-[10px] text-[18px]">{t('imageEditing')}&nbsp;&nbsp;<span className="text-[14px] text-[blue]">+{t('uploadMore')}</span></p> */}
                         <MuUploadImagButton fileList={fileList} setFileList={setFileList}></MuUploadImagButton>
                     </div>
                     <div className="mb-[16px]">
@@ -140,13 +159,13 @@ export default function Page() {
                     <div className="text-[13px]">
                         <p className="text-[18px] text-[#ea9d4e] my-[25px]">{t('publishSetting')}</p>
                         <div className='w-[500px] flex items-center mb-[20px]'>
-                            <span className="text-[14px] mr-3">{t('addLoc')}</span>
+                            {/* <span className="text-[14px] mr-3">{t('addLoc')}</span>
                             <div className='min-w-[350px]'>
                                 <Input
                                     className=""
                                     placeholder={t('pleaseSelect')}
                                 />
-                            </div>
+                            </div> */}
                         </div>
                         <div className='mb-[20px]'>
                             <span className="text-[14px] mr-3">{t('permission')}</span>

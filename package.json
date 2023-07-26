@@ -22,6 +22,7 @@
     "@types/react-dom": "18.2.6",
     "@vercel/analytics": "^1.0.1",
     "antd": "^5.6.4",
+    "antd-img-crop": "^4.12.2",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
     "cors": "^2.8.5",

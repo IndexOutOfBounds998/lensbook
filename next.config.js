@@ -10,7 +10,7 @@ const nextConfig = {
         ignoreDuringBuilds: true,
     },
     images: {
-        minimumCacheTTL: 60,
+        minimumCacheTTL: 30,
         unoptimized: true,
         remotePatterns: [
             {
