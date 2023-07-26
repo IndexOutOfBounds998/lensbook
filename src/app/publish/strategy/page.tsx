@@ -31,6 +31,14 @@ export default function Page() {
 
     const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
+    useEffect(() => {
+        const file = sessionStorage.getItem('file');
+        if (file) {
+            setFileList(JSON.parse(file));
+            // sessionStorage.removeItem('file');
+        }
+    }, [])
+
     const showModal = () => {
         setIsModalOpen(true);
     };
