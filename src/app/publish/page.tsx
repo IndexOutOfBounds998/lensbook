@@ -7,14 +7,16 @@ import MuUploadImagButton from "../components/button/MuUploadImagButton";
 import i18n from "i18next";
 import type { UploadFile } from 'antd/es/upload/interface';
 import { uuid } from "@walletconnect/legacy-utils";
-
+import { PublicationMetadataV2Input, PublicationMainFocus, PublicationMetadataDisplayTypes } from '@lens-protocol/client';
 import {
     useActiveProfile
 } from '@lens-protocol/react-web';
+
+import ValidateMetadata from '../lib/validateMetadata';
 const { TextArea } = Input;
 
 export default function Page() {
-   
+
     const { t } = useTranslation();
 
     const btnClass =
@@ -66,23 +68,43 @@ export default function Page() {
 
         })
 
+        //处理属性 让 nft 更加唯一性
+
+        let attributes = fileList.filter((item) => {
+            return item.response.code === 200;
+        }).map((item) => {
+
+            return {
+                displayType: PublicationMetadataDisplayTypes.Number,
+                traitType: "size",
+                value: item.size
+            }
+
+        })
+
         let current_locale = i18n.language
 
-        let matedata = {
-            version: "1.0.0",
+        let matedata: PublicationMetadataV2Input = {
+            version: "2.0.0",
             metadata_id: uuid(),
             appId: "lenstrip",
-            title: titleRef.current.input.value,
             image: images[0].item,
+            imageMimeType: images[0].type,
             content: quillRef,
-            attributes: profile.attributes,
-            state: stateValue,
+            title: titleRef.current.input.value,
+            attributes: attributes,
             locale: current_locale,
-            mainContentFocus: "IMAGE",
+            mainContentFocus: PublicationMainFocus.Image,
             media: images,
             tags: ["trip"],
             name: `Post by ${profile.handle}`
         }
+        //    try {
+        //      await ValidateMetadata(matedata);
+        //    } catch (error) {
+        //        alert("matadata 不标准");
+        //        return
+        //    }
         post(matedata);
 
 
