@@ -64,9 +64,7 @@ export default function UploadImg() {
                 console.log(info.file, info.fileList);
             }
             if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
                 setShowModel(true);
-                debugger
                 setFileList(info.fileList);
             } else if (status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
