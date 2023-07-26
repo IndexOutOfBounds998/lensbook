@@ -65,9 +65,10 @@ export default function LayoutContent({ cardClick }) {
 
 
     const tabCheck = (index) => {
+        
         let categoryItem = categories[index];
         if (categoryItem && categoryItem.tag !== 'All') {
-            requestArgs.metadata.tags.oneOf = [categoryItem.tag];
+            requestArgs.metadata.tags.oneOf = ["'"+categoryItem.tag+"'"];
             changeFilter(requestArgs);
         } else {
             requestArgs.metadata.tags.oneOf = [];
