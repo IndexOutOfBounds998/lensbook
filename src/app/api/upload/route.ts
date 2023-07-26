@@ -22,8 +22,6 @@ export async function POST(request: Request) {
     const res = await ipfsApi['upLoadImg'](formData, config);
     console.log(res)
     if (res) {
-      const ipfsUrl = `https://ipfs.io/ipfs/${res.IpfsHash}`;
-      console.log(ipfsUrl);
       return NextResponse.json({ code: 200, message: '文件上传成功。', data: res.IpfsHash });
     }
 
