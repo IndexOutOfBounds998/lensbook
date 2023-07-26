@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 import ipfsApi from "../../api/ipfsApi";
 import { IPFS_API_KEY } from "../../constants/constant";
 export async function POST(request: Request) {

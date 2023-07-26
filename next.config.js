@@ -11,7 +11,7 @@ const nextConfig = {
     },
     images: {
         minimumCacheTTL: 30,
-        unoptimized: false,
+        unoptimized: true,
         remotePatterns: [
             {
                 protocol: "https",

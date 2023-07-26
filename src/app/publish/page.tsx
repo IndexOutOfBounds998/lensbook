@@ -11,8 +11,6 @@ import { PublicationMetadataV2Input, PublicationMainFocus, PublicationMetadataDi
 import {
     useActiveProfile
 } from '@lens-protocol/react-web';
-
-import ValidateMetadata from '../lib/validateMetadata';
 const { TextArea } = Input;
 
 export default function Page() {
