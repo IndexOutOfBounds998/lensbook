@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {useTranslation} from "react-i18next";
 import {message, Upload} from "antd";
 import { useRouter } from 'next/navigation'
+import {useUpIpfs} from "../../hooks/useUpIpfs";
 
 const { Dragger } = Upload;
 
@@ -30,6 +31,8 @@ export default function UploadVideo() {
     ];
 
     const [loading, setLoading] = useState(false);
+
+    const { execute, loading: ipfsLoading, url } = useUpIpfs({ type: 'upLoadImg' });
 
     const beforeUpload = async (file) => {
         setLoading(true);
