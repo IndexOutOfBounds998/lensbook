@@ -68,7 +68,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     });
 
     useEffect(() => {
-        if(commentsData){
+        if (commentsData) {
             setComments(commentsData);
         }
     }, [commentsData])
@@ -357,7 +357,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                     {t('sharebtn')}
                                 </div>
                             </div>
-                            <div className='h-[50px] rounded-3xl w-full flex'>
+                            <div className='h-[50px] rounded-3xl w-full flex' style={{ display: publication && (publication as Post).canComment.result ? '' : 'none' }}>
                                 <div className='w-[calc(100%-95px)] mr-[15px] shadow p-[5px] h-[50px] bg-[#f9f9f9] rounded-3xl'>
                                     <Input
                                         ref={commentRef}
