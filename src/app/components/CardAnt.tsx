@@ -83,7 +83,8 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
                         placeholder="blur"
                         blurDataURL={`data:image/svg+xml;base64,${toBase64(
                             convertImage(700, 475)
-                        )}`} alt="example"
+                        )}`} 
+                        alt="example"
                         loading='lazy'
                         width={width}
                         height={300}

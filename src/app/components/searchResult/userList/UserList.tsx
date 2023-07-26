@@ -53,7 +53,7 @@ const UserList: React.FC<UserListProps> = ({ inputValue }) => {
             <InfiniteScroll
                 dataLength={dataList.length}
                 next={loadMore}
-                hasMore={true}
+                hasMore={resultObj.hasMore}
                 loader={
                     <div
                         className='w-full flex items-center justify-center h-[25px] mb-[10px]'
