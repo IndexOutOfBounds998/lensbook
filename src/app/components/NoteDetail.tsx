@@ -68,7 +68,9 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     });
 
     useEffect(() => {
-        setComments(commentsData);
+        if(commentsData){
+            setComments(commentsData);
+        }
     }, [commentsData])
 
     useEffect(() => {
