@@ -3,17 +3,19 @@ import { Radio, Input, Button } from 'antd';
 import React, { useEffect, useRef, useState } from "react";
 import { usePost } from '../../hooks/usePost'
 import { useTranslation } from "react-i18next";
-import MuUploadImagButton from "../../components/button/MuUploadImagButton";
-import i18n from "i18next";
 import type { UploadFile } from 'antd/es/upload/interface';
-import { uuid } from "@walletconnect/legacy-utils";
-import { PublicationMetadataV2Input, PublicationMainFocus, PublicationMetadataDisplayTypes } from '@lens-protocol/client';
 import {
     useActiveProfile
 } from '@lens-protocol/react-web';
 const { TextArea } = Input;
+import { useSearchParams  } from 'next/navigation'
+import ReactPlayer from "react-player";
 
 export default function Page() {
+
+    const params = useSearchParams();
+    //获取url中的ipfsUrl
+    console.log(params.get('ipfsUrl'))
 
     const { t } = useTranslation();
 
@@ -26,7 +28,7 @@ export default function Page() {
     let [quillRef, setQuillRef] = useState();
 
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-    // let quillRef = useRef(undefined);
+
     let titleRef = useRef(undefined);
 
     const { data: profile, error, loading: profileLoading } = useActiveProfile();
@@ -45,67 +47,6 @@ export default function Page() {
 
     const onSubmit = async () => {
 
-        if (fileList && fileList.length === 0) {
-            alert("请上传图片");
-            return
-        }
-        if (!titleRef.current || !quillRef) {
-            alert("请填写内容");
-            return
-        }
-        //处理图片
-        let images = fileList.filter((item) => {
-            return item.response.code === 200;
-        }).map((item) => {
-
-            return {
-                cover: "ipfs://" + item.response.data,
-                item: "ipfs://" + item.response.data,
-                type: item.type
-            }
-
-        })
-
-        //处理属性 让 nft 更加唯一性
-
-        let attributes = fileList.filter((item) => {
-            return item.response.code === 200;
-        }).map((item) => {
-
-            return {
-                displayType: PublicationMetadataDisplayTypes.Number,
-                traitType: "size",
-                value: item.size
-            }
-
-        })
-
-        let current_locale = i18n.language
-
-        let matedata: PublicationMetadataV2Input = {
-            version: "2.0.0",
-            metadata_id: uuid(),
-            appId: "lenstrip",
-            image: images[0].item,
-            imageMimeType: images[0].type,
-            content: quillRef,
-            title: titleRef.current.input.value,
-            attributes: attributes,
-            locale: current_locale,
-            mainContentFocus: PublicationMainFocus.Image,
-            media: images,
-            tags: ["trip"],
-            name: `Post by ${profile.handle}`
-        }
-        //    try {
-        //      await ValidateMetadata(matedata);
-        //    } catch (error) {
-        //        alert("matadata 不标准");
-        //        return
-        //    }
-        post(matedata);
-
-
     };
 
     return (
@@ -113,12 +54,18 @@ export default function Page() {
             <div className="w-full h-full bg-white overflow-y-scroll p-[30px] pl-[30px]">
                 <div className="text-[20px] flex items-center">
                     <div className="w-[10px] h-[25px] inline-block bg-[blueviolet] rounded-3xl mr-1" />
-                    <span>{t('publishTitle')}</span>
+                    <span>{t('postVideo')}</span>
                 </div>
                 <div className="p-[20px]">
                     <div className="mb-[10px]">
-                        {/* <p className="mb-[10px] text-[18px]">{t('imageEditing')}&nbsp;&nbsp;<span className="text-[14px] text-[blue]">+{t('uploadMore')}</span></p> */}
-                        <MuUploadImagButton fileList={fileList} setFileList={setFileList}></MuUploadImagButton>
+                        <p className="mb-[10px] text-[18px]">{t('videoEditing')}</p>
+                        <ReactPlayer
+                            url={params.get('ipfsUrl')}
+                            controls
+                            loop
+                            width='200px'
+                            height='300px'
+                        />
                     </div>
                     <div className="mb-[16px]">
                         <Input
@@ -158,15 +105,6 @@ export default function Page() {
                     </div>
                     <div className="text-[13px]">
                         <p className="text-[18px] text-[#ea9d4e] my-[25px]">{t('publishSetting')}</p>
-                        <div className='w-[500px] flex items-center mb-[20px]'>
-                            {/* <span className="text-[14px] mr-3">{t('addLoc')}</span>
-                            <div className='min-w-[350px]'>
-                                <Input
-                                    className=""
-                                    placeholder={t('pleaseSelect')}
-                                />
-                            </div> */}
-                        </div>
                         <div className='mb-[20px]'>
                             <span className="text-[14px] mr-3">{t('permission')}</span>
                             <Radio.Group

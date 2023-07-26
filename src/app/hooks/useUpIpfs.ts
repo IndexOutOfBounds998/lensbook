@@ -21,7 +21,7 @@ export function useUpIpfs({ type }: useUpData) {
         if (res && res.IpfsHash) {
             setUrl("ipfs://" + res.IpfsHash);
             setLoad(false);
-            return "ipfs://" + res.IpfsHash;
+            return res.IpfsHash;
         }
     }
 

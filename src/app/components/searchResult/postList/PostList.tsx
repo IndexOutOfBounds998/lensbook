@@ -67,8 +67,8 @@ const PostList: React.FC<PostListProps> = ({ inputValue }) => {
                     dataList.map((item, index) => (
                         <div key={index} className='px-[15px] py-[5px] hover:bg-[#8a2be236] cursor-pointer'>
                             <div className='flex justify-between items-center'>
-                                <div>
-                                    <span className='ml-[5px] text-[16px]'>{item.metadata.title ? formatTextLenth20(item.metadata.title) : formatTextLenth20(item.metadata.content)}</span>
+                                <div className='w-[calc(100%-80px)]'>
+                                    <p className='w-full ml-[5px] text-[16px] truncate'>{item.metadata.title || item.metadata.content}</p>
                                 </div>
                                 <div className='flex items-stretch'>
                                     <i className='iconfont icon-heart text-[16px] mr-[3px]' />
