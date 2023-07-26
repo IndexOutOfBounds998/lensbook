@@ -30,24 +30,19 @@ export default function UploadVideo() {
         },
     ];
     const [loading, setLoading] = useState(false);
-    const [ipfsHash, setIpfsHash] = useState('');
 
     const { execute, loading: ipfsLoading, url } = useUpIpfs({ type: 'upLoadImg' });
 
     const beforeUpload = async (file) => {
-        router.push(`/publish/strategy?ipfsUrl=${ipfsUrl}`)
-        // setLoading(true);
-        // const formData = new FormData();
-        // formData.append('file', file);
-        // const url = await execute(formData);
-        // if (url) {
-        //     const ipfsUrl = `https://ipfs.io/ipfs/${url}`;
-        //     setLoading(false);
-            // router.push({
-            //         pathname: '/publish/strategy',
-            //         query: { ipfsUrl: ipfsUrl },
-            //     })
-        // }
+        setLoading(true);
+        const formData = new FormData();
+        formData.append('file', file);
+        const url = await execute(formData);
+        if (url) {
+            const ipfsUrl = `https://ipfs.io/ipfs/${url}`;
+            setLoading(false);
+            router.push(`/publish/video?ipfsUrl=${ipfsUrl}`)
+        }
     };
 
     return (

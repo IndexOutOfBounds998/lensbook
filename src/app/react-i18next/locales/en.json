@@ -92,5 +92,7 @@
   "1imgRatio": "Image Resolution",
   "1imgRatioRecommendation": "It is recommended to upload photos with an aspect ratio of 3:4 and a resolution of no less than 720 * 960",
   "1imgWeb": "Images over 1280P have clearer image quality when uploaded on the webpage ",
-  "1imgUpload": "Drag and drop images here or click to upload"
+  "1imgUpload": "Drag and drop images here or click to upload",
+  "videoEditing": "Video Editing",
+  "postVideo": "Post video"
 }

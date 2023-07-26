@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import {useTranslation} from "react-i18next";
 import {message, Upload} from "antd";
+import { useRouter } from 'next/navigation'
 
 const { Dragger } = Upload;
 
 export default function UploadVideo() {
+
+    const router = useRouter();
 
     const { t } = useTranslation();
 
@@ -26,28 +29,18 @@ export default function UploadVideo() {
         },
     ];
 
+    const [loading, setLoading] = useState(false);
+
     const beforeUpload = async (file) => {
         setLoading(true);
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        if (!isJpgOrPng) {
-            message.error('You can only upload JPG/PNG file!');
-            return;
-        }
         const formData = new FormData();
         formData.append('file', file);
         const url = await execute(formData);
         if (url) {
             const ipfsUrl = `https://ipfs.io/ipfs/${url}`;
-            setIpfsHash(url);
-            let img = new Image();
-            img.src = url;
-            img.onload = () => {
-                setImageUrl(ipfsUrl);
-                // if (setSize) setSize(img)
-            }
             setLoading(false);
+            router.push(`/publish/strategy?ipfsUrl=${ipfsUrl}`)
         }
-        return isJpgOrPng;
     };
 
     return (

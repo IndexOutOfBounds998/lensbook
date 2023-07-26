@@ -45,7 +45,7 @@ export function useSendComment({ publication }: commentData) {
             const typedDataResult = await lensClient.publication.createCommentTypedData({
                 profileId: profile.id,
                 publicationId: publication.id,
-                contentURI: "ipfs://" + url, // or arweave
+                contentURI: url, // or arweave
                 collectModule: {
                     revertCollectModule: true, // collect disabled
                 },

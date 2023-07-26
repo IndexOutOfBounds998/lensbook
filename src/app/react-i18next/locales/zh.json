@@ -92,5 +92,7 @@
   "imgRatio": "图片分辨率",
   "imgRatioRecommend": "推荐上传宽高比为3:4、分辨率不低于720*960的照片，",
   "imgWeb": "超过1280P的图片用网页端上传画质更清晰",
-  "imgUpload": "拖拽图片到此处或点击上传"
+  "imgUpload": "拖拽图片到此处或点击上传",
+  "videoEditing": "视频编辑",
+  "postVideo": "发布视频"
 }

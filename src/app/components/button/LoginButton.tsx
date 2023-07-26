@@ -1,5 +1,5 @@
 import { useWalletLogin, useActiveProfile } from '@lens-protocol/react-web';
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { Button } from 'antd';
 import { useTranslation } from "react-i18next";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
@@ -22,11 +22,7 @@ export default function LoginButton() {
 
   const { execute: login, error: loginError, isPending: isLoginPending } = useWalletLogin();
 
-  const { address, isConnected } = useAccount();
-
-  const { disconnectAsync } = useDisconnect();
-
-  const { connectAsync, connectors, isLoading, pendingConnector } = useConnect();
+  const {  isConnected } = useAccount();
 
   const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
@@ -43,9 +39,7 @@ export default function LoginButton() {
 
   }, [chain, switchNetwork])
 
-  if (profile) {
-    return <ProfileSetting></ProfileSetting>
-  }
+  
 
   const onLoginClick = async () => {
 
@@ -55,6 +49,7 @@ export default function LoginButton() {
       address: walletClient.account.address,
     });
   };
+
 
   return (
     <>

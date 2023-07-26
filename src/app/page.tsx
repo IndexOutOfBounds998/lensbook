@@ -7,7 +7,7 @@ import React, {useEffect, useState} from "react";
 import LayoutHeader from './pages/layout/Header'
 import LayoutSider from './pages/layout/Sider'
 import Content from './pages/Home/Content'
-import NoteDetail from "./pages/Home/NoteDetail";
+import NoteDetail from "./components/NoteDetail";
 
 export default function Home() {
   let [card, setCard] =  useState('');
