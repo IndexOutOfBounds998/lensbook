@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import {useTranslation} from "react-i18next";
-import {message, Upload} from "antd";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Upload } from "antd";
 import { useRouter } from 'next/navigation'
-import {useUpIpfs} from "../../hooks/useUpIpfs";
+import { useUpIpfs } from "../../hooks/useUpIpfs";
 
 const { Dragger } = Upload;
 
@@ -55,11 +55,11 @@ export default function UploadVideo() {
                     <p>
                         <i className='iconfont icon-upload text-[40px]' />
                     </p>
-                    <p className="">{ t('imgUpload') }</p>
+                    <p className="">{t('imgUpload')}</p>
                     <div className='mt-[20px]'>
                         <span className="bg-[blueviolet] mx-[auto] py-[8px] px-[15px] rounded-[5px] text-[#fff]">
-                        { t('uploadImg') }
-                    </span>
+                            {t('uploadImg')}
+                        </span>
                     </div>
                 </div>
             </Dragger>
@@ -67,9 +67,9 @@ export default function UploadVideo() {
                 {
                     items.map((item, index) => (
                         <div key={index} className='border h-[130px] flex-1 text-center pt-[30px] rounded-[4px]] even:mx-[10px]'>
-                            <p>{ item.title }</p>
-                            <p className='mt-[5px] text-[#8c8c8c] text-[12px]'>{ item.p1 }</p>
-                            <p className='text-[#8c8c8c] text-[12px]'>{ item.p2 }</p>
+                            <p>{item.title}</p>
+                            <p className='mt-[5px] text-[#8c8c8c] text-[12px]'>{item.p1}</p>
+                            <p className='text-[#8c8c8c] text-[12px]'>{item.p2}</p>
                         </div>
                     ))
                 }
