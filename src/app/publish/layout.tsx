@@ -1,6 +1,6 @@
 "use client";
 
-import LayoutSider from "../../pages/layout/Sider";
+import LayoutSider from "../pages/layout/Sider";
 import React from "react";
 
 export default function RootLayout({

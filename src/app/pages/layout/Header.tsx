@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import logo from '../../assets/logo192.png'
+import logo from '../../../assets/logo192.png'
 import ProfileSetting from "@/app/components/ProfileSetting";
 import LoginButton from "@/app/components/button/LoginButton";
 import Search from "./Search";

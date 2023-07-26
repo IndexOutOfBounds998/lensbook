@@ -1,10 +1,10 @@
 import user from '../../assets/user.jpg'
-import Comment from "./Comment";
+import Comment from "../pages/Home/Comment";
 import React, { useEffect, useRef, useState } from "react";
 import { message, notification, Spin, Skeleton, Carousel } from "antd";
 import Input from "antd/es/input";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { formatNickName, formatDate, formatVideoUrl, formatPicture } from "../../app/utils/FormatContent";
+import { formatNickName, formatDate, formatVideoUrl, formatPicture } from "../utils/FormatContent";
 import { useTranslation } from "react-i18next";
 import {
     useComments,

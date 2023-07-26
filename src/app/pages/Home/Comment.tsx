@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useState } from "react";
-import { formatAvater, formatPicture, formatDate, formatNickName } from '../../app/utils/FormatContent'
+import { formatAvater, formatPicture, formatDate, formatNickName } from '../../utils/FormatContent'
 const icon = (icon) => (
     <i className={`iconfont icon-${icon} text-[16px] mr-[5px]`} />
 );

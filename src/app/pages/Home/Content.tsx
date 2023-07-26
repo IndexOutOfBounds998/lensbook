@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { PublicationTypes, PublicationMainFocus } from '@lens-protocol/react-web';
-import CardList from "../../app/components/CardList";
+import CardList from "../../components/CardList";
 import { PublicationSortCriteria, ExplorePublicationRequest } from '@lens-protocol/client';
 import { useFetchPublications } from '@/app/hooks/useFetchPublications';
 import { Select } from "antd";

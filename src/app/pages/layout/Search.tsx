@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import SearhResult from "../../app/components/searchResult/SearhResult";
+import SearhResult from "../../components/searchResult/SearhResult";
 import {Popover} from "antd";
 
 export default function Search() {

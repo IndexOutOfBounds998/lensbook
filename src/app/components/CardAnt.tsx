@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { formatPicture, formatNickName, formatVideoImage } from "../utils/FormatContent"
+import { formatPicture, formatNickName } from "../utils/FormatContent"
 import { Button, Card, message, Skeleton } from 'antd';
 import '../style/Card.css'
 import { useTranslation } from "react-i18next";
