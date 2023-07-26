@@ -48,7 +48,7 @@ export function usePost() {
             const lensClient = await getAuthenticatedClient();
             const typedDataResult = await lensClient.publication.createPostTypedData({
                 profileId: profile.id,
-                contentURI: url, // or arweave
+                contentURI: "ipfs://" + url, // or arweave
                 collectModule: {
                     revertCollectModule: true, // collect disabled
                 },

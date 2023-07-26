@@ -6,6 +6,7 @@ import UploadButton from "../../components/button/UploadButton";
 import { Radio, Input, Button } from 'antd';
 import React, { useEffect, useRef, useState } from "react";
 import { usePost } from '../../hooks/usePost'
+import {router} from "next/client";
 const { TextArea } = Input;
 // @ts-ignore
 export default function Strategy() {
@@ -24,6 +25,7 @@ export default function Strategy() {
     // let quillRef = useRef(undefined);
     let titleRef = useRef(undefined);
 
+    // console.log(router.query.id)
     const showModal = () => {
         setIsModalOpen(true);
     };
