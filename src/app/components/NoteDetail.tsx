@@ -46,6 +46,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     let flag = true;
 
     let [carouselList, setCarouselList] = useState([]);
+    let [comments, setComments] = useState([]);
     let [show, setShow] = useState(true);
     let [bgSize, setBgSize] = useState(0);
     let [contentSize, setContentSize] = useState(0);
@@ -60,12 +61,15 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
 
-    const { data: comments, loading: commentsLoading, hasMore, next } = useComments({
+    const { data: commentsData, loading: commentsLoading, hasMore, next } = useComments({
         commentsOf: item.id,
         limit: 10,
         observerId: profile && profile.id
     });
 
+    useEffect(() => {
+        setComments(commentsData);
+    }, [commentsData])
 
     useEffect(() => {
         if (flag) {
@@ -363,7 +367,8 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
                                 <WhenLoggedInWithProfile>
                                     {({ profile }) => {
-                                        return <SendCommentButton comments={comments} comment={commentRef.current} profile={profile} publication={publication} ></SendCommentButton>
+                                        return <SendCommentButton comments={comments} comment={commentRef.current} profile={profile} publication={publication} onChange={setComments}></SendCommentButton>
+
                                     }}
                                 </WhenLoggedInWithProfile>
 
