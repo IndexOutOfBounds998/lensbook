@@ -22,7 +22,7 @@ export default function LoginButton() {
 
   const { execute: login, error: loginError, isPending: isLoginPending } = useWalletLogin();
 
-  const { address, isConnected } = useAccount();
+  const {  isConnected } = useAccount();
 
   const { data: profile, error, loading: profileLoading } = useActiveProfile();
 
@@ -39,9 +39,7 @@ export default function LoginButton() {
 
   }, [chain, switchNetwork])
 
-  if (profile) {
-    return <ProfileSetting></ProfileSetting>
-  }
+  
 
   const onLoginClick = async () => {
 
@@ -51,6 +49,7 @@ export default function LoginButton() {
       address: walletClient.account.address,
     });
   };
+
 
   return (
     <>

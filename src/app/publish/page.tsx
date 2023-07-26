@@ -14,8 +14,7 @@ import {
 const { TextArea } = Input;
 
 export default function Page() {
-    const [sumbitButtonLoading, setSumbitButtonLoading] = useState(false);
-
+   
     const { t } = useTranslation();
 
     const btnClass =
@@ -98,7 +97,7 @@ export default function Page() {
                 </div>
                 <div className="p-[20px]">
                     <div className="mb-[10px]">
-                        <p className="mb-[10px] text-[18px]">{t('imageEditing')}&nbsp;&nbsp;<span className="text-[14px] text-[blue]">+{t('uploadMore')}</span></p>
+                        {/* <p className="mb-[10px] text-[18px]">{t('imageEditing')}&nbsp;&nbsp;<span className="text-[14px] text-[blue]">+{t('uploadMore')}</span></p> */}
                         <MuUploadImagButton fileList={fileList} setFileList={setFileList}></MuUploadImagButton>
                     </div>
                     <div className="mb-[16px]">
@@ -140,13 +139,13 @@ export default function Page() {
                     <div className="text-[13px]">
                         <p className="text-[18px] text-[#ea9d4e] my-[25px]">{t('publishSetting')}</p>
                         <div className='w-[500px] flex items-center mb-[20px]'>
-                            <span className="text-[14px] mr-3">{t('addLoc')}</span>
+                            {/* <span className="text-[14px] mr-3">{t('addLoc')}</span>
                             <div className='min-w-[350px]'>
                                 <Input
                                     className=""
                                     placeholder={t('pleaseSelect')}
                                 />
-                            </div>
+                            </div> */}
                         </div>
                         <div className='mb-[20px]'>
                             <span className="text-[14px] mr-3">{t('permission')}</span>
