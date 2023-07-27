@@ -1,5 +1,5 @@
 "use client";
-import { Radio, Input, Button } from 'antd';
+import { Radio, Input, Button, message } from 'antd';
 import React, { useEffect, useRef, useState } from "react";
 import { usePost } from '../../hooks/usePost'
 import { useTranslation } from "react-i18next";
@@ -36,11 +36,12 @@ const ImageModel: React.FC<{
     const showModal = () => {
         setIsModalOpen(true);
     };
+
     const callbackOnSuccess = () => {
-        alert("发布成功")
+        message.success(t('success'))
     }
     const callbackOnError = (error) => {
-        alert("发布失败" + error)
+        message.error(t('error') + error)
     }
 
     const { submit: post, postLoading } = usePost(callbackOnSuccess, callbackOnError);
@@ -48,11 +49,11 @@ const ImageModel: React.FC<{
     const onSubmit = async () => {
 
         if (fileList && fileList.length === 0) {
-            alert("请上传图片");
+            message.warning(t('imageModelAlert'));
             return
         }
         if (!titleRef.current || !quillRef) {
-            alert("请填写内容");
+            message.warning(t('contentFillIn'));
             return
         }
         //处理图片

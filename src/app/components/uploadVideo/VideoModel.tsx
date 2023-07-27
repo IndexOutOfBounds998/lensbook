@@ -48,11 +48,13 @@ const VideoModel: React.FC<{
     const showModal = () => {
         setIsModalOpen(true);
     };
+   
+    
     const callbackOnSuccess = () => {
-        alert("发布成功")
+        message.success(t('success'))
     }
     const callbackOnError = (error) => {
-        alert("发布失败" + error)
+        message.error(t('error') + error)
     }
 
     const { execute, loading: ipfsLoading, url } = useUpIpfs({ type: 'upLoadImg' });
@@ -69,7 +71,7 @@ const VideoModel: React.FC<{
 
     const onSubmit = async () => {
         if (!titleRef.current || !quillRef) {
-            alert("请填写内容");
+            message.warning(t('contentFillIn'));
             return
         }
 
