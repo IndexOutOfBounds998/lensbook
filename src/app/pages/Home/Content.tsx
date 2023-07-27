@@ -28,7 +28,7 @@ export default function LayoutContent({ cardClick }) {
         }),
         sortCriteria: selectedOption,
         limit: 20,
-        publicationTypes: [PublicationTypes.Post],
+        publicationTypes: [PublicationTypes.Post,PublicationTypes.Mirror],
         metadata: {
             mainContentFocus: [PublicationMainFocus.Image, PublicationMainFocus.Video],
             tags: {
