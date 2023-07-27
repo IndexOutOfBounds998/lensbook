@@ -83,7 +83,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
                         placeholder="blur"
                         blurDataURL={`data:image/svg+xml;base64,${toBase64(
                             convertImage(700, 475)
-                        )}`} 
+                        )}`}
                         alt="example"
                         loading='lazy'
                         width={width}
@@ -92,9 +92,9 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
                         loader={({ src, width: w, quality }) => {
                             const q = quality || 75;
                             return `/api/custom-loader?url=${encodeURIComponent(
-                              src
+                                src
                             )}?w=${w}&q=${q}`;
-                          }}
+                        }}
                         onLoadingComplete={(img) => {
                             setImgInfo(img);
                             setImgLoad(false);

@@ -15,7 +15,7 @@ export function useSendComment({ publication }: commentData) {
 
     const { signTypedDataAsync, isLoading: typedDataLoading } = useSignTypedData();
 
-    const { execute, url } = useUpIpfs({ type: 'upJsonContent' });
+    const { execute, url: hashUrl } = useUpIpfs({ type: 'upJsonContent' });
 
     const [loading, setLoading] = useState(false);
 
@@ -38,14 +38,14 @@ export function useSendComment({ publication }: commentData) {
             tags: null,
             name: `Comment by ${profile.handle}`,
         }
-        const url = await execute(obj);
-        if (url) {
+        const hash = await execute(obj);
+        if (hash) {
             // lensClient.explore.publications()
             const lensClient = await getAuthenticatedClient();
             const typedDataResult = await lensClient.publication.createCommentTypedData({
                 profileId: profile.id,
                 publicationId: publication.id,
-                contentURI: url, // or arweave
+                contentURI: "ipfs://" + hash, // or arweave
                 collectModule: {
                     revertCollectModule: true, // collect disabled
                 },
