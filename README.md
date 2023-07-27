@@ -24,9 +24,8 @@ npm run build
 
 ## Support
 
-join us on our [Discord](https://discord.gg/aDtzhfd9c3)
-join us on our [Twitter](https://twitter.com/0xtripxyz)
-join us on our [Mirror](https://mirror.xyz/0x16A2B058265d353d20dBe40Cd764b9c815955f49)
+join us on our [Discord](https://discord.gg/aDtzhfd9c3)  [Twitter](https://twitter.com/0xtripxyz)
+ [Mirror](https://mirror.xyz/0x16A2B058265d353d20dBe40Cd764b9c815955f49)
 
 
 
