@@ -5,26 +5,7 @@ import { getAuthenticatedClient } from '../shared/getAuthenticatedClient';
 type useFetchPublicationsArgs = {
   explorePublicationRequest: ExplorePublicationRequest;
 };
-
-// 使用方式
-// const explorePublicationRequest = {
-//     cursor: JSON.stringify({
-//       timestamp: 1,
-//       offset: 20,
-//       filter: JSON.stringify({
-//         mainContentFocus: ['IMAGE']
-//       })
-//     }),
-//     sortCriteria: PublicationSortCriteria.Latest,
-//     limit: 20,
-//     publicationTypes: [PublicationTypes.Post],
-//     sources: ['lenster', 'lenstrip']
-//   };
-
-//   const { data, loading, hasMore, next ,reset} = useFetchPublications({
-//     explorePublicationRequest
-//   });
-
+ 
 export function useFetchPublications({ explorePublicationRequest }: useFetchPublicationsArgs) {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);

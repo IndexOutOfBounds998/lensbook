@@ -103,7 +103,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
                         style={{ display: imgLoad ? 'none' : 'block' }}
                     />
                     {
-                        item.metadata.mainContentFocus === 'VIDEO' ? <i className='iconfont icon-bofang cursor-pointer text-[40px] opacity-70
+                        item.__typename === 'Mirror' ? item.mirrorOf.metadata.mainContentFocus === 'VIDEO' : item.metadata.mainContentFocus === 'VIDEO' ? <i className='iconfont icon-bofang cursor-pointer text-[40px] opacity-70
                      text-[#fff] mr-3 operator mix-blend-difference absolute top-[calc(50%-20px)] left-[calc(50%-20px)]' /> : ''
                     }
                     {imgLoad ? <Skeleton.Image className='w-full' active={true} /> : ''}
