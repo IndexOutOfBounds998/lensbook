@@ -1,5 +1,5 @@
 "use client";
-import {Radio, Input, Button, Upload, message} from 'antd';
+import { Radio, Input, Button, Upload, message } from 'antd';
 import React, { useEffect, useRef, useState } from "react";
 import { usePost } from '../../hooks/usePost'
 import { useTranslation } from "react-i18next";
@@ -8,18 +8,18 @@ import {
     useActiveProfile
 } from '@lens-protocol/react-web';
 const { TextArea } = Input;
-import { useSearchParams  } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import ReactPlayer from "react-player";
-import {RcFile, UploadProps} from "antd/es/upload";
+import { RcFile, UploadProps } from "antd/es/upload";
 import i18n from "i18next";
-import {uuid} from "@walletconnect/legacy-utils";
-import {PublicationMetadataV2Input, PublicationMainFocus, PublicationMetadataDisplayTypes} from "@lens-protocol/client";
-import {useUpIpfs} from "../../hooks/useUpIpfs";
+import { uuid } from "@walletconnect/legacy-utils";
+import { PublicationMetadataV2Input, PublicationMainFocus, PublicationMetadataDisplayTypes } from "@lens-protocol/client";
+import { useUpIpfs } from "../../hooks/useUpIpfs";
 import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 
 const VideoModel: React.FC<{
     videoData: any;
-}> = ({ videoData }) =>  {
+}> = ({ videoData }) => {
 
     const { t } = useTranslation();
 
@@ -77,11 +77,14 @@ const VideoModel: React.FC<{
         const result = await lensClient.publication.createAttachMediaData({
             itemCid: videoData.cid,
             type: videoData.type,
-            altTag: "video test",
+            altTag: titleRef.current.input.value,
             cover: "ipfs://" + cover,
         });
 
-        console.log(result)
+
+        if (!result) {
+            return;
+        }
 
         let current_locale = i18n.language
 
@@ -100,8 +103,8 @@ const VideoModel: React.FC<{
                 }
             ],
             locale: current_locale,
-            mainContentFocus: PublicationMainFocus.Image,
-            media: result,
+            mainContentFocus: PublicationMainFocus.Video,
+            media: [result.media],
             tags: ["trip"],
             name: `Post by ${profile.handle}`
         }
@@ -132,12 +135,12 @@ const VideoModel: React.FC<{
                                 </Button>
                             </Upload>
                         </div>
-                        <div  className='w-[200px] h-[300px] border'>
+                        <div className='w-[200px] h-[300px] border'>
                             <ReactPlayer
                                 url={videoData.url}
                                 controls
                                 loop
-                                light={cover ? <img src={`https://ipfs.io/ipfs/${cover}`}/> : false}
+                                light={cover ? <img src={`https://ipfs.io/ipfs/${cover}`} /> : false}
                                 width='100%'
                                 height='100%'
                             />
