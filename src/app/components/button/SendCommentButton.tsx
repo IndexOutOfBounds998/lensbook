@@ -1,5 +1,6 @@
 import {
     AnyPublication,
+    Comment,
     ProfileOwnedByMe,
 } from '@lens-protocol/react-web';
 
@@ -8,14 +9,16 @@ import { Button, message } from 'antd';
 import { useTranslation } from "react-i18next";
 
 import { useSendComment } from '@/app/hooks/useSendComment';
- 
+
 type CollectButtonProps = {
+    comments: any[];
     comment: any;
     profile: ProfileOwnedByMe;
     publication: AnyPublication;
+    onChange: React.Dispatch<React.SetStateAction<any[]>>;
 };
 
-export default function SendCommentButton({ comment, profile, publication }: CollectButtonProps) {
+export default function SendCommentButton({ comments, comment, profile, publication ,onChange}: CollectButtonProps) {
 
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -28,6 +31,20 @@ export default function SendCommentButton({ comment, profile, publication }: Col
 
         if (comment.input.value && !loading && profile) {
             send(comment.input.value, profile).then(res => {
+
+                const newComment = {
+                    __typename: "Comment",
+                    metadata: {
+                        __typename: 'MetadataOutput',
+                        content: comment.input.value
+                    },
+                    profile: profile
+                };
+
+                comments = [...comments, newComment];
+
+                onChange(comments);
+                console.log(comments);
                 messageApi.success("success");
             })
                 .catch(error => {
