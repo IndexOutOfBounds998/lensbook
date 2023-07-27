@@ -24,6 +24,7 @@ import '@/app/style/Carousel.css'
 import { NextSeo } from 'next-seo';
 import { useActiveProfile } from '@lens-protocol/react-web';
 import Link from 'next/link';
+import MirrorButton from './button/MirrorButton';
 export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
@@ -353,9 +354,15 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
 
-                                <div className='w-[70px] rounded-3xl bg-[#50b674] cursor-pointer p-[5px] text-[#fff] text-center'>
+                                {/* <div className='w-[70px] rounded-3xl bg-[#50b674] cursor-pointer p-[5px] text-[#fff] text-center'>
                                     {t('sharebtn')}
-                                </div>
+                                </div> */}
+                                <WhenLoggedInWithProfile>
+                                    {({ profile }) => {
+                                        return publication_loading ? '' : <MirrorButton publisher={profile} publication={publication as ContentPublication} />
+                                    }}
+                                </WhenLoggedInWithProfile>
+
                             </div>
                             <div className='h-[50px] rounded-3xl w-full flex' style={{ display: publication && (publication as Post).canComment.result ? '' : 'none' }}>
                                 <div className='w-[calc(100%-95px)] mr-[15px] shadow p-[5px] h-[50px] bg-[#f9f9f9] rounded-3xl'>
