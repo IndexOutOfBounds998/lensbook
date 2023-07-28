@@ -9,7 +9,7 @@
     <a href="https://lenstube.xyz/sasicodes.lens">
         <img src="https://lens-badge.vercel.app/api/badge/sasicodes.lens" alt="Lens">
     </a>
-    <a href="https://twitter.com/lenstubexyz">
+    <a href="https://twitter.com/0xtripxyz">
         <img src="https://img.shields.io/twitter/follow/0xtripxyz?style=social" alt="Twitter">
     </a>
     <a href="https://deepsource.io/gh/lenstube-xyz/lenstube">
