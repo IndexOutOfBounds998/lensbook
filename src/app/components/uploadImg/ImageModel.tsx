@@ -108,7 +108,7 @@ const ImageModel: React.FC<{
 
     return (
         <div>
-            <div className="w-full h-full bg-white overflow-y-scroll p-[30px] pl-[30px]">
+            <div className="w-full h-full bg-white p-[30px] pl-[30px]">
                 <div className="text-[20px] flex items-center">
                     <div className="w-[10px] h-[25px] inline-block bg-[blueviolet] rounded-3xl mr-1" />
                     <span>{t('publishTitle')}</span>

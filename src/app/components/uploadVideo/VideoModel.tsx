@@ -3,12 +3,10 @@ import { Radio, Input, Button, Upload, message } from 'antd';
 import React, { useEffect, useRef, useState } from "react";
 import { usePost } from '../../hooks/usePost'
 import { useTranslation } from "react-i18next";
-import type { UploadFile } from 'antd/es/upload/interface';
 import {
     useActiveProfile
 } from '@lens-protocol/react-web';
 const { TextArea } = Input;
-import { useSearchParams } from 'next/navigation'
 import ReactPlayer from "react-player";
 import { RcFile, UploadProps } from "antd/es/upload";
 import i18n from "i18next";
@@ -16,6 +14,7 @@ import { uuid } from "@walletconnect/legacy-utils";
 import { PublicationMetadataV2Input, PublicationMainFocus, PublicationMetadataDisplayTypes } from "@lens-protocol/client";
 import { useUpIpfs } from "../../hooks/useUpIpfs";
 import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
+import CollectModel from "../collectSetting/CollectModel";
 
 const VideoModel: React.FC<{
     videoData: any;
@@ -31,6 +30,7 @@ const VideoModel: React.FC<{
     let [timeValue, setTimeValue] = useState('just');
     let [quillRef, setQuillRef] = useState();
     let [cover, setCover] = useState('');
+    let [collectData, setCollectData] = useState({});
 
     let titleRef = useRef(undefined);
 
@@ -48,8 +48,8 @@ const VideoModel: React.FC<{
     const showModal = () => {
         setIsModalOpen(true);
     };
-   
-    
+
+
     const callbackOnSuccess = () => {
         message.success(t('success'))
     }
@@ -116,7 +116,7 @@ const VideoModel: React.FC<{
 
     return (
         <div>
-            <div className="w-full h-full bg-white overflow-y-scroll p-[30px] pl-[30px]">
+            <div className="w-full h-full bg-white p-[30px] pl-[30px]">
                 <div className="text-[20px] flex items-center">
                     <div className="w-[10px] h-[25px] inline-block bg-[blueviolet] rounded-3xl mr-1" />
                     <span>{t('postVideo')}</span>
@@ -237,6 +237,7 @@ const VideoModel: React.FC<{
                     </div>
                 </div>
             </div>
+            <CollectModel show={isModalOpen} setShow={setIsModalOpen} setCollectData={setCollectData}/>
         </div>
     );
 }
