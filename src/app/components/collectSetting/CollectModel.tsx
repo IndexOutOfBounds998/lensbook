@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Switch, InputNumber, Select } from "antd";
 import { useCurrencies, Erc20 } from '@lens-protocol/react-web';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-export default function Search({ show, setShow, setCollectData }) {
+export default function CollectModel({ show, setShow, setCollectData }) {
     const Icon = (icon) => (
         <i className={`iconfont icon-${icon} text-[blueviolet] cursor-pointer text-[18px] mr-[5px]`} />
     );
@@ -36,6 +36,25 @@ export default function Search({ show, setShow, setCollectData }) {
     let [collectLimit, setCollectLimit] = useState(0);
     //是否保存当前操作
     let [isSave, setIsSave] = useState(false);
+
+    // 将这些数据返回给父组件，设置到setCollectData这个方法里
+    useEffect(() => {
+        setCollectData({
+            isCollect: isCollect,
+            isCost: isCost,
+            isReward: isReward,
+            isLimit: isLimit,
+            isTimeLimit: isTimeLimit,
+            followerOnly: followerOnly,
+            currencys: currencys,
+            amount: amount,
+            selectAddress: selectAddress,
+            referralFee: referralFee,
+            collectLimit: collectLimit,
+            isSave: isSave
+        });
+    }, [isCollect, isCost, isReward, isLimit, isTimeLimit, followerOnly, currencys, amount, selectAddress, referralFee, collectLimit, isSave]);
+
 
     useEffect(() => {
         if (!loading) {

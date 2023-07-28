@@ -1,4 +1,14 @@
 // utils.ts
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import utc from 'dayjs/plugin/utc';
+// @ts-ignore
+import dayjsTwitter from 'dayjs-twitter';
+
+dayjs.extend(relativeTime);
+dayjs.extend(utc);
+dayjs.extend(dayjsTwitter);
+
 export function formatPicture(picture: any) {
 
   if (!picture) {
@@ -42,3 +52,7 @@ export function formatTextLenth20(text: any) {
   }
   return result;
 }
+
+export const getTimeAddedNDay = (day: number) => {
+  return dayjs().add(day, 'day').utc().format();
+};

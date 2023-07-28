@@ -17,8 +17,13 @@ export function usePost(callbackOnSuccess, callbackOnError) {
     const [postLoading, setPostLoading] = useState(false);
 
 
-
-    const submit = async (obj) => {
+    // collectModule: {
+    //     revertCollectModule: true, // collect disabled
+    // },
+    // referenceModule: {
+    //     followerOnlyReferenceModule: false, // anybody can comment or mirror
+    // },
+    const submit = async (obj, collectModule, referenceModule) => {
         setPostLoading(true);
         const url = await execute(obj);
         if (url) {
@@ -28,12 +33,8 @@ export function usePost(callbackOnSuccess, callbackOnError) {
                 const typedDataResult = await lensClient.publication.createPostTypedData({
                     profileId: profile.id,
                     contentURI: "ipfs://" + url, // or arweave
-                    collectModule: {
-                        revertCollectModule: true, // collect disabled
-                    },
-                    referenceModule: {
-                        followerOnlyReferenceModule: false, // anybody can comment or mirror
-                    },
+                    collectModule: collectModule,
+                    referenceModule: referenceModule,
                 });
                 // typedDataResult is a Result object
                 const data = typedDataResult.unwrap();
