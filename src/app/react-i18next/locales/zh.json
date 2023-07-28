@@ -98,5 +98,21 @@
   "success": "操作成功",
   "error": "操作失败",
   "imageModelAlert": "请上传至少一张图片",
-  "contentFillIn": "请填写内容"
+  "contentFillIn": "请填写内容",
+  "collectSetting": "收藏设置",
+  "canCollected": "此贴可以收藏",
+  "chargeCollecting": "收取费用",
+  "getPPaid": "每当有人收藏您的帖子时即可获得报酬",
+  "price": "价格",
+  "selectCurrency": "选择货币",
+  "referral": "镜像推荐奖励",
+  "amplify": "与扩大您的内容的人分享您的费用",
+  "referralFee": "推荐费",
+  "limitedEdition": "限量版",
+  "exclusive": "让帖子变的独一无二",
+  "collectLimit": "收取限额",
+  "timeLimit": "时限",
+  "first24h": "收藏仅限前24小时",
+  "canCollect": "谁可以收藏",
+  "onlyFollowers": "只有关注者才可以收藏"
 }

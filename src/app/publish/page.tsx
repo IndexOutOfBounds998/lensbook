@@ -25,7 +25,7 @@ export default function Page() {
 
     return (
         <div>
-            <div className="min-w-[1024px] max-w-[1220px] min-h-[600px] mx-[auto] bg-white overflow-y-scroll rounded-xl p-[15px]">
+            <div className="min-w-[1024px] max-w-[1220px] min-h-[600px] mx-[auto] bg-white rounded-xl p-[15px]">
                 <Tabs
                     defaultActiveKey="1"
                     size='middle'

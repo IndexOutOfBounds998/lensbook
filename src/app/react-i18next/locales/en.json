@@ -98,6 +98,21 @@
   "success": "success",
   "error": "error",
   "imageModelAlert": "Please upload at least one image",
-  "contentFillIn": "Please fill in the content"
-
+  "contentFillIn": "Please fill in the content",
+  "collectSetting": "Collect settings",
+  "canCollected": "This post can be collected",
+  "chargeCollecting": "Charge for collecting",
+  "getPPaid": "Get paid whenever someone collects your post",
+  "price": "Price",
+  "selectCurrency": "Select Currency",
+  "referral": "Mirror referral reward",
+  "amplify": "Share your fee with people who amplify your content",
+  "referralFee": "Referral fee",
+  "limitedEdition": "Limited edition",
+  "exclusive": "Make the collects exclusive",
+  "collectLimit": "Collect limit",
+  "timeLimit": "Time limit",
+  "first24h": "Limit collecting to the first 24h",
+  "canCollect": "Who can collect",
+  "onlyFollowers": "Only followers can collect"
 }
