@@ -7,7 +7,7 @@ import MuUploadImagButton from "@/app/components/button/MuUploadImagButton";
 import i18n from "i18next";
 import type { UploadFile } from 'antd/es/upload/interface';
 import { uuid } from "@walletconnect/legacy-utils";
-import { PublicationMetadataV2Input, PublicationMainFocus, PublicationMetadataDisplayTypes } from '@lens-protocol/client';
+import { PublicationMetadataV2Input, PublicationMainFocus, PublicationMetadataDisplayTypes, MetadataAttributeInput } from '@lens-protocol/client';
 import {
     useActiveProfile
 } from '@lens-protocol/react-web';
@@ -71,16 +71,14 @@ const ImageModel: React.FC<{
 
         //处理属性 让 nft 更加唯一性
 
-        let attributes = fileList.filter((item) => {
+        let attributes: MetadataAttributeInput[] = fileList.filter((item) => {
             return item.response.code === 200;
         }).map((item) => {
-
             return {
                 displayType: PublicationMetadataDisplayTypes.Number,
                 traitType: "size",
                 value: item.size
             }
-
         })
 
         let current_locale = i18n.language

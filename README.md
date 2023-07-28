@@ -9,16 +9,16 @@
     <a href="https://lenstube.xyz/sasicodes.lens">
         <img src="https://lens-badge.vercel.app/api/badge/sasicodes.lens" alt="Lens">
     </a>
-    <a href="https://twitter.com/lenstubexyz">
+    <a href="https://twitter.com/0xtripxyz">
         <img src="https://img.shields.io/twitter/follow/0xtripxyz?style=social" alt="Twitter">
     </a>
-    <a href="https://deepsource.io/gh/lenstube-xyz/lenstube">
+    <a href="https://deepsource.io/gh/IndexOutOfBounds998/lensbook">
         <img src="https://deepsource.io/gh/lenstube-xyz/lenstube.svg/?label=active+issues&show_trend=true" alt="Deepsource">
     </a>
-     <a href="https://status.lenstube.xyz">
+     <a href="https://status.lensbook.xyz">
         <img src="https://betteruptime.com/status-badges/v1/monitor/dfaw.svg" alt="Better Uptime">
     </a>
-    <a title="Crowdin" target="_blank" href="https://crowdin.com/project/lenstube">
+    <a title="Crowdin" target="_blank" href="https://crowdin.com/project/lensbook">
         <img src="https://badges.crowdin.net/lenstube/localized.svg">
     </a>
 </div>
@@ -39,27 +39,7 @@ For a place to have open discussions on features, voice your ideas, or get help 
 | Mainnet | https://mainnet.0xtrip.xyz   |
 | Testnet | https://testnet.0xtrip.xyz   |
 
-## 🔭 What's inside?
 
-This turborepo uses [Npm](https://www.npmjs.com/) as a package manager. It includes the following packages/apps:
-
-### Apps
-
-| Name     | Description                         |
-| -------- | ----------------------------------- |
-| `app`    | NextJs Lensbook website             |
-| `api`    | NextJs serverless functions         |
-
-### Packages
-
-| Name        | Description                               |
-| ----------- | ----------------------------------------- |
-| `lens`      | Everything about Lens Backend             |
-| `helpers`   | Collection of browser and generic helpers |
-| `ui`        | UI components                             |
-| `workers`   | Cloudflare Workers                        |
-| `constants` | Constants for the entire application      |
-| `config`    | Shared lint config                        |
 
 ## Getting Started
 

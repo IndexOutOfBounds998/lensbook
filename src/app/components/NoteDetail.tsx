@@ -144,20 +144,20 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
             <NextSeo
-                title={item.metadata.content}
+                title={item.metadata && item.metadata.content ? item.metadata.content : ''}
                 description="lens book"
                 canonical="https://testnet.0xtrip.xyz/"
                 openGraph={{
                     url: 'https://testnet.0xtrip.xyz/',
-                    title: item.metadata.content,
-                    description: item.metadata.content,
+                    title: item.metadata && item.metadata.content ? item.metadata.content : '',
+                    description: item.metadata && item.metadata.content ? item.metadata.content : '',
                     images: [
                         {
-                            url: item.metadata.media[0].original.url,
+                            url: item.metadata && item.metadata.media[0].original.url,
                             width: 300,
                             height: 400,
-                            alt: item.metadata.media[0].original.altTag,
-                            type: item.metadata.media[0].original.mimeType,
+                            alt: item.metadata && item.metadata.media[0].original.altTag,
+                            type: item.metadata && item.metadata.media[0].original.mimeType,
                         }
                     ],
                     siteName: 'lensbook',
