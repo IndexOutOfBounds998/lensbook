@@ -41,13 +41,13 @@ For a place to have open discussions on features, voice your ideas, or get help 
 
 ## 🔭 What's inside?
 
-This turborepo uses [Yarn](https://classic.yarnpkg.com/) as a package manager. It includes the following packages/apps:
+This turborepo uses [Npm](https://www.npmjs.com/) as a package manager. It includes the following packages/apps:
 
 ### Apps
 
 | Name     | Description                         |
 | -------- | ----------------------------------- |
-| `web`    | NextJs Lensbook website             |
+| `app`    | NextJs Lensbook website             |
 | `api`    | NextJs serverless functions         |
 
 ### Packages
@@ -82,7 +82,7 @@ and visit http://localhost:3000
 We love contributors! Feel free to contribute to this project but please read the [Contributing Guidelines](CONTRIBUTING.md) before opening an issue or PR so you understand the branching strategy and local development environment.
 
 <a href="https://github.com/IndexOutOfBounds998/lensbook/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=lenstube-xyz/lenstube" />
+  
 </a>
 
 ## 📜 License
