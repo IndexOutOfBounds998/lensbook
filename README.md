@@ -12,13 +12,13 @@
     <a href="https://twitter.com/0xtripxyz">
         <img src="https://img.shields.io/twitter/follow/0xtripxyz?style=social" alt="Twitter">
     </a>
-    <a href="https://deepsource.io/gh/lenstube-xyz/lenstube">
+    <a href="https://deepsource.io/gh/IndexOutOfBounds998/lensbook">
         <img src="https://deepsource.io/gh/lenstube-xyz/lenstube.svg/?label=active+issues&show_trend=true" alt="Deepsource">
     </a>
-     <a href="https://status.lenstube.xyz">
+     <a href="https://status.lensbook.xyz">
         <img src="https://betteruptime.com/status-badges/v1/monitor/dfaw.svg" alt="Better Uptime">
     </a>
-    <a title="Crowdin" target="_blank" href="https://crowdin.com/project/lenstube">
+    <a title="Crowdin" target="_blank" href="https://crowdin.com/project/lensbook">
         <img src="https://badges.crowdin.net/lenstube/localized.svg">
     </a>
 </div>
