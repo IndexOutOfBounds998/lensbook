@@ -39,27 +39,7 @@ For a place to have open discussions on features, voice your ideas, or get help 
 | Mainnet | https://mainnet.0xtrip.xyz   |
 | Testnet | https://testnet.0xtrip.xyz   |
 
-## 🔭 What's inside?
 
-This turborepo uses [Npm](https://www.npmjs.com/) as a package manager. It includes the following packages/apps:
-
-### Apps
-
-| Name     | Description                         |
-| -------- | ----------------------------------- |
-| `app`    | NextJs Lensbook website             |
-| `api`    | NextJs serverless functions         |
-
-### Packages
-
-| Name        | Description                               |
-| ----------- | ----------------------------------------- |
-| `lens`      | Everything about Lens Backend             |
-| `helpers`   | Collection of browser and generic helpers |
-| `ui`        | UI components                             |
-| `workers`   | Cloudflare Workers                        |
-| `constants` | Constants for the entire application      |
-| `config`    | Shared lint config                        |
 
 ## Getting Started
 
