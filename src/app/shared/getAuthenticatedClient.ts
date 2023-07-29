@@ -6,6 +6,6 @@ export async function getAuthenticatedClient(): Promise<LensClient> {
     environment: MAIN_NETWORK ? production : development,
     storage: localStorage,
   });
-  
+
   return lensClient;
 }
