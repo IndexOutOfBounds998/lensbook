@@ -82,7 +82,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     if (flag) {
       scaleDown();
       setIsVideo(item.metadata.mainContentFocus === "VIDEO");
-      console.log(item.metadata.media);
+
       setCarouselList(item.metadata.media);
     }
   }, []);
@@ -232,7 +232,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                         backgroundImage: `url(${formatPicture(item)})`,
                         width: `${bgSize}px`,
                       }}
-                    ></div>
+                    />
                   )}
                 </div>
               ))}
@@ -248,13 +248,13 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                   className="absolute top-[calc(50%-20px)] flex left-[20px] bg-[#fff] rounded-3xl w-[40px] h-[40px] cursor-pointer items-center border-[2px] justify-center"
                   onClick={() => carouselRef.current.prev()}
                 >
-                  <i className={`iconfont icon-icon-left text-[20px]`} />
+                  <i className={"iconfont icon-icon-left text-[20px]"} />
                 </div>
                 <div
                   className="absolute top-[calc(50%-20px)] flex right-[20px] bg-[#fff] rounded-3xl w-[40px] h-[40px] cursor-pointer items-center border-[2px] justify-center"
                   onClick={() => carouselRef.current.next()}
                 >
-                  <i className={`iconfont icon-icon-right text-[20px]`} />
+                  <i className={"iconfont icon-icon-right text-[20px]"} />
                 </div>
               </>
             ) : (
@@ -268,7 +268,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
               transition: "none",
               width: `${contentSize}px`,
             }}
-            className={`bg-white mb-[131px]`}
+            className={"bg-white mb-[131px]"}
           >
             <div
               className="flex py-5 px-6 justify-between"
@@ -303,7 +303,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                       follower={profile && profile}
                     />
                   ) : (
-                    <FollowButtonWithOutProfile></FollowButtonWithOutProfile>
+                    <FollowButtonWithOutProfile />
                   );
                 }}
               </WhenLoggedInWithProfile>
@@ -340,7 +340,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                         __html:
                           publication && (publication as Post).metadata.content,
                       }}
-                    ></div>
+                    />
                     <div className="mt-2 text-[14px] leading-6 text-[#33333399]">
                       {formatDate(publication?.createdAt)}
                     </div>
@@ -352,7 +352,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                         total={
                           item.stats ? item.stats.totalAmountOfComments : 0
                         }
-                      ></Comment>
+                      />
                     </div>
                   </div>
                 </InfiniteScroll>
@@ -433,7 +433,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                         profile={profile}
                         publication={publication}
                         onChange={setComments}
-                      ></SendCommentButton>
+                      />
                     );
                   }}
                 </WhenLoggedInWithProfile>

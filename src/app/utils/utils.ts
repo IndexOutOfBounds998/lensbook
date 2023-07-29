@@ -1,31 +1,35 @@
 // utils.ts
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import utc from 'dayjs/plugin/utc';
-// @ts-ignore
-import dayjsTwitter from 'dayjs-twitter';
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import utc from "dayjs/plugin/utc";
+import dayjsTwitter from "dayjs-twitter";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
 dayjs.extend(dayjsTwitter);
 
 export function formatPicture(picture: any) {
-
   if (!picture) {
-    return '';
+    return "";
   }
-  if (picture.__typename === 'MediaSet') {
-    if (picture.original.url.startsWith('ipfs://')) {
-      let result = picture.original.url.substring(7, picture.original.url.length)
-      return `https://lens.infura-ipfs.io/ipfs/${result}`
-    } else if (picture.original.url.startsWith('ar://')) {
-      let result = picture.original.url.substring(4, picture.original.url.length)
-      return `https://arweave.net/${result}`
+  if (picture.__typename === "MediaSet") {
+    if (picture.original.url.startsWith("ipfs://")) {
+      let result = picture.original.url.substring(
+        7,
+        picture.original.url.length,
+      );
+      return `https://lens.infura-ipfs.io/ipfs/${result}`;
+    } else if (picture.original.url.startsWith("ar://")) {
+      let result = picture.original.url.substring(
+        4,
+        picture.original.url.length,
+      );
+      return `https://arweave.net/${result}`;
     } else {
-      return picture.original.url
+      return picture.original.url;
     }
   } else {
-    return picture
+    return picture;
   }
 }
 
@@ -41,18 +45,17 @@ export function formatNickName(nickname: any) {
   }
 }
 
-
 export function formatTextLenth20(text: any) {
   if (!text) {
     return "";
   }
   let result = text.slice(0, 20);
   if (text.length > 20) {
-    result += '...';
+    result += "...";
   }
   return result;
 }
 
 export const getTimeAddedNDay = (day: number) => {
-  return dayjs().add(day, 'day').utc().format();
+  return dayjs().add(day, "day").utc().format();
 };

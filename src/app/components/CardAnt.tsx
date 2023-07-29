@@ -5,7 +5,7 @@ import "../style/Card.css";
 import { useTranslation } from "react-i18next";
 import NextImage from "next/image";
 import Link from "next/link";
-// @ts-ignore
+
 export default function CardAnt({
   item,
   index,

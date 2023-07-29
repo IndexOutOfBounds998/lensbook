@@ -9,13 +9,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-      <>
-          <LayoutSider/>
-          <div className='w-full bg-[#eef1f8]'>
-              <div className="w-full py-[30px] pl-[30px] h-full">
-                  {children}
-              </div>
-          </div>
-      </>
+    <>
+      <LayoutSider />
+      <div className="w-full bg-[#eef1f8]">
+        <div className="w-full py-[30px] pl-[30px] h-full">{children}</div>
+      </div>
+    </>
   );
 }

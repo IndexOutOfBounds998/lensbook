@@ -1,8 +1,9 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4072718 */
-  src: url('iconfont.woff2?t=1690274925220') format('woff2'),
-       url('iconfont.woff?t=1690274925220') format('woff'),
-       url('iconfont.ttf?t=1690274925220') format('truetype');
+  src:
+    url("iconfont.woff2?t=1690274925220") format("woff2"),
+    url("iconfont.woff?t=1690274925220") format("woff"),
+    url("iconfont.ttf?t=1690274925220") format("truetype");
 }
 
 .iconfont {
@@ -144,4 +145,3 @@
 .icon-shoucang:before {
   content: "\e65a";
 }
-

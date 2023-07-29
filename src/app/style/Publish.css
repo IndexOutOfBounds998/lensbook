@@ -1,12 +1,12 @@
 .ant-tabs-nav-list {
-    width: auto;
+  width: auto;
 }
 .ant-tabs-tab {
-    width: 50%;
-    padding-top: 0 !important;
-    justify-content: center;
+  width: 50%;
+  padding-top: 0 !important;
+  justify-content: center;
 }
 .ant-popover-inner {
-    padding: 0 !important;
-    overflow: hidden;
+  padding: 0 !important;
+  overflow: hidden;
 }
