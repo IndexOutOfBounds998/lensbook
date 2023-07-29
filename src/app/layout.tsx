@@ -61,7 +61,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script src="https://cdn.bootcdn.net/ajax/libs/masonry/4.2.2/masonry.pkgd.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/masonry/4.2.2/masonry.pkgd.js" />
       </head>
       <body>
         <WagmiConfig config={wagmiConfig}>

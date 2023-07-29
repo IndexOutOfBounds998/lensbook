@@ -122,7 +122,7 @@ export default function Page() {
             <MuUploadImagButton
               fileList={fileList}
               setFileList={setFileList}
-            ></MuUploadImagButton>
+             />
           </div>
           <div className="mb-[16px]">
             <Input

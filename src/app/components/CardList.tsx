@@ -96,7 +96,7 @@ const CardList: React.FC<CardListProps> = ({
         onScroll={handleScroll}
       >
         {dataObj.loading && dataObj.data.length === 0 ? (
-          <ContentHomeLoader></ContentHomeLoader>
+          <ContentHomeLoader />
         ) : (
           <div
             id="scrollableDiv"

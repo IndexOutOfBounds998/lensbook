@@ -47,7 +47,7 @@ export default function LoginButton() {
   return (
     <>
       {profile ? (
-        <ProfileSetting></ProfileSetting>
+        <ProfileSetting />
       ) : !isConnected ? (
         <ConnectButton />
       ) : (

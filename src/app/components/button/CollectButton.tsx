@@ -129,7 +129,7 @@ export default function CollectButton({
     case CollectState.CAN_BE_COLLECTED:
       return (
         <>
-          <ShowCollectModal publication={publication}></ShowCollectModal>
+          <ShowCollectModal publication={publication} />
           <Button
             onClick={() => showModal()}
             disabled={isPending}

@@ -43,11 +43,11 @@ const Comment: React.FC<CommentArgs> = ({ item, total }) => {
               <div className="flex text-[14px]">
                 <div className="cursor-pointer hover:text-[#333333]">
                   {icon("xihuan1")}
-                  <span></span>
+                  <span />
                 </div>
                 <div className="cursor-pointer ml-[20px] hover:text-[#333333]">
                   {icon("icon-message")}
-                  <span></span>
+                  <span />
                 </div>
               </div>
             </div>

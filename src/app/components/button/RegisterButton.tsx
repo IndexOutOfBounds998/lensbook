@@ -65,7 +65,7 @@ export default function RegisterButton() {
   }
 
   if (registerStatus) {
-    return <LoginButton></LoginButton>;
+    return <LoginButton />;
   }
 
   const onFinish = async (values: any) => {

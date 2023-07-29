@@ -13,12 +13,12 @@ export default function Page() {
     {
       key: "1",
       label: t("uploadVideo"),
-      children: <UploadVideo></UploadVideo>, //上传视频
+      children: <UploadVideo />, //上传视频
     },
     {
       key: "2",
       label: t("uploadImg"),
-      children: <UploadImg></UploadImg>, //上传图文
+      children: <UploadImg />, //上传图文
     },
   ];
 

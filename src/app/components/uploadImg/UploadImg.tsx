@@ -107,7 +107,7 @@ export default function UploadImg() {
           </div>
         </div>
       ) : (
-        <ImageModel fileList={fileList} setFileList={setFileList}></ImageModel>
+        <ImageModel fileList={fileList} setFileList={setFileList} />
       )}
     </>
   );
