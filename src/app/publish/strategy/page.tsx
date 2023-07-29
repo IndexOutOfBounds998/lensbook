@@ -119,10 +119,7 @@ export default function Page() {
         <div className="p-[20px]">
           <div className="mb-[10px]">
             {/* <p className="mb-[10px] text-[18px]">{t('imageEditing')}&nbsp;&nbsp;<span className="text-[14px] text-[blue]">+{t('uploadMore')}</span></p> */}
-            <MuUploadImagButton
-              fileList={fileList}
-              setFileList={setFileList}
-             />
+            <MuUploadImagButton fileList={fileList} setFileList={setFileList} />
           </div>
           <div className="mb-[16px]">
             <Input

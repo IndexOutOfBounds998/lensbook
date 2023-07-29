@@ -148,7 +148,7 @@ export default function LayoutContent({ cardClick }) {
           <CardList
             cardClick={cardClick}
             dataObj={{ data, loading, hasMore, next, reset }}
-           />
+          />
         )}
       </div>
     </>
