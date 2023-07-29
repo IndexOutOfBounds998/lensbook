@@ -9,6 +9,6 @@ export default async function ValidateMetadata(
   );
 
   if (!validateResult.valid) {
-      throw new Error("Metadata is not valid.");
+    throw new Error("Metadata is not valid.");
   }
 }
