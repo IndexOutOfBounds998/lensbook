@@ -5,7 +5,7 @@ export default async function ValidateMetadata(metadata: PublicationMetadataV2In
     const validateResult = await lensClient.publication.validateMetadata(metadata);
 
     if (!validateResult.valid) {
-        throw new Error(`Metadata is not valid.`);
+        throw new Error("Metadata is not valid.");
     }
 
 }
