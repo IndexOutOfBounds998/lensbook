@@ -73,9 +73,6 @@ export function useSendComment({ publication }: commentData) {
       const broadcastResultValue = broadcastResult.unwrap();
 
       if (broadcastResultValue.__typename == "RelayerResult") {
-        console.log(
-          `Transaction was successfuly broadcasted with txId ${broadcastResultValue.txId}`,
-        );
       }
 
       setLoading(false);
