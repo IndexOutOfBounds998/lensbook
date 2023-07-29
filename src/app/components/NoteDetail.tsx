@@ -33,7 +33,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const { data: publication, loading: publication_loading } = usePublication(
         {
             publicationId: item.id,
-            observerId: profile && profile.id
+            observerId:  profile?.id
         }
     );
 
@@ -65,7 +65,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     const { data: commentsData, loading: commentsLoading, hasMore, next } = useComments({
         commentsOf: item.id,
         limit: 10,
-        observerId: profile && profile.id
+        observerId:  profile?.id
     });
 
     useEffect(() => {
@@ -144,20 +144,20 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
 
             <NextSeo
-                title={item.metadata && item.metadata.content ? item.metadata.content : ''}
+                title={ item.metadata?.content ? item.metadata.content : ''}
                 description="lens book"
                 canonical="https://testnet.0xtrip.xyz/"
                 openGraph={{
                     url: 'https://testnet.0xtrip.xyz/',
-                    title: item.metadata && item.metadata.content ? item.metadata.content : '',
-                    description: item.metadata && item.metadata.content ? item.metadata.content : '',
+                    title:  item.metadata?.content ? item.metadata.content : '',
+                    description:  item.metadata?.content ? item.metadata.content : '',
                     images: [
                         {
-                            url: item.metadata && item.metadata.media[0].original.url,
+                            url:  item.metadata?.media[0].original.url,
                             width: 300,
                             height: 400,
-                            alt: item.metadata && item.metadata.media[0].original.altTag,
-                            type: item.metadata && item.metadata.media[0].original.mimeType,
+                            alt:  item.metadata?.media[0].original.altTag,
+                            type:  item.metadata?.media[0].original.mimeType,
                         }
                     ],
                     siteName: 'lensbook',
@@ -272,17 +272,17 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                 <Link href={`/profile/${item.profile.handle}`}>
                                     <img
                                         className='rounded-3xl w-[40px] h-[40px] mx-2'
-                                        src={publication && publication.profile.picture ? formatPicture(publication && publication.profile.picture) : user}
+                                        src={ publication?.profile.picture ? formatPicture( publication?.profile.picture) : user}
                                         alt=""
                                     />
-                                    <span>{publication && publication.profile.name ? publication && publication.profile.name : formatNickName(publication && publication.profile.handle)}</span>
+                                    <span>{ publication?.profile.name ?  publication?.profile.name : formatNickName( publication?.profile.handle)}</span>
                                 </Link>
                             </div>
 
 
                             <WhenLoggedInWithProfile>
                                 {({ profile }) => {
-                                    return publication_loading ? '' : profile ? <FollowButton followee={publication && publication.profile} follower={profile && profile} /> : <FollowButtonWithOutProfile></FollowButtonWithOutProfile>
+                                    return publication_loading ? '' : profile ? <FollowButton followee={ publication?.profile} follower={profile && profile} /> : <FollowButtonWithOutProfile></FollowButtonWithOutProfile>
                                 }}
                             </WhenLoggedInWithProfile>
 
@@ -317,7 +317,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                                         >
                                         </div>
                                         <div className='mt-2 text-[14px] leading-6 text-[#33333399]'>
-                                            {formatDate(publication && publication.createdAt)}
+                                            {formatDate( publication?.createdAt)}
                                         </div>
                                     </div>
                                     <div className='px-[30px] py-[20px]'>
@@ -341,7 +341,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
 
                                 <WhenLoggedInWithProfile>
                                     {({ profile }) => {
-                                        return publication_loading ? '' : <ReactionButton publication={publication as ContentPublication} profileId={profile && profile.id}
+                                        return publication_loading ? '' : <ReactionButton publication={publication as ContentPublication} profileId={ profile?.id}
                                             reactionType={ReactionType.UPVOTE} />
                                     }}
                                 </WhenLoggedInWithProfile>

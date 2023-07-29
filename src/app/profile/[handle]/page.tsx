@@ -55,7 +55,7 @@ function Publications({ profile, currentProfile }: { profile: Profile, currentPr
   let { data: publications } = usePublications({
     profileId: profile.id,
     limit: 10,
-    observerId: currentProfile && currentProfile.id,
+    observerId:  currentProfile?.id,
     metadataFilter: {
       restrictPublicationMainFocusTo: [PublicationMainFocus.Image, PublicationMainFocus.Video]
     }

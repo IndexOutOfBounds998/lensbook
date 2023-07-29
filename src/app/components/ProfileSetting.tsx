@@ -34,10 +34,10 @@ export default function ProfileSetting() {
     const { t } = useTranslation();
 
     const list = [
-        { value: profile && profile.stats.totalFollowing, title: t('follow') },
-        { value: profile && profile.stats.totalFollowers, title: t('fans') },
-        { value: profile && profile.stats.totalPosts, title: t('post') },
-        { value: profile && profile.stats.totalCollects, title: t('collect') },
+        { value:  profile?.stats.totalFollowing, title: t('follow') },
+        { value:  profile?.stats.totalFollowers, title: t('fans') },
+        { value:  profile?.stats.totalPosts, title: t('post') },
+        { value:  profile?.stats.totalCollects, title: t('collect') },
     ]
 
     const exit = () => {
@@ -62,7 +62,7 @@ export default function ProfileSetting() {
                                     <span className='text-[20px] font-bold'>{profile && formatNickName(profile.handle)}</span>
                                     <i className='iconfont icon-icon-right text-[10px]' />
                                 </div>
-                                <p className='truncate w-[200px] text-[#3339] cursor-pointer hover:text-[#000]'>{profile && profile.bio}</p>
+                                <p className='truncate w-[200px] text-[#3339] cursor-pointer hover:text-[#000]'>{ profile?.bio}</p>
                             </div>
                         </div>
                         <div className='flex justify-around mb-[30px]'>

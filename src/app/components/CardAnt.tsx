@@ -115,7 +115,7 @@ export default function CardAnt({ item, index, cardClick, width, position, cardP
         >
             <div className='p-2.5'>
                 <p className='text-[14px] leading-5 line-clamp-2 tracking-wide mb-2 cursor-pointer'>
-                    {contentItem && contentItem.content ? contentItem.content : ''}
+                    { contentItem?.content ? contentItem.content : ''}
                 </p>
                 <div className='h-[20px] text-[13px] flex justify-between text-gray-500 cursor-pointer'>
                     <div className='flex flex-row items-center'>
