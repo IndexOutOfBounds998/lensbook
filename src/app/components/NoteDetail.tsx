@@ -232,7 +232,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                         backgroundImage: `url(${formatPicture(item)})`,
                         width: `${bgSize}px`,
                       }}
-                    ></div>
+                    />
                   )}
                 </div>
               ))}
@@ -303,7 +303,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                       follower={profile && profile}
                     />
                   ) : (
-                    <FollowButtonWithOutProfile></FollowButtonWithOutProfile>
+                    <FollowButtonWithOutProfile />
                   );
                 }}
               </WhenLoggedInWithProfile>
@@ -340,7 +340,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                         __html:
                           publication && (publication as Post).metadata.content,
                       }}
-                    ></div>
+                    />
                     <div className="mt-2 text-[14px] leading-6 text-[#33333399]">
                       {formatDate(publication?.createdAt)}
                     </div>
@@ -352,7 +352,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                         total={
                           item.stats ? item.stats.totalAmountOfComments : 0
                         }
-                      ></Comment>
+                      />
                     </div>
                   </div>
                 </InfiniteScroll>
@@ -433,7 +433,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
                         profile={profile}
                         publication={publication}
                         onChange={setComments}
-                      ></SendCommentButton>
+                      />
                     );
                   }}
                 </WhenLoggedInWithProfile>
