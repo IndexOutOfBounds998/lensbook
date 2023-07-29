@@ -80,7 +80,7 @@ const CardList: React.FC<CardListProps> = ({
       const height = e.target.clientHeight;
       const allHeight = e.target.scrollHeight;
       if (allHeight - height - top < 500) {
-        console.log("加载");
+        
         nextList();
       }
     }

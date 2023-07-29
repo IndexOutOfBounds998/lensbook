@@ -89,7 +89,7 @@ export default function LayoutContent({ cardClick }) {
   };
 
   const onMenuOpen = (value) => {
-    console.log(value);
+    
   };
   const { data: categoryData, loading: categoryLoading } = useTrending({
     limit: 10,

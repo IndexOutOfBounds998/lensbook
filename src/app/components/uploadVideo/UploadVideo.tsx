@@ -46,7 +46,7 @@ export default function UploadVideo() {
     onChange(info) {
       const { status } = info.file;
       if (status !== "uploading") {
-        console.log(info.file, info.fileList);
+        
       }
       if (status === "done") {
         setShowModel(true);
@@ -55,7 +55,7 @@ export default function UploadVideo() {
       }
     },
     onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
+      
     },
   };
 
@@ -69,7 +69,7 @@ export default function UploadVideo() {
       };
 
       reader.onload = () => {
-        console.log("onload");
+        
         resolve(reader.result);
       };
 
@@ -107,12 +107,7 @@ export default function UploadVideo() {
         cid: cid,
         type: file.type,
       });
-      console.log({
-        url: getObjectURL(file),
-        cid: cid,
-        type: file.type,
-        size: file.size,
-      });
+      
       // const lensClient = await getAuthenticatedClient();
       // const result = await lensClient.publication.createAttachMediaData({
       //     itemCid: cid,

@@ -17,7 +17,7 @@ export async function POST(request: Request) {
       },
     };
     const res = await ipfsApi["upLoadImg"](formData, config);
-    console.log(res);
+    
     if (res) {
       return NextResponse.json({
         code: 200,

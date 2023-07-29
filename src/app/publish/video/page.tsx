@@ -12,7 +12,7 @@ import ReactPlayer from "react-player";
 export default function Page() {
   const params = useSearchParams();
   //获取url中的ipfsUrl
-  console.log(params.get("ipfsUrl"));
+  
 
   const { t } = useTranslation();
 

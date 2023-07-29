@@ -59,7 +59,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ inputValue }) => {
   ];
 
   const onChange = (key: string) => {
-    console.log(key);
+    
   };
 
   return (

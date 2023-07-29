@@ -62,7 +62,7 @@ export default function UploadImg() {
     onChange(info) {
       const { status } = info.file;
       if (status !== "uploading") {
-        console.log(info.file, info.fileList);
+        
       }
       if (status === "done") {
         setShowModel(true);
@@ -72,7 +72,7 @@ export default function UploadImg() {
       }
     },
     onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
+      
     },
   };
 
