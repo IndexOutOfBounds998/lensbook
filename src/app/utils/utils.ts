@@ -2,7 +2,6 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
-@ts-expect-error
 import dayjsTwitter from "dayjs-twitter";
 
 dayjs.extend(relativeTime);

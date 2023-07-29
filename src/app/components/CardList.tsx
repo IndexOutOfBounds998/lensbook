@@ -5,8 +5,6 @@ import { FloatButton, Spin } from "antd";
 import { SyncOutlined } from "@ant-design/icons";
 import ContentHomeLoader from "./loading/ContentHomeLoader";
 
-// import Macy from 'macy';
-// @ts-expect-error
 interface CardListProps {
   cardClick: any;
   dataObj: {

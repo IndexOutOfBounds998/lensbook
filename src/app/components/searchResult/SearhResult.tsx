@@ -7,8 +7,6 @@ import UserList from "./userList/UserList";
 import PostList from "./postList/PostList";
 import user from "../../../assets/user.jpg";
 
-// import Macy from 'macy';
-// @ts-expect-error
 interface SearchResultProps {
   inputValue: any;
 }

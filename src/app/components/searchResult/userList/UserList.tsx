@@ -6,8 +6,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 import { formatPicture, formatNickName } from "../../../utils/FormatContent";
 
-// import Macy from 'macy';
-// @ts-expect-error
 interface UserListProps {
   inputValue: any;
 }
