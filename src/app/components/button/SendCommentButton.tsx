@@ -50,7 +50,7 @@ export default function SendCommentButton({
           comments = [...comments, newComment];
 
           onChange(comments);
-          
+
           messageApi.success("success");
         })
         .catch((error) => {

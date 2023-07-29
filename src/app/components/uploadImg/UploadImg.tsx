@@ -62,7 +62,6 @@ export default function UploadImg() {
     onChange(info) {
       const { status } = info.file;
       if (status !== "uploading") {
-        
       }
       if (status === "done") {
         setShowModel(true);
@@ -71,9 +70,7 @@ export default function UploadImg() {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
-    onDrop(e) {
-      
-    },
+    onDrop(e) {},
   };
 
   return (

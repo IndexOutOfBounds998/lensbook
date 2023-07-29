@@ -24,7 +24,6 @@ const PostList: React.FC<PostListProps> = ({ inputValue }) => {
   //查询
   const searchPosts = async () => {
     if (inputValue) {
-      
       const lensClient = await getAuthenticatedClient();
       const result = await lensClient.search.publications({
         query: inputValue,
@@ -40,7 +39,6 @@ const PostList: React.FC<PostListProps> = ({ inputValue }) => {
       });
       setDataList(result.items);
       setResultObj(result);
-      
     }
   };
 
@@ -48,7 +46,6 @@ const PostList: React.FC<PostListProps> = ({ inputValue }) => {
     const result = await resultObj.next();
     setDataList(dataList.concat(result.items));
     setResultObj(result);
-    
   };
 
   return (

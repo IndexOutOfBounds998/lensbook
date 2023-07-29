@@ -82,7 +82,7 @@ export default function NoteDetail({ card, img, item, setShowDetail }) {
     if (flag) {
       scaleDown();
       setIsVideo(item.metadata.mainContentFocus === "VIDEO");
-      
+
       setCarouselList(item.metadata.media);
     }
   }, []);

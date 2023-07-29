@@ -24,7 +24,6 @@ const UserList: React.FC<UserListProps> = ({ inputValue }) => {
   //查询
   const searchProfiles = async () => {
     if (inputValue) {
-      
       const lensClient = await getAuthenticatedClient();
       const result = await lensClient.search.profiles({
         query: inputValue,
@@ -32,7 +31,6 @@ const UserList: React.FC<UserListProps> = ({ inputValue }) => {
       });
       setDataList(result.items);
       setResultObj(result);
-      
     }
   };
 
@@ -41,7 +39,6 @@ const UserList: React.FC<UserListProps> = ({ inputValue }) => {
     const result = await resultObj.next();
     setDataList(dataList.concat(result.items));
     setResultObj(result);
-    
   };
 
   return (

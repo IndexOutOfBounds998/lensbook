@@ -73,7 +73,6 @@ export function useSendComment({ publication }: commentData) {
       const broadcastResultValue = broadcastResult.unwrap();
 
       if (broadcastResultValue.__typename == "RelayerResult") {
-        
       }
 
       setLoading(false);

@@ -88,9 +88,7 @@ export default function LayoutContent({ cardClick }) {
     changeFilter(requestArgs);
   };
 
-  const onMenuOpen = (value) => {
-    
-  };
+  const onMenuOpen = (value) => {};
   const { data: categoryData, loading: categoryLoading } = useTrending({
     limit: 10,
   });

@@ -46,7 +46,6 @@ export default function UploadVideo() {
     onChange(info) {
       const { status } = info.file;
       if (status !== "uploading") {
-        
       }
       if (status === "done") {
         setShowModel(true);
@@ -54,9 +53,7 @@ export default function UploadVideo() {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
-    onDrop(e) {
-      
-    },
+    onDrop(e) {},
   };
 
   const readAsArrayBufferReader = (file) => {
@@ -69,7 +66,6 @@ export default function UploadVideo() {
       };
 
       reader.onload = () => {
-        
         resolve(reader.result);
       };
 
@@ -107,7 +103,7 @@ export default function UploadVideo() {
         cid: cid,
         type: file.type,
       });
-      
+
       // const lensClient = await getAuthenticatedClient();
       // const result = await lensClient.publication.createAttachMediaData({
       //     itemCid: cid,

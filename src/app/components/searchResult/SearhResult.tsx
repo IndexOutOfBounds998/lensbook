@@ -58,9 +58,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ inputValue }) => {
     },
   ];
 
-  const onChange = (key: string) => {
-    
-  };
+  const onChange = (key: string) => {};
 
   return (
     <div className="w-full">
