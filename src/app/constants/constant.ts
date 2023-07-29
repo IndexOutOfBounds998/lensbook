@@ -32,7 +32,7 @@ export const IPFS_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3
 
 export const RB_PID = "9298e5d1a1cfc4d8bdeb76ecc8748084";
 
-export const MAIN_NETWORK = false;
+export const MAIN_NETWORK = true;
 
 export const EVN = MAIN_NETWORK ? '.lensbook' : ".test";
 
