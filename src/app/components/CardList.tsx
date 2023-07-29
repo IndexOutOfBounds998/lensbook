@@ -6,7 +6,7 @@ import { SyncOutlined } from "@ant-design/icons";
 import ContentHomeLoader from "./loading/ContentHomeLoader";
 
 // import Macy from 'macy';
-// @ts-ignore
+// @ts-expect-error
 interface CardListProps {
   cardClick: any;
   dataObj: {

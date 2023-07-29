@@ -110,7 +110,7 @@ export default function CollectButton({
       className="flex items-center"
       title={title}
     >
-      <i className={`iconfont icon-star cursor-pointer text-[25px] mr-3`} />
+    <i className={"iconfont icon-star cursor-pointer text-[25px] mr-3"} />
       <span className="font-bold">
         {publication.stats.totalAmountOfCollects}
       </span>

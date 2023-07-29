@@ -6,7 +6,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 import { formatTextLenth20 } from "@/app/utils/utils";
 // import Macy from 'macy';
-// @ts-ignore
+// @ts-expect-error
 interface PostListProps {
   inputValue: any;
 }

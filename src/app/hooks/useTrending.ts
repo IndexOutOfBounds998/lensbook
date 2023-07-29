@@ -24,7 +24,7 @@ export function useTrending({ limit }: useTrendingArgs) {
       "X-Access-Token":
         typeof window !== "undefined" &&
         window.localStorage.getItem("accessToken")
-          ? `Bearer ` + window.localStorage.getItem("accessToken")
+        ? "Bearer " + window.localStorage.getItem("accessToken")
           : "",
     },
   };

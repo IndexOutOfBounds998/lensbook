@@ -7,7 +7,7 @@ import { getAuthenticatedClient } from "@/app/shared/getAuthenticatedClient";
 import { formatPicture, formatNickName } from "../../../utils/FormatContent";
 
 // import Macy from 'macy';
-// @ts-ignore
+// @ts-expect-error
 interface UserListProps {
   inputValue: any;
 }
