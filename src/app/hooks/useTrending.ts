@@ -1,15 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
-import { Trending } from '../api/LensApi';
+import { useState, useEffect, useRef } from "react";
+import { Trending } from "../api/LensApi";
 type useTrendingArgs = {
-  limit: Number
-}
+  limit: Number;
+};
 export function useTrending({ limit }: useTrendingArgs) {
-
-  const query = `{
+  const query =
+    `{
     "operationName":"Trending",
     "variables":{
         "request":{
-            "limit":`+ limit + `,
+            "limit":` +
+    limit +
+    `,
             "sort":"MOST_POPULAR"
         }
     },
@@ -18,10 +20,13 @@ export function useTrending({ limit }: useTrendingArgs) {
 
   const config = {
     headers: {
-      'content-type': 'application/json',
-      'X-Access-Token': typeof window !== 'undefined' && window.localStorage.getItem('accessToken') ? "Bearer " + window.localStorage.getItem('accessToken') : ''
-
-    }
+      "content-type": "application/json",
+      "X-Access-Token":
+        typeof window !== "undefined" &&
+        window.localStorage.getItem("accessToken")
+          ? "Bearer " + window.localStorage.getItem("accessToken")
+          : "",
+    },
   };
 
   const [loading, setLoading] = useState(false);
@@ -34,7 +39,9 @@ export function useTrending({ limit }: useTrendingArgs) {
     let items = result.data.allPublicationsTags.items;
     if (items) {
       items.unshift({
-        tag: "All", total: 0, __typename: "TagResult"
+        tag: "All",
+        total: 0,
+        __typename: "TagResult",
       });
       setData(items);
     }
@@ -47,8 +54,6 @@ export function useTrending({ limit }: useTrendingArgs) {
       setLoad(true);
     }
   }, [load]);
-
-
 
   return {
     data,
