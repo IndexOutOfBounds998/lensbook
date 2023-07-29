@@ -1,4 +1,3 @@
- 
 <div align="center">
     <h1>lensbook</h1>
     <p>Decentralized video and image&text -sharing social media platform.</p>
@@ -26,7 +25,7 @@
 
 ## 📽️ About
 
-**Lensbook* is a decentralized  video-and-image&text -sharing social media platform, built using Lens Protocol 🌿
+\*_Lensbook_ is a decentralized video-and-image&text -sharing social media platform, built using Lens Protocol 🌿
 
 ## 💪 Community
 
@@ -34,12 +33,10 @@ For a place to have open discussions on features, voice your ideas, or get help 
 
 ## 🚢 Deployments
 
-| Name    | Link                         |
-| ------- | ---------------------------- |
-| Mainnet | https://mainnet.0xtrip.xyz   |
-| Testnet | https://testnet.0xtrip.xyz   |
-
-
+| Name    | Link                       |
+| ------- | -------------------------- |
+| Mainnet | https://mainnet.0xtrip.xyz |
+| Testnet | https://testnet.0xtrip.xyz |
 
 ## Getting Started
 
@@ -68,8 +65,3 @@ We love contributors! Feel free to contribute to this project but please read th
 ## 📜 License
 
 Lensbook is open-sourced software licensed under the [AGPLv3](LICENSE).
-
-
-
-
-

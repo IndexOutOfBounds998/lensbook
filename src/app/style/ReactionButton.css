@@ -1,10 +1,10 @@
 .reaction-btn:hover {
-    color: #ff2442!important;
+  color: #ff2442 !important;
 }
 .reaction-btn:active {
-    color: #ff2442!important;
+  color: #ff2442 !important;
 }
 .ant-btn-icon {
-    display: flex !important;
-    align-items: center !important;
+  display: flex !important;
+  align-items: center !important;
 }

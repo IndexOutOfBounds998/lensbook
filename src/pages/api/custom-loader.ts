@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   if (req.method === "GET") {
     try {
@@ -32,7 +32,7 @@ export default async function handler(
       // 👇set public cache to 1 year
       res.setHeader(
         "Cache-Control",
-        "public, max-age=31536000, must-revalidate"
+        "public, max-age=31536000, must-revalidate",
       );
       // 👇set content type to webp.
       res.setHeader("content-type", "image/webp");
