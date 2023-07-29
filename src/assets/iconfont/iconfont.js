@@ -51,7 +51,7 @@
             (e = !1),
             m(),
             (h.onreadystatechange = function () {
-              "complete" == h.readyState &&
+              h.readyState == "complete" &&
                 ((h.onreadystatechange = null), n());
             }));
     }
