@@ -19,7 +19,7 @@ export function useTrending({ limit }: useTrendingArgs) {
   const config = {
     headers: {
       'content-type': 'application/json',
-      'X-Access-Token': typeof window !== 'undefined' && window.localStorage.getItem('accessToken') ? `Bearer ` + window.localStorage.getItem('accessToken') : ''
+      'X-Access-Token': typeof window !== 'undefined' && window.localStorage.getItem('accessToken') ? "Bearer " + window.localStorage.getItem('accessToken') : ''
 
     }
   };
