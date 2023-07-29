@@ -9,7 +9,7 @@ import PostList from "./postList/PostList";
 import user from "../../../assets/user.jpg";
 
 // import Macy from 'macy';
-// @ts-ignore
+// @ts-expect-error
 interface SearchResultProps {
     inputValue: any;
 }
